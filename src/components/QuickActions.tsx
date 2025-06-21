@@ -1,6 +1,7 @@
 
-import { Users, Calendar, FileText, MessageSquare, Settings, Trophy } from 'lucide-react';
+import { Users, Calendar, FileText, MessageSquare, Settings, Trophy, ArrowRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
 
 const QuickActions = () => {
   const actions = [
@@ -8,78 +9,104 @@ const QuickActions = () => {
       icon: Users,
       title: 'Meet the Team',
       description: 'Get to know our amazing committee members',
-      color: 'bg-blue-500',
-      href: '/team'
+      color: 'gradient-primary',
+      href: '/team',
+      delay: 'delay-100'
     },
     {
       icon: Calendar,
       title: 'Upcoming Events',
       description: 'Discover exciting events and workshops',
-      color: 'bg-green-500',
-      href: '/events'
+      color: 'gradient-secondary',
+      href: '/events',
+      delay: 'delay-200'
     },
     {
       icon: FileText,
       title: 'Newsletter Archive',
       description: 'Read our latest newsletters and updates',
-      color: 'bg-purple-500',
-      href: '/newsletter'
+      color: 'gradient-accent',
+      href: '/newsletter',
+      delay: 'delay-300'
     },
     {
       icon: MessageSquare,
       title: 'Join Discussions',
       description: 'Participate in community conversations',
-      color: 'bg-orange-500',
-      href: '/discussions'
+      color: 'gradient-primary',
+      href: '/discussions',
+      delay: 'delay-400'
     },
     {
       icon: Trophy,
       title: 'Achievements',
       description: 'Celebrate our accomplishments',
-      color: 'bg-yellow-500',
-      href: '/achievements'
+      color: 'gradient-secondary',
+      href: '/achievements',
+      delay: 'delay-500'
     },
     {
       icon: Settings,
       title: 'Committee Info',
       description: 'Learn about our mission and values',
-      color: 'bg-gray-500',
-      href: '/about'
+      color: 'gradient-accent',
+      href: '/about',
+      delay: 'delay-600'
     }
   ];
 
   return (
-    <section className="py-12">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-[#333333] mb-4">Quick Actions</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Everything you need to stay connected with the IET Committee
-        </p>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {actions.map((action, index) => (
-          <Card 
-            key={index} 
-            className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-[#4f1b59]/20 hover:-translate-y-1"
-          >
-            <CardContent className="p-6">
-              <div className="flex items-start space-x-4">
-                <div className={`w-12 h-12 ${action.color} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
-                  <action.icon className="w-6 h-6 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-[#333333] mb-2 group-hover:text-[#4f1b59] transition-colors duration-200">
-                    {action.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    {action.description}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+    <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16 animate-fade-in">
+          <h2 className="text-5xl font-black text-gray-800 mb-6">
+            Quick <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Actions</span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto font-medium">
+            Everything you need to stay connected with the IET Committee
+          </p>
+          <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-amber-400 rounded-full mx-auto mt-6"></div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {actions.map((action, index) => (
+            <Link key={index} to={action.href}>
+              <Card 
+                className={`group hover:shadow-2xl transition-all duration-500 cursor-pointer border-0 overflow-hidden hover-lift animate-bounce-in ${action.delay} bg-white/80 backdrop-blur-sm`}
+              >
+                <CardContent className="p-8 relative">
+                  {/* Animated background gradient */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500">
+                    <div className={`w-full h-full ${action.color}`}></div>
+                  </div>
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-start space-x-6">
+                      <div className={`w-16 h-16 ${action.color} rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg`}>
+                        <action.icon className="w-8 h-8 text-white animate-float" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-orange-600 transition-colors duration-300">
+                          {action.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                          {action.description}
+                        </p>
+                        <div className="flex items-center text-orange-600 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                          <span className="mr-2">Explore</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Hover effect overlay */}
+                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-amber-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );

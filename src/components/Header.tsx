@@ -1,7 +1,8 @@
 
 import { useState } from 'react';
-import { Menu, X, User, LogIn } from 'lucide-react';
+import { Menu, X, User, LogIn, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,40 +10,67 @@ const Header = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="bg-white border-b-2 border-[#4f1b59] sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-md border-b border-orange-200 sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-[#4f1b59] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">L</span>
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="relative">
+              <div className="w-14 h-14 gradient-primary rounded-2xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-300 animate-pulse-glow">
+                <Sparkles className="w-8 h-8 text-white animate-float" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
             </div>
-            <span className="text-xl font-bold text-[#333333]">LoopIn</span>
-          </div>
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                LoopIn
+              </span>
+              <span className="text-xs text-gray-500 font-medium">IET Committee</span>
+            </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="/" className="text-[#333333] hover:text-[#4f1b59] transition-colors duration-200 font-medium">
+            <Link 
+              to="/" 
+              className="relative text-gray-700 hover:text-orange-600 transition-all duration-300 font-semibold group"
+            >
               Home
-            </a>
-            <a href="/team" className="text-[#333333] hover:text-[#4f1b59] transition-colors duration-200 font-medium">
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link 
+              to="/team" 
+              className="relative text-gray-700 hover:text-orange-600 transition-all duration-300 font-semibold group"
+            >
               Team
-            </a>
-            <a href="/events" className="text-[#333333] hover:text-[#4f1b59] transition-colors duration-200 font-medium">
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link 
+              to="/events" 
+              className="relative text-gray-700 hover:text-orange-600 transition-all duration-300 font-semibold group"
+            >
               Events
-            </a>
-            <a href="/newsletter" className="text-[#333333] hover:text-[#4f1b59] transition-colors duration-200 font-medium">
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link 
+              to="/newsletter" 
+              className="relative text-gray-700 hover:text-orange-600 transition-all duration-300 font-semibold group"
+            >
               Newsletter
-            </a>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
           </nav>
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" className="border-[#4f1b59] text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white">
+            <Button 
+              variant="outline" 
+              className="border-2 border-orange-300 text-orange-600 hover:bg-orange-50 hover:border-orange-400 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            >
               <LogIn className="w-4 h-4 mr-2" />
               Login
             </Button>
-            <Button className="bg-[#4f1b59] hover:bg-[#4f1b59]/90 text-white">
+            <Button className="gradient-primary text-white hover:scale-105 transition-all duration-300 hover:shadow-xl border-0">
               <User className="w-4 h-4 mr-2" />
               Sign Up
             </Button>
@@ -51,7 +79,7 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 rounded-md text-[#333333] hover:text-[#4f1b59] hover:bg-gray-100 transition-colors duration-200"
+            className="md:hidden p-3 rounded-xl text-gray-700 hover:text-orange-600 hover:bg-orange-50 transition-all duration-300 hover:scale-110"
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -59,26 +87,42 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-200 py-4 animate-fade-in">
+          <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-orange-200 py-6 animate-fade-in rounded-b-2xl shadow-xl">
             <nav className="flex flex-col space-y-4">
-              <a href="/" className="text-[#333333] hover:text-[#4f1b59] transition-colors duration-200 font-medium px-4 py-2">
+              <Link 
+                to="/" 
+                className="text-gray-700 hover:text-orange-600 transition-colors duration-300 font-semibold px-4 py-3 rounded-xl hover:bg-orange-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Home
-              </a>
-              <a href="/team" className="text-[#333333] hover:text-[#4f1b59] transition-colors duration-200 font-medium px-4 py-2">
+              </Link>
+              <Link 
+                to="/team" 
+                className="text-gray-700 hover:text-orange-600 transition-colors duration-300 font-semibold px-4 py-3 rounded-xl hover:bg-orange-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Team
-              </a>
-              <a href="/events" className="text-[#333333] hover:text-[#4f1b59] transition-colors duration-200 font-medium px-4 py-2">
+              </Link>
+              <Link 
+                to="/events" 
+                className="text-gray-700 hover:text-orange-600 transition-colors duration-300 font-semibold px-4 py-3 rounded-xl hover:bg-orange-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Events
-              </a>
-              <a href="/newsletter" className="text-[#333333] hover:text-[#4f1b59] transition-colors duration-200 font-medium px-4 py-2">
+              </Link>
+              <Link 
+                to="/newsletter" 
+                className="text-gray-700 hover:text-orange-600 transition-colors duration-300 font-semibold px-4 py-3 rounded-xl hover:bg-orange-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Newsletter
-              </a>
-              <div className="flex flex-col space-y-2 px-4">
-                <Button variant="outline" className="border-[#4f1b59] text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white w-full">
+              </Link>
+              <div className="flex flex-col space-y-3 px-4 pt-4 border-t border-orange-200">
+                <Button variant="outline" className="border-2 border-orange-300 text-orange-600 hover:bg-orange-50 w-full">
                   <LogIn className="w-4 h-4 mr-2" />
                   Login
                 </Button>
-                <Button className="bg-[#4f1b59] hover:bg-[#4f1b59]/90 text-white w-full">
+                <Button className="gradient-primary text-white w-full">
                   <User className="w-4 h-4 mr-2" />
                   Sign Up
                 </Button>
