@@ -21,7 +21,7 @@ const Header = () => {
               </div>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-gray-800">
+              <span className="text-xl font-bold" style={{ color: 'var(--text-color)' }}>
                 LoopIn
               </span>
               <span className="text-xs text-gray-500 font-medium">IET Committee</span>
@@ -33,30 +33,46 @@ const Header = () => {
             <Link 
               to="/" 
               className="relative text-gray-700 hover:text-purple-700 transition-all duration-300 font-medium group py-2"
+              style={{ color: 'var(--text-color)' }}
             >
               Home
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-700 transition-all duration-300 group-hover:w-full"></span>
+              <span 
+                className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                style={{ backgroundColor: 'var(--secondary-color)' }}
+              ></span>
             </Link>
             <Link 
               to="/team" 
               className="relative text-gray-700 hover:text-purple-700 transition-all duration-300 font-medium group py-2"
+              style={{ color: 'var(--text-color)' }}
             >
               Team
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-700 transition-all duration-300 group-hover:w-full"></span>
+              <span 
+                className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                style={{ backgroundColor: 'var(--secondary-color)' }}
+              ></span>
             </Link>
             <Link 
               to="/events" 
               className="relative text-gray-700 hover:text-purple-700 transition-all duration-300 font-medium group py-2"
+              style={{ color: 'var(--text-color)' }}
             >
               Events
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-700 transition-all duration-300 group-hover:w-full"></span>
+              <span 
+                className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                style={{ backgroundColor: 'var(--secondary-color)' }}
+              ></span>
             </Link>
             <Link 
               to="/newsletter" 
               className="relative text-gray-700 hover:text-purple-700 transition-all duration-300 font-medium group py-2"
+              style={{ color: 'var(--text-color)' }}
             >
               Newsletter
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-700 transition-all duration-300 group-hover:w-full"></span>
+              <span 
+                className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                style={{ backgroundColor: 'var(--secondary-color)' }}
+              ></span>
             </Link>
           </nav>
 
@@ -65,7 +81,8 @@ const Header = () => {
             <Button 
               asChild
               variant="outline" 
-              className="border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-purple-300 transition-all duration-300"
+              className="border border-gray-300 hover:bg-gray-50 transition-all duration-300"
+              style={{ color: 'var(--text-color)', borderColor: 'var(--secondary-color)' }}
             >
               <Link to="/login">
                 <LogIn className="w-4 h-4 mr-2" />
@@ -86,7 +103,8 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 rounded-lg text-gray-700 hover:text-purple-700 hover:bg-gray-100 transition-all duration-300"
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-all duration-300"
+            style={{ color: 'var(--text-color)' }}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -98,7 +116,8 @@ const Header = () => {
             <nav className="flex flex-col space-y-2">
               <Link 
                 to="/" 
-                className="text-gray-700 hover:text-purple-700 transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
+                className="transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
+                style={{ color: 'var(--text-color)' }}
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Settings className="w-4 h-4 mr-3" />
@@ -106,7 +125,8 @@ const Header = () => {
               </Link>
               <Link 
                 to="/team" 
-                className="text-gray-700 hover:text-purple-700 transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
+                className="transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
+                style={{ color: 'var(--text-color)' }}
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Users className="w-4 h-4 mr-3" />
@@ -114,7 +134,8 @@ const Header = () => {
               </Link>
               <Link 
                 to="/events" 
-                className="text-gray-700 hover:text-purple-700 transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
+                className="transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
+                style={{ color: 'var(--text-color)' }}
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Calendar className="w-4 h-4 mr-3" />
@@ -122,14 +143,15 @@ const Header = () => {
               </Link>
               <Link 
                 to="/newsletter" 
-                className="text-gray-700 hover:text-purple-700 transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
+                className="transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
+                style={{ color: 'var(--text-color)' }}
                 onClick={() => setIsMenuOpen(false)}
               >
                 <FileText className="w-4 h-4 mr-3" />
                 Newsletter
               </Link>
               <div className="flex flex-col space-y-2 px-4 pt-4 border-t border-gray-200">
-                <Button asChild variant="outline" className="border border-gray-300 text-gray-700 hover:bg-gray-50 w-full">
+                <Button asChild variant="outline" className="border w-full" style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}>
                   <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                     <LogIn className="w-4 h-4 mr-2" />
                     Login

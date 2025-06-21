@@ -28,9 +28,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen gradient-subtle flex items-center justify-center px-4">
       <div className="absolute top-6 left-6">
-        <Button asChild variant="outline" className="border border-gray-300 hover:bg-gray-50">
+        <Button asChild variant="outline" className="border hover:bg-gray-50" style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}>
           <Link to="/">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
@@ -39,12 +39,12 @@ const Login = () => {
       </div>
 
       <div className="w-full max-w-md animate-fade-in">
-        <Card className="border border-gray-200 shadow-xl bg-white/95 backdrop-blur-sm">
+        <Card className="border border-gray-200 shadow-xl glass">
           <CardHeader className="text-center pb-8">
             <div className="w-16 h-16 gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
               <LogIn className="w-8 h-8 text-white" />
             </div>
-            <CardTitle className="text-3xl font-bold text-gray-800">
+            <CardTitle className="text-3xl font-bold" style={{ color: 'var(--text-color)' }}>
               Welcome Back
             </CardTitle>
             <p className="text-gray-600 mt-2">
@@ -55,7 +55,7 @@ const Login = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700 font-medium">
+                <Label htmlFor="email" className="font-medium" style={{ color: 'var(--text-color)' }}>
                   Email Address
                 </Label>
                 <Input
@@ -65,13 +65,14 @@ const Login = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="your.email@example.com"
-                  className="border-gray-300 focus:ring-purple-600 focus:border-purple-600"
+                  className="border-gray-300"
+                  style={{ borderColor: 'var(--secondary-color)' }}
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-700 font-medium">
+                <Label htmlFor="password" className="font-medium" style={{ color: 'var(--text-color)' }}>
                   Password
                 </Label>
                 <div className="relative">
@@ -82,7 +83,8 @@ const Login = () => {
                     value={formData.password}
                     onChange={handleInputChange}
                     placeholder="Enter your password"
-                    className="border-gray-300 focus:ring-purple-600 focus:border-purple-600 pr-12"
+                    className="border-gray-300 pr-12"
+                    style={{ borderColor: 'var(--secondary-color)' }}
                     required
                   />
                   <button
@@ -97,10 +99,10 @@ const Login = () => {
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center">
-                  <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-600" />
+                  <input type="checkbox" className="rounded border-gray-300" style={{ accentColor: 'var(--secondary-color)' }} />
                   <span className="ml-2 text-sm text-gray-600">Remember me</span>
                 </label>
-                <Link to="/forgot-password" className="text-sm text-purple-600 hover:text-purple-700 transition-colors">
+                <Link to="/forgot-password" className="text-sm transition-colors" style={{ color: 'var(--secondary-color)' }}>
                   Forgot password?
                 </Link>
               </div>
@@ -116,7 +118,7 @@ const Login = () => {
             <div className="mt-8 text-center">
               <p className="text-gray-600">
                 Don't have an account?{' '}
-                <Link to="/register" className="text-purple-600 hover:text-purple-700 font-semibold transition-colors">
+                <Link to="/register" className="font-semibold transition-colors" style={{ color: 'var(--secondary-color)' }}>
                   Sign up here
                 </Link>
               </p>

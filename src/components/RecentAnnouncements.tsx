@@ -66,13 +66,13 @@ const RecentAnnouncements = () => {
               <Bell className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-4xl font-black text-gray-800">
-                Recent <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Announcements</span>
+              <h2 className="text-4xl font-black" style={{ color: 'var(--text-color)' }}>
+                Recent <span className="gradient-text">Announcements</span>
               </h2>
               <p className="text-gray-600 mt-2">Stay updated with our latest news</p>
             </div>
           </div>
-          <button className="group flex items-center space-x-2 text-orange-600 hover:text-orange-700 font-bold transition-all duration-300 hover:scale-105">
+          <button className="group flex items-center space-x-2 font-bold transition-all duration-300 hover:scale-105" style={{ color: 'var(--secondary-color)' }}>
             <span>View All</span>
             <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
           </button>
@@ -84,15 +84,15 @@ const RecentAnnouncements = () => {
             return (
               <Card 
                 key={announcement.id} 
-                className={`group hover:shadow-xl transition-all duration-500 cursor-pointer border-l-4 ${priorityStyles.border} hover-lift animate-slide-in-left ${announcement.delay} bg-white/90 backdrop-blur-sm overflow-hidden`}
+                className={`group hover:shadow-xl transition-all duration-500 cursor-pointer border-l-4 ${priorityStyles.border} hover-lift animate-slide-in-left ${announcement.delay} glass overflow-hidden`}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(135deg, rgba(79, 27, 89, 0.05) 0%, transparent 100%)` }}></div>
                 
                 <CardHeader className="pb-4 relative z-10">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-3">
                       {priorityStyles.icon}
-                      <CardTitle className="text-xl font-bold group-hover:text-orange-600 transition-colors duration-300">
+                      <CardTitle className="text-xl font-bold transition-colors duration-300" style={{ color: 'var(--text-color)' }}>
                         {announcement.title}
                       </CardTitle>
                     </div>
@@ -114,15 +114,15 @@ const RecentAnnouncements = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <span>by</span>
-                        <span className="font-semibold text-orange-600">{announcement.author}</span>
+                        <span className="font-semibold" style={{ color: 'var(--secondary-color)' }}>{announcement.author}</span>
                       </div>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-orange-400 group-hover:translate-x-2 group-hover:text-orange-600 transition-all duration-300" />
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-2 transition-all duration-300" style={{ color: 'var(--secondary-color)' }} />
                   </div>
                 </CardContent>
                 
                 {/* Animated bottom border */}
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-amber-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <div className="absolute bottom-0 left-0 w-full h-1 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" style={{ background: `linear-gradient(135deg, var(--secondary-color) 0%, #6a2c70 100%)` }}></div>
               </Card>
             );
           })}

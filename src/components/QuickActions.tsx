@@ -1,3 +1,4 @@
+
 import { Users, Calendar, FileText, MessageSquare, Settings, Trophy, ArrowRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
@@ -55,23 +56,23 @@ const QuickActions = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+    <section className="py-20 gradient-subtle">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-5xl font-black text-gray-800 mb-6">
-            Quick <span className="bg-gradient-to-r from-purple-800 to-purple-600 bg-clip-text text-transparent">Actions</span>
+          <h2 className="text-5xl font-black mb-6" style={{ color: 'var(--text-color)' }}>
+            Quick <span className="gradient-text">Actions</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto font-medium">
+          <p className="text-xl max-w-3xl mx-auto font-medium" style={{ color: 'var(--text-color)' }}>
             Everything you need to stay connected with the IET Committee
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full mx-auto mt-6"></div>
+          <div className="w-24 h-1 rounded-full mx-auto mt-6" style={{ background: `linear-gradient(135deg, var(--secondary-color) 0%, #6a2c70 100%)` }}></div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {actions.map((action, index) => (
             <Link key={index} to={action.href}>
               <Card 
-                className={`group hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-200 overflow-hidden hover-lift animate-bounce-in ${action.delay} bg-white/90 backdrop-blur-sm`}
+                className={`group hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-200 overflow-hidden hover-lift animate-bounce-in ${action.delay} glass`}
               >
                 <CardContent className="p-8 relative">
                   <div className="relative z-10">
@@ -80,13 +81,13 @@ const QuickActions = () => {
                         <action.icon className="w-8 h-8 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-purple-700 transition-colors duration-300">
+                        <h3 className="text-xl font-bold mb-3 group-hover:text-purple-700 transition-colors duration-300" style={{ color: 'var(--text-color)' }}>
                           {action.title}
                         </h3>
                         <p className="text-gray-600 text-sm mb-4 leading-relaxed">
                           {action.description}
                         </p>
-                        <div className="flex items-center text-purple-700 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                        <div className="flex items-center font-semibold group-hover:translate-x-2 transition-transform duration-300" style={{ color: 'var(--secondary-color)' }}>
                           <span className="mr-2">Explore</span>
                           <ArrowRight className="w-4 h-4" />
                         </div>
@@ -94,7 +95,7 @@ const QuickActions = () => {
                     </div>
                   </div>
                   
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-purple-800 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                  <div className="absolute bottom-0 left-0 w-full h-1 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" style={{ background: `linear-gradient(135deg, var(--secondary-color) 0%, #6a2c70 100%)` }}></div>
                 </CardContent>
               </Card>
             </Link>
