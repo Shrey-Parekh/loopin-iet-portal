@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Menu, X, User, LogIn, Sparkles } from 'lucide-react';
+import { Menu, X, User, LogIn, FileText, Users, Calendar, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -10,19 +10,18 @@ const Header = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-orange-200 sticky top-0 z-50 shadow-lg">
+    <header className="bg-white/98 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="relative">
-              <div className="w-14 h-14 gradient-primary rounded-2xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-300 animate-pulse-glow">
-                <Sparkles className="w-8 h-8 text-white animate-float" />
+              <div className="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-all duration-300">
+                <span className="text-white font-bold text-lg">L</span>
               </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+              <span className="text-xl font-bold text-gray-800">
                 LoopIn
               </span>
               <span className="text-xs text-gray-500 font-medium">IET Committee</span>
@@ -33,53 +32,61 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               to="/" 
-              className="relative text-gray-700 hover:text-orange-600 transition-all duration-300 font-semibold group"
+              className="relative text-gray-700 hover:text-purple-700 transition-all duration-300 font-medium group py-2"
             >
               Home
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-700 transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
               to="/team" 
-              className="relative text-gray-700 hover:text-orange-600 transition-all duration-300 font-semibold group"
+              className="relative text-gray-700 hover:text-purple-700 transition-all duration-300 font-medium group py-2"
             >
               Team
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-700 transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
               to="/events" 
-              className="relative text-gray-700 hover:text-orange-600 transition-all duration-300 font-semibold group"
+              className="relative text-gray-700 hover:text-purple-700 transition-all duration-300 font-medium group py-2"
             >
               Events
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-700 transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <Link 
               to="/newsletter" 
-              className="relative text-gray-700 hover:text-orange-600 transition-all duration-300 font-semibold group"
+              className="relative text-gray-700 hover:text-purple-700 transition-all duration-300 font-medium group py-2"
             >
               Newsletter
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-700 transition-all duration-300 group-hover:w-full"></span>
             </Link>
           </nav>
 
           {/* Desktop Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-3">
             <Button 
+              asChild
               variant="outline" 
-              className="border-2 border-orange-300 text-orange-600 hover:bg-orange-50 hover:border-orange-400 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              className="border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-purple-300 transition-all duration-300"
             >
-              <LogIn className="w-4 h-4 mr-2" />
-              Login
+              <Link to="/login">
+                <LogIn className="w-4 h-4 mr-2" />
+                Login
+              </Link>
             </Button>
-            <Button className="gradient-primary text-white hover:scale-105 transition-all duration-300 hover:shadow-xl border-0">
-              <User className="w-4 h-4 mr-2" />
-              Sign Up
+            <Button 
+              asChild
+              className="gradient-primary text-white hover:opacity-90 transition-all duration-300 border-0"
+            >
+              <Link to="/register">
+                <User className="w-4 h-4 mr-2" />
+                Sign Up
+              </Link>
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-3 rounded-xl text-gray-700 hover:text-orange-600 hover:bg-orange-50 transition-all duration-300 hover:scale-110"
+            className="md:hidden p-2 rounded-lg text-gray-700 hover:text-purple-700 hover:bg-gray-100 transition-all duration-300"
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -87,44 +94,52 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-orange-200 py-6 animate-fade-in rounded-b-2xl shadow-xl">
-            <nav className="flex flex-col space-y-4">
+          <div className="md:hidden bg-white/98 backdrop-blur-md border-t border-gray-200 py-4 animate-fade-in rounded-b-lg shadow-lg">
+            <nav className="flex flex-col space-y-2">
               <Link 
                 to="/" 
-                className="text-gray-700 hover:text-orange-600 transition-colors duration-300 font-semibold px-4 py-3 rounded-xl hover:bg-orange-50"
+                className="text-gray-700 hover:text-purple-700 transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
+                <Settings className="w-4 h-4 mr-3" />
                 Home
               </Link>
               <Link 
                 to="/team" 
-                className="text-gray-700 hover:text-orange-600 transition-colors duration-300 font-semibold px-4 py-3 rounded-xl hover:bg-orange-50"
+                className="text-gray-700 hover:text-purple-700 transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
+                <Users className="w-4 h-4 mr-3" />
                 Team
               </Link>
               <Link 
                 to="/events" 
-                className="text-gray-700 hover:text-orange-600 transition-colors duration-300 font-semibold px-4 py-3 rounded-xl hover:bg-orange-50"
+                className="text-gray-700 hover:text-purple-700 transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
+                <Calendar className="w-4 h-4 mr-3" />
                 Events
               </Link>
               <Link 
                 to="/newsletter" 
-                className="text-gray-700 hover:text-orange-600 transition-colors duration-300 font-semibold px-4 py-3 rounded-xl hover:bg-orange-50"
+                className="text-gray-700 hover:text-purple-700 transition-colors duration-300 font-medium px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
+                <FileText className="w-4 h-4 mr-3" />
                 Newsletter
               </Link>
-              <div className="flex flex-col space-y-3 px-4 pt-4 border-t border-orange-200">
-                <Button variant="outline" className="border-2 border-orange-300 text-orange-600 hover:bg-orange-50 w-full">
-                  <LogIn className="w-4 h-4 mr-2" />
-                  Login
+              <div className="flex flex-col space-y-2 px-4 pt-4 border-t border-gray-200">
+                <Button asChild variant="outline" className="border border-gray-300 text-gray-700 hover:bg-gray-50 w-full">
+                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Login
+                  </Link>
                 </Button>
-                <Button className="gradient-primary text-white w-full">
-                  <User className="w-4 h-4 mr-2" />
-                  Sign Up
+                <Button asChild className="gradient-primary text-white w-full">
+                  <Link to="/register" onClick={() => setIsMenuOpen(false)}>
+                    <User className="w-4 h-4 mr-2" />
+                    Sign Up
+                  </Link>
                 </Button>
               </div>
             </nav>

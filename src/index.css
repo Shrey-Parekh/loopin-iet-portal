@@ -104,8 +104,8 @@
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(139, 69, 19, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(139, 69, 19, 0.6); }
+  0%, 100% { box-shadow: 0 0 20px rgba(79, 27, 89, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(79, 27, 89, 0.6); }
 }
 
 @keyframes shimmer {
@@ -132,11 +132,11 @@
 
 @keyframes pulse-glow {
   0%, 100% { 
-    box-shadow: 0 0 20px rgba(139, 69, 19, 0.4);
+    box-shadow: 0 0 20px rgba(79, 27, 89, 0.4);
     transform: scale(1);
   }
   50% { 
-    box-shadow: 0 0 40px rgba(139, 69, 19, 0.8);
+    box-shadow: 0 0 40px rgba(79, 27, 89, 0.8);
     transform: scale(1.02);
   }
 }
@@ -171,34 +171,34 @@
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
-/* Gradient backgrounds */
+/* Professional gradient backgrounds */
 .gradient-primary {
-  background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #CD853F 100%);
+  background: linear-gradient(135deg, #4f1b59 0%, #6a2c70 50%, #8b5a8c 100%);
 }
 
 .gradient-secondary {
-  background: linear-gradient(135deg, #2E8B57 0%, #3CB371 50%, #90EE90 100%);
+  background: linear-gradient(135deg, #333333 0%, #555555 50%, #777777 100%);
 }
 
 .gradient-accent {
-  background: linear-gradient(135deg, #4169E1 0%, #6495ED 50%, #87CEEB 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e9ecef 100%);
 }
 
-/* Glass morphism effect */
+/* Professional glass morphism effect */
 .glass {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(79, 27, 89, 0.1);
 }
 
-/* Hover effects */
+/* Professional hover effects */
 .hover-lift {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hover-lift:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 10px 30px rgba(79, 27, 89, 0.1);
 }
 
 /* Stagger animation delays */
@@ -208,3 +208,4 @@
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
 .delay-600 { animation-delay: 0.6s; }
+
