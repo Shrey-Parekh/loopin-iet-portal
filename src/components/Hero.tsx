@@ -1,71 +1,102 @@
-
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Hero = () => {
+  // Scroll animations for each main element
+  const badgeRef = useScrollAnimation(0.1, 'animate-fade-in-up') as React.RefObject<HTMLDivElement>;
+  const headingRef = useScrollAnimation(0.1, 'animate-scale-in') as React.RefObject<HTMLHeadingElement>;
+  const subtitleRef = useScrollAnimation(0.1, 'animate-fade-in-up-late') as React.RefObject<HTMLParagraphElement>;
+  const ctaRef = useScrollAnimation(0.1, 'animate-fade-in-up-latest') as React.RefObject<HTMLDivElement>;
+
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-purple-600 via-purple-500 to-purple-700 overflow-hidden">
-      {/* Animated gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-transparent to-purple-800/20 animate-gradient-shift"></div>
-      
-      {/* Geometric shapes for depth */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 right-20 w-64 h-64 rounded-full border border-white/30 animate-float"></div>
-        <div className="absolute bottom-20 left-20 w-48 h-48 rounded-full border border-white/20 animate-float-delayed"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full border border-white/10 animate-pulse-subtle"></div>
+    <section className="relative min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-[#4f1b59] via-purple-600 to-purple-800 overflow-hidden">
+      {/* Animated background layers */}
+      <div className="absolute inset-0">
+        {/* Primary gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#4f1b59] via-purple-600 to-purple-800"></div>
+        
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/40 via-transparent to-purple-800/40 animate-gradient-shift"></div>
+        
+        {/* Moving geometric shapes */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Large floating orbs */}
+          <div className="absolute top-20 left-20 w-64 h-64 rounded-full bg-gradient-to-br from-purple-400/20 to-white/10 blur-3xl animate-float"></div>
+          <div className="absolute bottom-20 right-20 w-48 h-48 rounded-full bg-gradient-to-br from-purple-300/30 to-purple-500/20 blur-2xl animate-float-delayed"></div>
+          <div className="absolute top-1/3 right-1/4 w-32 h-32 rounded-full bg-gradient-to-br from-white/20 to-purple-200/10 blur-xl animate-float"></div>
+          
+          {/* Animated grid pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(90deg,transparent_50%,rgba(255,255,255,0.1)_50%),linear-gradient(0deg,transparent_50%,rgba(255,255,255,0.1)_50%)] bg-[length:50px_50px] animate-pulse-subtle"></div>
+          </div>
+          
+          {/* Floating particles */}
+          <div className="absolute top-1/4 left-1/3 w-2 h-2 bg-white/60 rounded-full animate-float"></div>
+          <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-purple-300/80 rounded-full animate-float-delayed"></div>
+          <div className="absolute top-1/2 left-1/4 w-1.5 h-1.5 bg-white/40 rounded-full animate-float"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-purple-200/60 rounded-full animate-float-delayed"></div>
+          
+          {/* Animated wave effect */}
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-purple-900/30 via-transparent to-transparent animate-pulse-subtle"></div>
+        </div>
+        
+        {/* Interactive light rays */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent animate-pulse-subtle"></div>
+          <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-purple-300/15 to-transparent animate-pulse-subtle" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-0 left-2/3 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent animate-pulse-subtle" style={{animationDelay: '2s'}}></div>
+        </div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge with entrance animation */}
-          <div className="mb-8 animate-fade-in-up">
-            <span className="inline-block px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium border border-white/20 text-white mb-6 hover:bg-white/20 transition-all duration-300">
-              IET College Committee Portal
+        <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
+          {/* Animated badge */}
+          <div ref={badgeRef} className="mb-8">
+            <span className="inline-block px-6 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold border border-white/30 text-white tracking-wide shadow-md hover:bg-white/30 transition-all duration-300">
+              Empowering Innovation & Community
             </span>
           </div>
-          
-          {/* Main heading with staggered animation */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight animate-fade-in-up-delayed">
-            Welcome to{' '}
-            <span className="relative bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">
-              LoopIn
-              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-white/80 to-purple-200 rounded-full animate-scale-in"></div>
+          {/* REVISED heading */}
+          <h1 ref={headingRef} className="text-5xl md:text-7xl font-extrabold mb-4 text-white leading-tight tracking-tight drop-shadow-2xl">
+            <span className="animate-text-gradient bg-gradient-to-r from-purple-200 via-white to-purple-200 bg-clip-text text-transparent">
+              Welcome to LoopIn
             </span>
           </h1>
-
-          {/* Subtitle with later animation */}
-          <p className="text-xl md:text-2xl mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed animate-fade-in-up-late">
-            Your comprehensive gateway to the IET College Committee. Connect, collaborate, and stay informed with our vibrant academic community.
+          {/* REVISED subtitle */}
+          <p ref={subtitleRef} className="text-xl md:text-2xl mb-12 text-purple-200/90 max-w-2xl mx-auto leading-relaxed">
+            The IET College Committee Portal.
           </p>
-
-          {/* CTA buttons with hover animations */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in-up-latest">
-            <Button 
+          {/* REVISED CTA buttons */}
+          <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
+            <Button
               asChild
-              className="px-8 py-4 text-lg font-semibold bg-white text-purple-600 hover:bg-white/90 hover:scale-105 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 group"
+              className="px-8 py-4 text-lg font-semibold bg-white text-[#4f1b59] hover:bg-purple-100 hover:scale-110 rounded-lg shadow-lg hover:shadow-2xl transform transition-all duration-300 group"
             >
               <Link to="/team">
-                Explore Committee
+                Meet the Committee
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </Button>
-            <Button 
+            <Button
               asChild
-              variant="outline" 
-              className="px-8 py-4 text-lg font-semibold border-2 border-white/30 text-white hover:bg-white/10 hover:scale-105 backdrop-blur-sm rounded-lg transition-all duration-300"
+              className="px-8 py-4 text-lg font-semibold bg-white text-[#4f1b59] hover:bg-purple-100 hover:scale-110 rounded-lg shadow-lg hover:shadow-2xl transform transition-all duration-300 group"
             >
               <Link to="/events">
-                View Events
+                Explore Events
+                <Calendar className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </Button>
           </div>
         </div>
       </div>
+      {/* Fade to white overlay */}
+      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-white to-transparent pointer-events-none z-20"></div>
 
-      {/* Enhanced scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/80 animate-bounce-subtle">
-        <ChevronDown className="w-6 h-6" />
+      {/* Animated scroll indicator (behind the fade) */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-500 animate-bounce-subtle z-10">
+        <ChevronDown className="w-8 h-8" />
       </div>
     </section>
   );

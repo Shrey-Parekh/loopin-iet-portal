@@ -1,7 +1,6 @@
-
 import { useEffect, useRef } from 'react';
 
-export const useScrollAnimation = (threshold: number = 0.1) => {
+export const useScrollAnimation = (threshold: number = 0.1, animationClass: string = 'animate-fade-in-up') => {
   const elementRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -9,7 +8,7 @@ export const useScrollAnimation = (threshold: number = 0.1) => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in-up');
+            entry.target.classList.add(animationClass);
             entry.target.classList.remove('opacity-0', 'translate-y-8');
           }
         });
@@ -28,7 +27,7 @@ export const useScrollAnimation = (threshold: number = 0.1) => {
         observer.unobserve(element);
       }
     };
-  }, [threshold]);
+  }, [threshold, animationClass]);
 
   return elementRef;
 };
