@@ -1,91 +1,58 @@
-
 import { Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useTeam } from '@/hooks/useApi';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const TeamGrid = () => {
-  const teamMembers = [
-    {
-      id: 1,
-      name: 'Alex Johnson',
-      role: 'President',
-      bio: 'Leading the committee with passion for technology and innovation. Computer Science major with 3 years of leadership experience.',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face',
-      location: 'New York, NY',
-      email: 'alex.johnson@iet.edu',
-      linkedin: 'https://linkedin.com/in/alexjohnson',
-      github: 'https://github.com/alexjohnson',
-      hobbies: ['Photography', 'Rock Climbing', 'Chess']
-    },
-    {
-      id: 2,
-      name: 'Sarah Chen',
-      role: 'Vice President',
-      bio: 'Coordinating events and managing team operations. Electrical Engineering student with a love for renewable energy projects.',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b332c2a9?w=300&h=300&fit=crop&crop=face',
-      location: 'California, CA',
-      email: 'sarah.chen@iet.edu',
-      linkedin: 'https://linkedin.com/in/sarahchen',
-      github: 'https://github.com/sarahchen',
-      hobbies: ['Guitar', 'Hiking', 'Cooking']
-    },
-    {
-      id: 3,
-      name: 'Marcus Rodriguez',
-      role: 'Technical Lead',
-      bio: 'Spearheading technical workshops and coding bootcamps. Full-stack developer with expertise in modern web technologies.',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
-      location: 'Texas, TX',
-      email: 'marcus.rodriguez@iet.edu',
-      linkedin: 'https://linkedin.com/in/marcusrodriguez',
-      github: 'https://github.com/marcusrodriguez',
-      hobbies: ['Gaming', 'Basketball', 'Reading']
-    },
-    {
-      id: 4,
-      name: 'Emily Davis',
-      role: 'Events Coordinator',
-      bio: 'Organizing memorable events and workshops. Event management expert with a creative approach to community building.',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
-      location: 'Florida, FL',
-      email: 'emily.davis@iet.edu',
-      linkedin: 'https://linkedin.com/in/emilydavis',
-      github: 'https://github.com/emilydavis',
-      hobbies: ['Dancing', 'Painting', 'Traveling']
-    },
-    {
-      id: 5,
-      name: 'David Kim',
-      role: 'Secretary',
-      bio: 'Managing communications and documentation. Business major with excellent organizational and communication skills.',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face',
-      location: 'Washington, WA',
-      email: 'david.kim@iet.edu',
-      linkedin: 'https://linkedin.com/in/davidkim',
-      github: 'https://github.com/davidkim',
-      hobbies: ['Writing', 'Tennis', 'Coffee']
-    },
-    {
-      id: 6,
-      name: 'Lisa Thompson',
-      role: 'Treasurer',
-      bio: 'Managing finances and budget planning. Accounting major with a keen eye for detail and financial management.',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face',
-      location: 'Illinois, IL',
-      email: 'lisa.thompson@iet.edu',
-      linkedin: 'https://linkedin.com/in/lisathompson',
-      github: 'https://github.com/lisathompson',
-      hobbies: ['Yoga', 'Gardening', 'Podcasts']
-    }
-  ];
+  const { data: teamMembers, loading, error } = useTeam();
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[...Array(6)].map((_, index) => (
+          <Card key={index} className="overflow-hidden">
+            <Skeleton className="w-full h-64" />
+            <CardContent className="p-6">
+              <Skeleton className="h-6 w-3/4 mb-2" />
+              <Skeleton className="h-4 w-1/2 mb-3" />
+              <Skeleton className="h-16 w-full mb-4" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <div className="flex gap-2">
+                <Skeleton className="h-8 w-8" />
+                <Skeleton className="h-8 w-8" />
+                <Skeleton className="h-8 w-8" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-500">Error loading team members: {error}</p>
+      </div>
+    );
+  }
+
+  if (!teamMembers || teamMembers.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500">No team members found.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {teamMembers.map((member) => (
+      {teamMembers.map((member: any) => (
         <Card key={member.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-2">
           <div className="relative">
             <img 
-              src={member.image} 
+              src={member.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face'} 
               alt={member.name}
               className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -118,15 +85,27 @@ const TeamGrid = () => {
             </div>
             
             <div className="flex items-center space-x-2">
-              <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white">
-                <Mail className="w-4 h-4" />
-              </Button>
-              <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white">
-                <Linkedin className="w-4 h-4" />
-              </Button>
-              <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white">
-                <Github className="w-4 h-4" />
-              </Button>
+              {member.linkedin && (
+                <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
+                  <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
+                    <Linkedin className="w-4 h-4" />
+                  </a>
+                </Button>
+              )}
+              {member.github && (
+                <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
+                  <a href={member.github} target="_blank" rel="noopener noreferrer">
+                    <Github className="w-4 h-4" />
+                  </a>
+                </Button>
+              )}
+              {member.twitter && (
+                <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
+                  <a href={member.twitter} target="_blank" rel="noopener noreferrer">
+                    <Mail className="w-4 h-4" />
+                  </a>
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>

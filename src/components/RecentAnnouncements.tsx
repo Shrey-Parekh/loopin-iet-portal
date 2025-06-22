@@ -3,34 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useRecentAnnouncements } from '@/hooks/useApi';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const RecentAnnouncements = () => {
-  const announcements = [
-    {
-      id: 1,
-      title: 'Tech Workshop: Introduction to AI',
-      content: 'Join us for an exciting workshop on Artificial Intelligence basics. Perfect for beginners who want to dive into the world of AI!',
-      date: '2024-06-25',
-      priority: 'high',
-      author: 'Tech Team'
-    },
-    {
-      id: 2,
-      title: 'Committee Meeting Minutes Available',
-      content: 'The minutes from our last committee meeting are now available in the member portal. Check out all the important decisions made.',
-      date: '2024-06-23',
-      priority: 'medium',
-      author: 'Secretary'
-    },
-    {
-      id: 3,
-      title: 'New Member Registration Open',
-      content: 'We are now accepting applications for new committee members. Apply before the deadline and join our amazing team!',
-      date: '2024-06-20',
-      priority: 'high',
-      author: 'HR Team'
-    }
-  ];
+  const { data: announcements, loading, error } = useRecentAnnouncements();
 
   const getPriorityStyles = (priority: string) => {
     switch (priority) {
@@ -55,6 +32,74 @@ const RecentAnnouncements = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4 text-[#333333] dark:text-white">
+              Recent Announcements
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Stay in the loop with the latest news, updates, and opportunities from the IET Committee.
+            </p>
+            <div className="w-24 h-1 bg-purple-500 mx-auto mt-4 rounded-full"></div>
+          </div>
+
+          <div className="space-y-6 max-w-4xl mx-auto">
+            {[...Array(3)].map((_, index) => (
+              <Card key={index} className="bg-white dark:bg-gray-800/80">
+                <CardHeader className="pb-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center space-x-4">
+                      <Skeleton className="w-5 h-5 rounded" />
+                      <Skeleton className="h-6 w-64" />
+                    </div>
+                    <Skeleton className="h-6 w-16" />
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <Skeleton className="h-16 w-full mb-6" />
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-6">
+                      <Skeleton className="h-4 w-32" />
+                      <Skeleton className="h-4 w-24" />
+                    </div>
+                    <Skeleton className="h-4 w-20" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="text-red-500">Error loading announcements: {error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!announcements || announcements.length === 0) {
+    return (
+      <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="text-gray-500">No announcements found.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="container mx-auto px-4">
@@ -69,7 +114,7 @@ const RecentAnnouncements = () => {
         </div>
 
         <div className="space-y-6 max-w-4xl mx-auto">
-          {announcements.map((announcement) => {
+          {announcements.map((announcement: any) => {
             const priorityStyles = getPriorityStyles(announcement.priority);
             return (
               <Card 
@@ -99,10 +144,6 @@ const RecentAnnouncements = () => {
                       <div className="flex items-center space-x-2">
                         <Clock className="w-4 h-4" />
                         <span>{new Date(announcement.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <User className="w-4 h-4" />
-                        <span className="font-medium text-gray-700 dark:text-gray-300">{announcement.author}</span>
                       </div>
                     </div>
                     <Button variant="link" asChild className="text-purple-600 dark:text-purple-400 group-hover:underline">

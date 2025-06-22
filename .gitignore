@@ -6,6 +6,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=shrey123
+DB_NAME=loopin_portal
+PORT=3001
+
 
 node_modules
 dist
