@@ -92,7 +92,7 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} LoopIn IET Committee. All rights reserved.
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-4 sm:mt-0">
-            Designed & Developed with ❤️ by the IET Tech Team.
+            Designed & Developed by the IET Tech Team.
           </p>
         </div>
       </div>
