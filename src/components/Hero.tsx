@@ -17,9 +17,9 @@ const Hero = () => {
         {/* Primary gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#4f1b59] via-purple-600 to-purple-800"></div>
         
-        {/* Animated gradient overlay */}
+      {/* Animated gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/40 via-transparent to-purple-800/40 animate-gradient-shift"></div>
-        
+      
         {/* Moving geometric shapes */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Large floating orbs */}
@@ -28,7 +28,7 @@ const Hero = () => {
           <div className="absolute top-1/3 right-1/4 w-32 h-32 rounded-full bg-gradient-to-br from-white/20 to-purple-200/10 blur-xl animate-float"></div>
           
           {/* Animated grid pattern */}
-          <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(90deg,transparent_50%,rgba(255,255,255,0.1)_50%),linear-gradient(0deg,transparent_50%,rgba(255,255,255,0.1)_50%)] bg-[length:50px_50px] animate-pulse-subtle"></div>
           </div>
           
@@ -70,7 +70,7 @@ const Hero = () => {
           </p>
           {/* REVISED CTA buttons */}
           <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
-            <Button
+            <Button 
               asChild
               className="px-8 py-4 text-lg font-semibold bg-white text-[#4f1b59] hover:bg-purple-100 hover:scale-110 rounded-lg shadow-lg hover:shadow-2xl transform transition-all duration-300 group"
             >
@@ -79,7 +79,7 @@ const Hero = () => {
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </Button>
-            <Button
+            <Button 
               asChild
               className="px-8 py-4 text-lg font-semibold bg-white text-[#4f1b59] hover:bg-purple-100 hover:scale-110 rounded-lg shadow-lg hover:shadow-2xl transform transition-all duration-300 group"
             >

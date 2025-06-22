@@ -5,9 +5,10 @@ require('dotenv').config();
 
 // Create connection without database first
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 3306,
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'shrey123',
 });
 
 // Read SQL file
@@ -19,9 +20,10 @@ const statements = sqlFile.split(';').filter(statement => statement.trim());
 connection.connect((err) => {
   if (err) {
     console.error('Error connecting to MySQL:', err);
+    console.log('Please make sure MySQL is running on port 3306 and accessible.');
     return;
   }
-  console.log('Connected to MySQL server.');
+  console.log('Connected to MySQL server on port 3306.');
 
   // Execute each statement
   statements.forEach((statement, index) => {

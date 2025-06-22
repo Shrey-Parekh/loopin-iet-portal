@@ -1,12 +1,30 @@
-import { Github, Linkedin, Mail, MapPin } from 'lucide-react';
+import { Github, Linkedin, Mail, MapPin, Twitter } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useTeam } from '@/hooks/useApi';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const TeamGrid = () => {
-  const { data: teamMembers, loading, error } = useTeam();
+interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  position_hierarchy: string;
+  department?: string;
+  member_type: string;
+  image?: string;
+  linkedin?: string;
+  github?: string;
+  twitter?: string;
+  email?: string;
+  bio?: string;
+}
 
+interface TeamGridProps {
+  members?: TeamMember[];
+  loading?: boolean;
+  error?: string | null;
+}
+
+const TeamGrid = ({ members, loading, error }: TeamGridProps) => {
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -38,7 +56,7 @@ const TeamGrid = () => {
     );
   }
 
-  if (!teamMembers || teamMembers.length === 0) {
+  if (!members || members.length === 0) {
     return (
       <div className="text-center py-8">
         <p className="text-gray-500">No team members found.</p>
@@ -48,7 +66,7 @@ const TeamGrid = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {teamMembers.map((member: any) => (
+      {members.map((member) => (
         <Card key={member.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-2">
           <div className="relative">
             <img 
@@ -66,7 +84,7 @@ const TeamGrid = () => {
             
             <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
               <MapPin className="w-4 h-4" />
-              <span>{member.location}</span>
+              <span>{member.department || 'Committee Member'}</span>
             </div>
             
             <p className="text-gray-600 mb-4 text-sm leading-relaxed">
@@ -74,13 +92,16 @@ const TeamGrid = () => {
             </p>
             
             <div className="mb-4">
-              <h4 className="text-sm font-semibold text-[#333333] mb-2">Hobbies</h4>
+              <h4 className="text-sm font-semibold text-[#333333] mb-2">Position</h4>
               <div className="flex flex-wrap gap-2">
-                {member.hobbies.map((hobby, index) => (
-                  <span key={index} className="bg-[#4f1b59]/10 text-[#4f1b59] px-2 py-1 rounded-full text-xs">
-                    {hobby}
+                <span className="bg-[#4f1b59]/10 text-[#4f1b59] px-2 py-1 rounded-full text-xs">
+                  {member.position_hierarchy}
+                </span>
+                {member.member_type && (
+                  <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs">
+                    {member.member_type.replace('_', ' ')}
                   </span>
-                ))}
+                )}
               </div>
             </div>
             
@@ -102,6 +123,13 @@ const TeamGrid = () => {
               {member.twitter && (
                 <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
                   <a href={member.twitter} target="_blank" rel="noopener noreferrer">
+                    <Twitter className="w-4 h-4" />
+                  </a>
+                </Button>
+              )}
+              {member.email && (
+                <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
+                  <a href={`mailto:${member.email}`}>
                     <Mail className="w-4 h-4" />
                   </a>
                 </Button>
