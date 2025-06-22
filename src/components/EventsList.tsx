@@ -14,13 +14,13 @@ const EventsList = ({ selectedCategory, selectedTimeframe }: EventsListProps) =>
   const { data: events, loading, error } = useEvents();
 
   // Filter events by status and category
-  const filteredEvents = (events || []).filter((event: any) => {
+  const filteredEvents = Array.isArray(events) ? events.filter((event: any) => {
     const categoryMatch = selectedCategory === 'all' || event.category === selectedCategory;
     let statusMatch = true;
     if (selectedTimeframe === 'upcoming') statusMatch = event.status === 'upcoming' || event.status === 'ongoing';
     else if (selectedTimeframe === 'completed') statusMatch = event.status === 'completed';
     return categoryMatch && statusMatch;
-  });
+  }) : [];
 
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
