@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Eye, EyeOff, User, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, ArrowLeft, User, Mail, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,14 +27,13 @@ const Register = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log('Registration attempt:', formData);
+    console.log('Register attempt:', formData);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-gray-50 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="absolute top-6 left-6">
-        <Button asChild variant="outline" className="border border-gray-300 hover:bg-gray-50">
+        <Button asChild variant="outline" className="border hover:bg-gray-100 transition-colors duration-200" style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}>
           <Link to="/">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
@@ -42,13 +41,13 @@ const Register = () => {
         </Button>
       </div>
 
-      <div className="w-full max-w-md animate-fade-in">
-        <Card className="border border-gray-200 shadow-xl bg-white/95 backdrop-blur-sm">
-          <CardHeader className="text-center pb-8">
-            <div className="w-16 h-16 gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
-              <User className="w-8 h-8 text-white" />
+      <div className="w-full max-w-md">
+        <Card className="border shadow-lg bg-white">
+          <CardHeader className="text-center pb-6">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4" style={{ background: 'var(--secondary-color)' }}>
+              <UserPlus className="w-6 h-6 text-white" />
             </div>
-            <CardTitle className="text-3xl font-bold text-gray-800">
+            <CardTitle className="text-2xl font-bold" style={{ color: 'var(--text-color)' }}>
               Join LoopIn
             </CardTitle>
             <p className="text-gray-600 mt-2">
@@ -57,25 +56,29 @@ const Register = () => {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-gray-700 font-medium">
+                  <Label htmlFor="firstName" className="font-medium" style={{ color: 'var(--text-color)' }}>
                     First Name
                   </Label>
-                  <Input
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    placeholder="John"
-                    className="border-gray-300 focus:ring-purple-600 focus:border-purple-600"
-                    required
-                  />
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      placeholder="John"
+                      className="pl-10 border-gray-300"
+                      required
+                    />
+                  </div>
                 </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-gray-700 font-medium">
+                  <Label htmlFor="lastName" className="font-medium" style={{ color: 'var(--text-color)' }}>
                     Last Name
                   </Label>
                   <Input
@@ -85,33 +88,37 @@ const Register = () => {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     placeholder="Doe"
-                    className="border-gray-300 focus:ring-purple-600 focus:border-purple-600"
+                    className="border-gray-300"
                     required
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700 font-medium">
+                <Label htmlFor="email" className="font-medium" style={{ color: 'var(--text-color)' }}>
                   Email Address
                 </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="your.email@example.com"
-                  className="border-gray-300 focus:ring-purple-600 focus:border-purple-600"
-                  required
-                />
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="john.doe@example.com"
+                    className="pl-10 border-gray-300"
+                    required
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-700 font-medium">
+                <Label htmlFor="password" className="font-medium" style={{ color: 'var(--text-color)' }}>
                   Password
                 </Label>
                 <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <Input
                     id="password"
                     name="password"
@@ -119,24 +126,25 @@ const Register = () => {
                     value={formData.password}
                     onChange={handleInputChange}
                     placeholder="Create a strong password"
-                    className="border-gray-300 focus:ring-purple-600 focus:border-purple-600 pr-12"
+                    className="pl-10 pr-10 border-gray-300"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">
+                <Label htmlFor="confirmPassword" className="font-medium" style={{ color: 'var(--text-color)' }}>
                   Confirm Password
                 </Label>
                 <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
@@ -144,45 +152,52 @@ const Register = () => {
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     placeholder="Confirm your password"
-                    className="border-gray-300 focus:ring-purple-600 focus:border-purple-600 pr-12"
+                    className="pl-10 pr-10 border-gray-300"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-start">
-                <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-600 mt-1" required />
-                <span className="ml-2 text-sm text-gray-600">
+              <div className="flex items-center space-x-2">
+                <input 
+                  type="checkbox" 
+                  id="terms" 
+                  className="rounded border-gray-300" 
+                  style={{ accentColor: 'var(--secondary-color)' }} 
+                  required 
+                />
+                <Label htmlFor="terms" className="text-sm text-gray-600">
                   I agree to the{' '}
-                  <Link to="/terms" className="text-purple-600 hover:text-purple-700 transition-colors">
+                  <Link to="/terms" className="font-medium hover:underline" style={{ color: 'var(--secondary-color)' }}>
                     Terms of Service
                   </Link>{' '}
                   and{' '}
-                  <Link to="/privacy" className="text-purple-600 hover:text-purple-700 transition-colors">
+                  <Link to="/privacy" className="font-medium hover:underline" style={{ color: 'var(--secondary-color)' }}>
                     Privacy Policy
                   </Link>
-                </span>
+                </Label>
               </div>
 
               <Button 
                 type="submit"
-                className="w-full gradient-primary text-white hover:opacity-90 transition-all duration-300 py-3 text-lg font-semibold"
+                className="w-full transition-all duration-200 py-3 text-base font-semibold hover:shadow-md"
+                style={{ background: 'var(--secondary-color)', color: 'white' }}
               >
                 Create Account
               </Button>
             </form>
 
-            <div className="mt-8 text-center">
+            <div className="mt-6 text-center">
               <p className="text-gray-600">
                 Already have an account?{' '}
-                <Link to="/login" className="text-purple-600 hover:text-purple-700 font-semibold transition-colors">
+                <Link to="/login" className="font-semibold transition-colors hover:underline" style={{ color: 'var(--secondary-color)' }}>
                   Sign in here
                 </Link>
               </p>

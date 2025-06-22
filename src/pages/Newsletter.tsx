@@ -1,160 +1,205 @@
 
-import { FileText, Download, Calendar, Eye } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 import Header from '../components/Header';
+import { Search, Download, Calendar, Eye, Tag } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 const Newsletter = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
   const newsletters = [
     {
       id: 1,
-      title: "IET Committee Monthly Digest - December 2024",
-      date: "December 15, 2024",
-      description: "Featuring our latest tech events, member spotlights, and upcoming workshops for the new year.",
-      thumbnail: "/placeholder.svg",
-      downloadUrl: "#"
+      title: 'IET Weekly Digest - June 2024',
+      description: 'Latest updates from the committee, upcoming events, and member spotlights.',
+      date: '2024-06-20',
+      category: 'weekly',
+      downloadUrl: '#',
+      views: 245,
+      image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=300&fit=crop'
     },
     {
       id: 2,
-      title: "Innovation Week Special Edition",
-      date: "November 20, 2024",
-      description: "Complete coverage of Innovation Week 2024, including winning projects and guest speaker highlights.",
-      thumbnail: "/placeholder.svg",
-      downloadUrl: "#"
+      title: 'Tech Innovation Report - Q2 2024',
+      description: 'Comprehensive overview of technological advancements and their impact on our field.',
+      date: '2024-06-15',
+      category: 'quarterly',
+      downloadUrl: '#',
+      views: 189,
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=300&fit=crop'
     },
     {
       id: 3,
-      title: "IET Committee Quarterly Review - Q3 2024",
-      date: "October 10, 2024",
-      description: "Quarterly achievements, new member introductions, and exciting plans for the final quarter.",
-      thumbnail: "/placeholder.svg",
-      downloadUrl: "#"
+      title: 'Special Edition: Annual Symposium',
+      description: 'Complete coverage of our annual tech symposium with highlights and key takeaways.',
+      date: '2024-06-10',
+      category: 'special',
+      downloadUrl: '#',
+      views: 312,
+      image: 'https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?w=400&h=300&fit=crop'
     },
     {
       id: 4,
-      title: "Summer Workshop Series Recap",
-      date: "August 25, 2024",
-      description: "Comprehensive review of our successful summer workshop series and participant feedback.",
-      thumbnail: "/placeholder.svg",
-      downloadUrl: "#"
-    },
-    {
-      id: 5,
-      title: "Tech Talk Series Launch",
-      date: "July 15, 2024",
-      description: "Announcing our new monthly tech talk series with industry experts and alumni speakers.",
-      thumbnail: "/placeholder.svg",
-      downloadUrl: "#"
-    },
-    {
-      id: 6,
-      title: "IET Committee Annual Report 2023-24",
-      date: "June 30, 2024",
-      description: "Our comprehensive annual report showcasing achievements, impact metrics, and future roadmap.",
-      thumbnail: "/placeholder.svg",
-      downloadUrl: "#"
+      title: 'Student Achievements - May 2024',
+      description: 'Celebrating outstanding achievements of our committee members and students.',
+      date: '2024-05-30',
+      category: 'monthly',
+      downloadUrl: '#',
+      views: 156,
+      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&h=300&fit=crop'
     }
   ];
+
+  const categories = [
+    { id: 'all', label: 'All Categories' },
+    { id: 'weekly', label: 'Weekly' },
+    { id: 'monthly', label: 'Monthly' },
+    { id: 'quarterly', label: 'Quarterly' },
+    { id: 'special', label: 'Special Edition' }
+  ];
+
+  const filteredNewsletters = newsletters.filter(newsletter => {
+    const matchesSearch = newsletter.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         newsletter.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || newsletter.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'weekly': return 'bg-blue-50 text-blue-700 border-blue-200';
+      case 'monthly': return 'bg-green-50 text-green-700 border-green-200';
+      case 'quarterly': return 'bg-orange-50 text-orange-700 border-orange-200';
+      case 'special': return 'bg-purple-50 text-purple-700 border-purple-200';
+      default: return 'bg-gray-50 text-gray-700 border-gray-200';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 animate-fade-in">
-            <h1 className="text-6xl font-black text-gray-800 mb-6">
-              Newsletter <span className="bg-gradient-to-r from-purple-800 to-purple-600 bg-clip-text text-transparent">Archive</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-medium">
-              Stay updated with our latest news, events, and committee activities through our comprehensive newsletter collection.
-            </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full mx-auto mt-6"></div>
-          </div>
+      <div className="container mx-auto px-4 py-12">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4" style={{ color: 'var(--text-color)' }}>
+            Newsletter Archive
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Stay informed with our comprehensive newsletters covering committee updates, tech insights, and community highlights
+          </p>
+          <div className="w-16 h-1 rounded-full mx-auto mt-4" style={{ background: 'var(--secondary-color)' }}></div>
         </div>
-      </section>
 
-      {/* Newsletter Grid */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {newsletters.map((newsletter, index) => (
-              <Card 
-                key={newsletter.id}
-                className={`group hover:shadow-xl transition-all duration-500 border border-gray-200 overflow-hidden hover-lift animate-bounce-in delay-${(index % 6 + 1) * 100} bg-white`}
-              >
-                <div className="aspect-video bg-gradient-to-br from-purple-100 to-gray-100 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <FileText className="w-16 h-16 text-purple-600 opacity-20" />
-                  </div>
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-purple-700 border border-purple-200">
-                      Newsletter
-                    </span>
-                  </div>
-                </div>
-                
-                <CardContent className="p-6">
-                  <div className="flex items-center text-sm text-gray-500 mb-3">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    {newsletter.date}
-                  </div>
-                  
-                  <h3 className="text-lg font-bold text-gray-800 mb-3 group-hover:text-purple-700 transition-colors duration-300 leading-tight">
-                    {newsletter.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">
-                    {newsletter.description}
-                  </p>
-                  
-                  <div className="flex space-x-3">
-                    <Button 
-                      size="sm" 
-                      className="gradient-primary text-white hover:opacity-90 transition-all duration-300 flex-1"
-                    >
-                      <Eye className="w-4 h-4 mr-2" />
-                      Read Online
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="border border-gray-300 hover:bg-gray-50"
-                    >
-                      <Download className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Subscribe Section */}
-      <section className="py-20 bg-gradient-to-br from-purple-50 to-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl font-black text-gray-800 mb-6">
-              Stay <span className="bg-gradient-to-r from-purple-800 to-purple-600 bg-clip-text text-transparent">Connected</span>
-            </h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Subscribe to receive our latest newsletters directly in your inbox and never miss an update.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input 
-                type="email" 
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+        {/* Search and Filter Section */}
+        <div className="mb-12">
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Input
+                placeholder="Search newsletters..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 border-gray-300"
               />
-              <Button className="gradient-primary text-white hover:opacity-90 transition-all duration-300 px-8">
-                Subscribe
-              </Button>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {categories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className="transition-all duration-200"
+                  style={selectedCategory === category.id ? {
+                    background: 'var(--secondary-color)',
+                    color: 'white'
+                  } : {
+                    borderColor: 'var(--secondary-color)',
+                    color: 'var(--secondary-color)'
+                  }}
+                >
+                  {category.label}
+                </Button>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+
+        {/* Newsletter Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {filteredNewsletters.map((newsletter) => (
+            <Card key={newsletter.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden bg-white border">
+              <div className="relative">
+                <img 
+                  src={newsletter.image} 
+                  alt={newsletter.title}
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute top-4 left-4">
+                  <Badge className={`border ${getCategoryColor(newsletter.category)}`}>
+                    <Tag className="w-3 h-3 mr-1" />
+                    {newsletter.category}
+                  </Badge>
+                </div>
+              </div>
+              
+              <CardHeader>
+                <CardTitle className="text-xl group-hover:text-purple-700 transition-colors duration-200" style={{ color: 'var(--text-color)' }}>
+                  {newsletter.title}
+                </CardTitle>
+              </CardHeader>
+              
+              <CardContent>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  {newsletter.description}
+                </p>
+                
+                <div className="flex items-center justify-between text-sm text-gray-500 mb-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>{new Date(newsletter.date).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Eye className="w-4 h-4" />
+                      <span>{newsletter.views} views</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex gap-2">
+                  <Button className="flex-1 font-medium transition-all duration-200" style={{ background: 'var(--secondary-color)', color: 'white' }}>
+                    <Eye className="w-4 h-4 mr-2" />
+                    Read Online
+                  </Button>
+                  <Button variant="outline" className="transition-all duration-200" style={{ borderColor: 'var(--secondary-color)', color: 'var(--secondary-color)' }}>
+                    <Download className="w-4 h-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Subscribe Section */}
+        <div className="mt-20 text-center bg-gray-50 rounded-2xl p-12">
+          <h3 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-color)' }}>
+            Stay Updated
+          </h3>
+          <p className="text-gray-600 mb-6 max-w-xl mx-auto">
+            Subscribe to our newsletter to receive the latest updates directly in your inbox
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+            <Input placeholder="Enter your email" className="flex-1 border-gray-300" />
+            <Button className="font-medium" style={{ background: 'var(--secondary-color)', color: 'white' }}>
+              Subscribe
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
