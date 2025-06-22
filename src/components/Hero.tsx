@@ -1,121 +1,93 @@
 
-import { ArrowRight, Users, Calendar, FileText } from 'lucide-react';
+import { ArrowRight, Users, Calendar, FileText, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
-    <section className="relative py-24 lg:py-32 bg-white overflow-hidden">
-      {/* Professional geometric background */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 right-0 w-1/3 h-full opacity-5" style={{ background: `linear-gradient(135deg, var(--secondary-color) 0%, transparent 70%)` }}></div>
-        <div className="absolute bottom-0 left-0 w-1/4 h-1/2 opacity-3" style={{ background: `linear-gradient(45deg, var(--secondary-color) 0%, transparent 100%)` }}></div>
+    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-white via-gray-50 to-gray-100 overflow-hidden">
+      {/* Subtle geometric background */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 right-20 w-64 h-64 rounded-full border border-[#4f1b59]"></div>
+        <div className="absolute bottom-20 left-20 w-48 h-48 rounded-full border border-[#4f1b59]"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full border border-[#4f1b59]"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Content Section */}
-            <div className="text-left">
-              {/* Professional badge */}
-              <div className="mb-6">
-                <span className="inline-block px-4 py-2 bg-gray-50 rounded-md text-sm font-medium border" style={{ color: 'var(--secondary-color)', borderColor: 'var(--secondary-color)' }}>
-                  IET College Committee Portal
-                </span>
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Main content */}
+          <div className="mb-8">
+            <span className="inline-block px-4 py-2 bg-white rounded-full text-sm font-medium border border-gray-200 text-[#4f1b59] mb-6">
+              IET College Committee Portal
+            </span>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-[#333333] leading-tight">
+            Welcome to{' '}
+            <span className="text-[#4f1b59] relative">
+              LoopIn
+              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-[#4f1b59] to-purple-400 rounded-full"></div>
+            </span>
+          </h1>
+
+          <p className="text-xl md:text-2xl mb-12 text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Your comprehensive gateway to the IET College Committee. Connect, collaborate, and stay informed with our vibrant academic community.
+          </p>
+
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            <Button 
+              asChild
+              className="px-8 py-4 text-lg font-semibold bg-[#4f1b59] hover:bg-[#3d1445] text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
+            >
+              <Link to="/team">
+                Explore Committee
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Link>
+            </Button>
+            <Button 
+              asChild
+              variant="outline" 
+              className="px-8 py-4 text-lg font-semibold border-2 border-[#4f1b59] text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white rounded-lg transition-all duration-200"
+            >
+              <Link to="/events">
+                View Events
+              </Link>
+            </Button>
+          </div>
+
+          {/* Stats section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+            <div className="text-center p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+              <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-[#4f1b59] flex items-center justify-center">
+                <Users className="w-6 h-6 text-white" />
               </div>
-              
-              {/* Main heading */}
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight" style={{ color: 'var(--text-color)' }}>
-                Welcome to{' '}
-                <span style={{ color: 'var(--secondary-color)' }}>
-                  LoopIn
-                </span>
-              </h1>
-
-              {/* Subtitle */}
-              <p className="text-lg lg:text-xl mb-8 text-gray-600 leading-relaxed max-w-lg">
-                Your comprehensive gateway to the IET College Committee. Connect, collaborate, and stay informed with our vibrant academic community.
-              </p>
-
-              {/* CTA buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Button 
-                  asChild
-                  className="px-8 py-3 text-base font-semibold transition-all duration-200 hover:shadow-lg"
-                  style={{ 
-                    background: 'var(--secondary-color)',
-                    color: 'white'
-                  }}
-                >
-                  <Link to="/team">
-                    Explore Committee
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Link>
-                </Button>
-                <Button 
-                  asChild
-                  variant="outline" 
-                  className="px-8 py-3 text-base font-semibold border-2 transition-all duration-200 hover:bg-gray-50"
-                  style={{ 
-                    borderColor: 'var(--secondary-color)', 
-                    color: 'var(--secondary-color)' 
-                  }}
-                >
-                  <Link to="/events">
-                    View Events
-                  </Link>
-                </Button>
-              </div>
-
-              {/* Professional Stats */}
-              <div className="grid grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-lg flex items-center justify-center" style={{ background: 'var(--secondary-color)' }}>
-                    <Users className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-color)' }}>50+</h3>
-                  <p className="text-sm text-gray-600">Active Members</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-lg flex items-center justify-center bg-gray-800">
-                    <Calendar className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-color)' }}>25+</h3>
-                  <p className="text-sm text-gray-600">Events This Year</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-lg flex items-center justify-center border-2" style={{ borderColor: 'var(--secondary-color)' }}>
-                    <FileText className="w-6 h-6" style={{ color: 'var(--secondary-color)' }} />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-color)' }}>12</h3>
-                  <p className="text-sm text-gray-600">Newsletters</p>
-                </div>
-              </div>
+              <h3 className="text-3xl font-bold text-[#333333] mb-2">50+</h3>
+              <p className="text-gray-600">Active Members</p>
             </div>
 
-            {/* Visual Section */}
-            <div className="relative">
-              <div className="relative bg-white rounded-2xl shadow-xl border p-8" style={{ borderColor: 'rgba(79, 27, 89, 0.1)' }}>
-                <div className="space-y-4">
-                  <div className="h-4 rounded" style={{ background: 'var(--secondary-color)', width: '60%' }}></div>
-                  <div className="h-3 bg-gray-200 rounded" style={{ width: '80%' }}></div>
-                  <div className="h-3 bg-gray-200 rounded" style={{ width: '70%' }}></div>
-                  <div className="grid grid-cols-2 gap-4 mt-6">
-                    <div className="h-20 rounded-lg" style={{ background: 'var(--secondary-color)', opacity: 0.1 }}></div>
-                    <div className="h-20 bg-gray-100 rounded-lg"></div>
-                  </div>
-                  <div className="flex space-x-2 mt-4">
-                    <div className="w-8 h-8 rounded-full" style={{ background: 'var(--secondary-color)' }}></div>
-                    <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-                    <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-                  </div>
-                </div>
+            <div className="text-center p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+              <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-gray-800 flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-white" />
               </div>
+              <h3 className="text-3xl font-bold text-[#333333] mb-2">25+</h3>
+              <p className="text-gray-600">Events This Year</p>
+            </div>
+
+            <div className="text-center p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+              <div className="w-12 h-12 mx-auto mb-4 rounded-lg border-2 border-[#4f1b59] flex items-center justify-center">
+                <FileText className="w-6 h-6 text-[#4f1b59]" />
+              </div>
+              <h3 className="text-3xl font-bold text-[#333333] mb-2">12</h3>
+              <p className="text-gray-600">Newsletters</p>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-[#4f1b59]">
+        <ChevronDown className="w-6 h-6 animate-bounce" />
       </div>
     </section>
   );

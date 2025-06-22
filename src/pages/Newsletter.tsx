@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Header from '../components/Header';
 import { Search, Download, Calendar, Eye, Tag } from 'lucide-react';
@@ -80,123 +79,124 @@ const Newsletter = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="container mx-auto px-4 py-12">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4" style={{ color: 'var(--text-color)' }}>
-            Newsletter Archive
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Stay informed with our comprehensive newsletters covering committee updates, tech insights, and community highlights
-          </p>
-          <div className="w-16 h-1 rounded-full mx-auto mt-4" style={{ background: 'var(--secondary-color)' }}></div>
-        </div>
+      <div className="py-20">
+        <div className="container mx-auto px-4">
+          {/* Header Section */}
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-[#4f1b59] text-white rounded-full text-sm font-medium mb-4">
+              Newsletter Archive
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#333333]">
+              Stay Informed
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Stay informed with our comprehensive newsletters covering committee updates, tech insights, and community highlights
+            </p>
+          </div>
 
-        {/* Search and Filter Section */}
-        <div className="mb-12">
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input
-                placeholder="Search newsletters..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 border-gray-300"
-              />
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              {categories.map((category) => (
-                <Button
-                  key={category.id}
-                  variant={selectedCategory === category.id ? "default" : "outline"}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className="transition-all duration-200"
-                  style={selectedCategory === category.id ? {
-                    background: 'var(--secondary-color)',
-                    color: 'white'
-                  } : {
-                    borderColor: 'var(--secondary-color)',
-                    color: 'var(--secondary-color)'
-                  }}
-                >
-                  {category.label}
-                </Button>
-              ))}
+          {/* Search and Filter Section */}
+          <div className="mb-12">
+            <div className="flex flex-col md:flex-row gap-4 mb-6 max-w-4xl mx-auto">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input
+                  placeholder="Search newsletters..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 border-gray-300 h-12"
+                />
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                {categories.map((category) => (
+                  <Button
+                    key={category.id}
+                    variant={selectedCategory === category.id ? "default" : "outline"}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`transition-all duration-200 ${
+                      selectedCategory === category.id 
+                        ? 'bg-[#4f1b59] text-white' 
+                        : 'border-[#4f1b59] text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white'
+                    }`}
+                  >
+                    {category.label}
+                  </Button>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Newsletter Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredNewsletters.map((newsletter) => (
-            <Card key={newsletter.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden bg-white border">
-              <div className="relative">
-                <img 
-                  src={newsletter.image} 
-                  alt={newsletter.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-4 left-4">
-                  <Badge className={`border ${getCategoryColor(newsletter.category)}`}>
-                    <Tag className="w-3 h-3 mr-1" />
-                    {newsletter.category}
-                  </Badge>
-                </div>
-              </div>
-              
-              <CardHeader>
-                <CardTitle className="text-xl group-hover:text-purple-700 transition-colors duration-200" style={{ color: 'var(--text-color)' }}>
-                  {newsletter.title}
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent>
-                <p className="text-gray-600 mb-4 leading-relaxed">
-                  {newsletter.description}
-                </p>
-                
-                <div className="flex items-center justify-between text-sm text-gray-500 mb-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>{new Date(newsletter.date).toLocaleDateString()}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Eye className="w-4 h-4" />
-                      <span>{newsletter.views} views</span>
-                    </div>
+          {/* Newsletter Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {filteredNewsletters.map((newsletter) => (
+              <Card key={newsletter.id} className="group hover:shadow-lg transition-all duration-200 overflow-hidden bg-white border border-gray-200">
+                <div className="relative">
+                  <img 
+                    src={newsletter.image} 
+                    alt={newsletter.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <Badge className={`border ${getCategoryColor(newsletter.category)}`}>
+                      <Tag className="w-3 h-3 mr-1" />
+                      {newsletter.category}
+                    </Badge>
                   </div>
                 </div>
                 
-                <div className="flex gap-2">
-                  <Button className="flex-1 font-medium transition-all duration-200" style={{ background: 'var(--secondary-color)', color: 'white' }}>
-                    <Eye className="w-4 h-4 mr-2" />
-                    Read Online
-                  </Button>
-                  <Button variant="outline" className="transition-all duration-200" style={{ borderColor: 'var(--secondary-color)', color: 'var(--secondary-color)' }}>
-                    <Download className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                <CardHeader>
+                  <CardTitle className="text-xl text-[#333333] group-hover:text-[#4f1b59] transition-colors">
+                    {newsletter.title}
+                  </CardTitle>
+                </CardHeader>
+                
+                <CardContent>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {newsletter.description}
+                  </p>
+                  
+                  <div className="flex items-center justify-between text-sm text-gray-500 mb-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-1">
+                        <Calendar className="w-4 h-4" />
+                        <span>{new Date(newsletter.date).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Eye className="w-4 h-4" />
+                        <span>{newsletter.views} views</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Button className="flex-1 font-medium bg-[#4f1b59] hover:bg-[#3d1445] text-white">
+                      <Eye className="w-4 h-4 mr-2" />
+                      Read Online
+                    </Button>
+                    <Button variant="outline" className="border-[#4f1b59] text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white">
+                      <Download className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-        {/* Subscribe Section */}
-        <div className="mt-20 text-center bg-gray-50 rounded-2xl p-12">
-          <h3 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-color)' }}>
-            Stay Updated
-          </h3>
-          <p className="text-gray-600 mb-6 max-w-xl mx-auto">
-            Subscribe to our newsletter to receive the latest updates directly in your inbox
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <Input placeholder="Enter your email" className="flex-1 border-gray-300" />
-            <Button className="font-medium" style={{ background: 'var(--secondary-color)', color: 'white' }}>
-              Subscribe
-            </Button>
+          {/* Subscribe Section */}
+          <div className="mt-20 text-center bg-white rounded-2xl p-12 shadow-sm border border-gray-200 max-w-4xl mx-auto">
+            <h3 className="text-2xl font-bold mb-4 text-[#333333]">
+              Stay Updated
+            </h3>
+            <p className="text-gray-600 mb-6 max-w-xl mx-auto">
+              Subscribe to our newsletter to receive the latest updates directly in your inbox
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <Input placeholder="Enter your email" className="flex-1 border-gray-300" />
+              <Button className="font-medium bg-[#4f1b59] hover:bg-[#3d1445] text-white">
+                Subscribe
+              </Button>
+            </div>
           </div>
         </div>
       </div>

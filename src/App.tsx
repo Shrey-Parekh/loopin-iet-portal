@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Team from "./pages/Team";
 import Events from "./pages/Events";
 import Newsletter from "./pages/Newsletter";
+import Announcements from "./pages/Announcements";
+import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
@@ -25,6 +27,8 @@ const App = () => (
           <Route path="/team" element={<Team />} />
           <Route path="/events" element={<Events />} />
           <Route path="/newsletter" element={<Newsletter />} />
+          <Route path="/announcements" element={<Announcements />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
