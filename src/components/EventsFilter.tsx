@@ -30,29 +30,9 @@ const EventsFilter = ({
   ];
 
   return (
-    <div className="bg-gray-50 rounded-lg p-6 mb-8">
-      <div className="space-y-6">
-        <div>
-          <h3 className="text-lg font-semibold text-[#333333] mb-3">Filter by Category</h3>
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <Button
-                key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category.id)}
-                className={selectedCategory === category.id 
-                  ? "bg-[#4f1b59] hover:bg-[#4f1b59]/90 text-white" 
-                  : "border-[#4f1b59] text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white"
-                }
-              >
-                {category.label}
-              </Button>
-            ))}
-          </div>
-        </div>
 
-        <div>
-          <h3 className="text-lg font-semibold text-[#333333] mb-3">Filter by Time</h3>
+        <center><div>
+       
           <div className="flex flex-wrap gap-2">
             {timeframes.map((timeframe) => (
               <Button
@@ -68,9 +48,7 @@ const EventsFilter = ({
               </Button>
             ))}
           </div>
-        </div>
-      </div>
-    </div>
+        </div></center>
   );
 };
 

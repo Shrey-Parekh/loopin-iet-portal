@@ -63,7 +63,7 @@ const QuickActions = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {actions.map((action, index) => (
-            <Link key={index} to={action.href} className="group block">
+            <Link key={index} to={action.href} className="group block" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <Card className="h-full border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-gray-800/80 backdrop-blur-sm hover:shadow-2xl hover:border-purple-300 dark:hover:border-purple-500 transition-all duration-300 transform hover:-translate-y-2">
                 <CardContent className="p-8">
                   <div className="flex flex-col items-center text-center">

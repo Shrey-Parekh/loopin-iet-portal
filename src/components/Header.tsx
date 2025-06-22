@@ -68,11 +68,10 @@ const Header = () => {
 
           {/* Desktop Controls */}
           <div className="hidden md:flex items-center space-x-3">
-            <ThemeToggle />
             <Button
               asChild
               variant="outline"
-              className="border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-400 dark:hover:text-white transition-all duration-200"
+              className="border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white transition-all duration-200"
             >
               <Link to="/login">
                 <LogIn className="w-4 h-4 mr-2" />
@@ -120,10 +119,6 @@ const Header = () => {
                 </Link>
               ))}
               <div className="border-t border-gray-200 dark:border-gray-800 mt-4 pt-4 flex flex-col space-y-3">
-                <div className="flex justify-between items-center px-4">
-                  <span className="font-medium text-gray-700 dark:text-gray-300">Switch Theme</span>
-                  <ThemeToggle />
-                </div>
                 <Button asChild variant="outline" className="w-full text-purple-600 border-purple-500">
                   <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                     <LogIn className="w-4 h-4 mr-2" />
