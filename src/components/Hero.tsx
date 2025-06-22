@@ -1,126 +1,119 @@
 
-import { ArrowRight, Users, Calendar, FileText, Sparkles, Zap, Star } from 'lucide-react';
+import { ArrowRight, Users, Calendar, FileText, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
-    <section className="relative overflow-hidden gradient-subtle py-24">
-      {/* Animated background elements */}
+    <section className="relative overflow-hidden py-32 lg:py-40" style={{ background: 'linear-gradient(135deg, var(--primary-color) 0%, rgba(79, 27, 89, 0.03) 100%)' }}>
+      {/* Subtle background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full opacity-10 animate-float" style={{ backgroundColor: 'var(--secondary-color)' }}></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full opacity-5 animate-float delay-300" style={{ backgroundColor: 'var(--secondary-color)' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full opacity-5 animate-pulse" style={{ backgroundColor: 'var(--secondary-color)' }}></div>
+        <div className="absolute top-20 right-10 w-72 h-72 rounded-full opacity-5 animate-slow-float" style={{ backgroundColor: 'var(--secondary-color)' }}></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 rounded-full opacity-3" style={{ backgroundColor: 'var(--secondary-color)' }}></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Main heading with enhanced animations */}
-          <div className="mb-8 animate-bounce-in">
-            <div className="flex items-center justify-center mb-6">
-              <Sparkles className="w-8 h-8 animate-pulse" style={{ color: 'var(--secondary-color)' }} />
-              <span className="mx-4 px-6 py-2 glass rounded-full text-sm font-semibold" style={{ color: 'var(--secondary-color)' }}>
-                Welcome to the Future
-              </span>
-              <Sparkles className="w-8 h-8 animate-pulse" style={{ color: 'var(--secondary-color)' }} />
-            </div>
-            
-            <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight" style={{ color: 'var(--text-color)' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Professional badge */}
+          <div className="mb-8 animate-fade-in-up">
+            <span className="inline-block px-6 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium border border-gray-200 shadow-sm" style={{ color: 'var(--secondary-color)' }}>
+              IET College Committee Portal
+            </span>
+          </div>
+          
+          {/* Main heading */}
+          <div className="mb-8 animate-fade-in-up delay-200">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight" style={{ color: 'var(--text-color)' }}>
               Welcome to{' '}
               <span className="relative inline-block">
-                <span className="gradient-text animate-shimmer">
+                <span style={{ 
+                  background: `linear-gradient(135deg, var(--secondary-color) 0%, #6a2c70 100%)`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}>
                   LoopIn
                 </span>
-                <div className="absolute -bottom-4 left-0 right-0 h-2 rounded-full opacity-60 animate-pulse" style={{ backgroundColor: 'var(--secondary-color)' }}></div>
               </span>
             </h1>
           </div>
 
-          <div className="mb-12 animate-slide-in-left delay-200">
-            <p className="text-2xl mb-8 max-w-3xl mx-auto leading-relaxed font-medium" style={{ color: 'var(--text-color)' }}>
-              Your gateway to the <span className="font-bold" style={{ color: 'var(--secondary-color)' }}>IET College Committee</span>. 
-              Stay connected, get involved, and be part of something{' '}
-              <span className="gradient-text font-bold">
-                extraordinary
-              </span>
+          {/* Subtitle */}
+          <div className="mb-12 animate-fade-in-up delay-300">
+            <p className="text-xl md:text-2xl mb-6 max-w-3xl mx-auto leading-relaxed text-gray-600 font-light">
+              Your comprehensive gateway to the <span className="font-medium" style={{ color: 'var(--secondary-color)' }}>IET College Committee</span>. 
+              Connect, collaborate, and stay informed with our vibrant academic community.
             </p>
           </div>
 
-          {/* Enhanced CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-slide-in-right delay-400">
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in-up delay-400">
             <Button 
               asChild
-              className="gradient-primary text-white px-10 py-4 text-xl font-bold group hover:scale-105 transition-all duration-300 hover:shadow-2xl border-0"
+              className="px-8 py-4 text-lg font-medium hover:scale-105 transition-all duration-300 shadow-lg border-0"
+              style={{ 
+                background: `linear-gradient(135deg, var(--secondary-color) 0%, #6a2c70 100%)`,
+                color: 'white'
+              }}
             >
               <Link to="/team">
-                Get Started
-                <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform duration-300" />
+                Explore Committee
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
             <Button 
               asChild
               variant="outline" 
-              className="border-3 px-10 py-4 text-xl font-bold hover:scale-105 transition-all duration-300 hover:shadow-xl glass"
-              style={{ borderColor: 'var(--secondary-color)', color: 'var(--secondary-color)' }}
+              className="px-8 py-4 text-lg font-medium border-2 hover:scale-105 transition-all duration-300 bg-white/80 backdrop-blur-sm"
+              style={{ 
+                borderColor: 'var(--secondary-color)', 
+                color: 'var(--secondary-color)' 
+              }}
             >
               <Link to="/events">
-                Explore Events
-                <Zap className="w-6 h-6 ml-3" />
+                View Events
               </Link>
             </Button>
           </div>
           
-          {/* Enhanced Stats with staggered animations */}
+          {/* Professional Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
-            <div className="text-center group cursor-pointer animate-bounce-in delay-100 hover-lift">
-              <div className="relative mb-6">
-                <div className="w-20 h-20 gradient-primary rounded-3xl flex items-center justify-center mx-auto group-hover:rotate-12 transition-all duration-500 shadow-xl">
-                  <Users className="w-10 h-10 text-white animate-float" />
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--secondary-color)' }}>
-                  <Star className="w-3 h-3 text-white" />
-                </div>
+            <div className="text-center group animate-fade-in-up delay-500">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300" style={{ background: `linear-gradient(135deg, var(--secondary-color) 0%, #6a2c70 100%)` }}>
+                <Users className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-4xl font-black mb-3 group-hover:text-purple-600 transition-colors duration-300" style={{ color: 'var(--text-color)' }}>
+              <h3 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-color)' }}>
                 50+
               </h3>
-              <p className="text-gray-600 font-semibold text-lg">Active Members</p>
-              <div className="w-16 h-1 rounded-full mx-auto mt-3 group-hover:w-24 transition-all duration-300" style={{ backgroundColor: 'var(--secondary-color)' }}></div>
+              <p className="text-gray-600 font-medium">Active Members</p>
             </div>
 
-            <div className="text-center group cursor-pointer animate-bounce-in delay-200 hover-lift">
-              <div className="relative mb-6">
-                <div className="w-20 h-20 gradient-secondary rounded-3xl flex items-center justify-center mx-auto group-hover:rotate-12 transition-all duration-500 shadow-xl">
-                  <Calendar className="w-10 h-10 text-white animate-float delay-100" />
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--secondary-color)' }}>
-                  <Star className="w-3 h-3 text-white" />
-                </div>
+            <div className="text-center group animate-fade-in-up delay-600">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300" style={{ background: `linear-gradient(135deg, var(--text-color) 0%, #555555 100%)` }}>
+                <Calendar className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-4xl font-black mb-3 transition-colors duration-300" style={{ color: 'var(--text-color)' }}>
+              <h3 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-color)' }}>
                 25+
               </h3>
-              <p className="text-gray-600 font-semibold text-lg">Events This Year</p>
-              <div className="w-16 h-1 rounded-full mx-auto mt-3 group-hover:w-24 transition-all duration-300" style={{ backgroundColor: 'var(--secondary-color)' }}></div>
+              <p className="text-gray-600 font-medium">Events This Year</p>
             </div>
 
-            <div className="text-center group cursor-pointer animate-bounce-in delay-300 hover-lift">
-              <div className="relative mb-6">
-                <div className="w-20 h-20 gradient-accent rounded-3xl flex items-center justify-center mx-auto group-hover:rotate-12 transition-all duration-500 shadow-xl">
-                  <FileText className="w-10 h-10 animate-float delay-200" style={{ color: 'var(--secondary-color)' }} />
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--secondary-color)' }}>
-                  <Star className="w-3 h-3 text-white" />
-                </div>
+            <div className="text-center group animate-fade-in-up delay-700">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 bg-white border-2" style={{ borderColor: 'var(--secondary-color)' }}>
+                <FileText className="w-8 h-8" style={{ color: 'var(--secondary-color)' }} />
               </div>
-              <h3 className="text-4xl font-black mb-3 transition-colors duration-300" style={{ color: 'var(--text-color)' }}>
+              <h3 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-color)' }}>
                 12
               </h3>
-              <p className="text-gray-600 font-semibold text-lg">Newsletters Published</p>
-              <div className="w-16 h-1 rounded-full mx-auto mt-3 group-hover:w-24 transition-all duration-300" style={{ backgroundColor: 'var(--secondary-color)' }}></div>
+              <p className="text-gray-600 font-medium">Newsletters Published</p>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <ChevronDown className="w-6 h-6 text-gray-400" />
       </div>
     </section>
   );
