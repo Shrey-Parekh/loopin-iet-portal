@@ -1,40 +1,39 @@
-
-import { Home, ArrowLeft, Sparkles } from 'lucide-react';
+import { Home, ArrowLeft, Frown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center px-4">
-      <div className="text-center max-w-2xl mx-auto">
-        {/* Animated 404 */}
-        <div className="mb-8 animate-bounce-in">
-          <h1 className="text-9xl font-black bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent mb-4 animate-shimmer">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-50 dark:from-purple-900/10 via-transparent to-transparent"></div>
+        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-tl from-indigo-50 dark:from-indigo-900/10 via-transparent to-transparent"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-100 dark:bg-purple-900/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-100 dark:bg-indigo-900/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+      </div>
+      
+      <div className="text-center max-w-lg mx-auto relative z-10">
+        <div className="mb-8">
+          <h1 className="text-8xl md:text-9xl font-black bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 bg-clip-text text-transparent mb-4 animate-fade-in-up">
             404
           </h1>
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <Sparkles className="w-6 h-6 text-orange-500 animate-pulse" />
-            <span className="text-2xl font-bold text-gray-800">Page Not Found</span>
-            <Sparkles className="w-6 h-6 text-orange-500 animate-pulse" />
+          <div className="flex items-center justify-center space-x-3 mb-6 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+            <Frown className="w-8 h-8 text-purple-500 dark:text-purple-400" />
+            <span className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100">Page Not Found</span>
           </div>
         </div>
 
-        {/* Description */}
-        <div className="mb-12 animate-fade-in delay-200">
-          <p className="text-xl text-gray-600 mb-6 leading-relaxed">
-            Oops! Looks like you've wandered off the beaten path. 
-            The page you're looking for doesn't exist in our universe.
-          </p>
-          <p className="text-lg text-gray-500">
-            But don't worry, our amazing LoopIn portal has plenty of other exciting pages to explore!
+        <div className="mb-12 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+            Oops! The page you are looking for does not exist. It might have been moved or deleted.
           </p>
         </div>
 
-        {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-in-left delay-400">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{animationDelay: '0.6s'}}>
           <Button 
             asChild
-            className="gradient-primary text-white px-8 py-4 text-lg font-bold hover:scale-105 transition-all duration-300 hover:shadow-xl border-0"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-base font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105"
           >
             <Link to="/">
               <Home className="w-5 h-5 mr-2" />
@@ -45,8 +44,7 @@ const NotFound = () => {
           <Button 
             asChild
             variant="outline"
-            className="border-3 border-orange-400 text-orange-600 hover:bg-orange-50 px-8 py-4 text-lg font-bold hover:scale-105 transition-all duration-300"
-            onClick={() => window.history.back()}
+            className="border-2 border-purple-500 text-purple-600 hover:bg-purple-50 hover:text-purple-700 dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-900/30 dark:hover:text-white px-8 py-3 text-base font-semibold transform transition-all duration-300 hover:scale-105"
           >
             <Link to="#" onClick={(e) => { e.preventDefault(); window.history.back(); }}>
               <ArrowLeft className="w-5 h-5 mr-2" />
@@ -54,11 +52,6 @@ const NotFound = () => {
             </Link>
           </Button>
         </div>
-
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-20 w-20 h-20 bg-orange-200 rounded-full opacity-20 animate-float"></div>
-        <div className="absolute bottom-20 right-20 w-32 h-32 bg-amber-200 rounded-full opacity-20 animate-float delay-300"></div>
-        <div className="absolute top-1/2 left-10 w-16 h-16 bg-yellow-200 rounded-full opacity-10 animate-pulse"></div>
       </div>
     </div>
   );
