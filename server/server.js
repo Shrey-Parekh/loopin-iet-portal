@@ -6,7 +6,7 @@ const app = express();
 const port = 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
 
 // MySQL connection
 const db = mysql.createConnection({
@@ -59,9 +59,31 @@ db.connect(err => {
           console.error('Error fetching team members:', err.message);
           return res.status(500).json({ error: 'Error fetching team members' });
         }
-        res.json(results);
+        // Parse hobbies as array (comma-separated), tags as JSON
+        const parsed = results.map(row => ({
+          ...row,
+          hobbies: row.hobbies ? parseHobbies(row.hobbies) : [],
+          tags: row.tags ? safeJsonParse(row.tags) : [],
+        }));
+        res.json(parsed);
       });
     });
+
+    // Helper for safe JSON parse
+    function safeJsonParse(str) {
+      try {
+        const parsed = JSON.parse(str);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    // Helper for hobbies parse
+    function parseHobbies(str) {
+      if (!str) return [];
+      return str.split(',').map(h => h.trim()).filter(Boolean);
+    }
 
     // Department-specific route
     app.get('/api/team/department/:department', (req, res) => {
@@ -71,7 +93,12 @@ db.connect(err => {
           console.error(err.message);
           return res.status(500).json({ error: 'Error fetching team members by department' });
         }
-        res.json(results);
+        const parsed = results.map(row => ({
+          ...row,
+          hobbies: row.hobbies ? parseHobbies(row.hobbies) : [],
+          tags: row.tags ? safeJsonParse(row.tags) : [],
+        }));
+        res.json(parsed);
       });
     });
 
@@ -83,7 +110,12 @@ db.connect(err => {
           console.error(err.message);
           return res.status(500).json({ error: 'Error fetching team members by type' });
         }
-        res.json(results);
+        const parsed = results.map(row => ({
+          ...row,
+          hobbies: row.hobbies ? parseHobbies(row.hobbies) : [],
+          tags: row.tags ? safeJsonParse(row.tags) : [],
+        }));
+        res.json(parsed);
       });
     });
 
@@ -94,7 +126,12 @@ db.connect(err => {
           console.error(err.message);
           return res.status(500).json({ error: 'Error fetching super core members' });
         }
-        res.json(results);
+        const parsed = results.map(row => ({
+          ...row,
+          hobbies: row.hobbies ? parseHobbies(row.hobbies) : [],
+          tags: row.tags ? safeJsonParse(row.tags) : [],
+        }));
+        res.json(parsed);
       });
     });
 
@@ -105,7 +142,12 @@ db.connect(err => {
           console.error(err.message);
           return res.status(500).json({ error: 'Error fetching core members' });
         }
-        res.json(results);
+        const parsed = results.map(row => ({
+          ...row,
+          hobbies: row.hobbies ? parseHobbies(row.hobbies) : [],
+          tags: row.tags ? safeJsonParse(row.tags) : [],
+        }));
+        res.json(parsed);
       });
     });
 
@@ -164,9 +206,176 @@ db.connect(err => {
       });
     });
 
+    // Newsletters API
+    app.get('/api/newsletters', (req, res) => {
+      db.query('SELECT * FROM newsletters ORDER BY date DESC', (err, results) => {
+        if (err) {
+          console.error('Error fetching newsletters:', err.message);
+          return res.status(500).json({ error: 'Error fetching newsletters' });
+        }
+        res.json(results);
+      });
+    });
+
+    // Newsletter subscription endpoint
+    app.post('/api/newsletters/subscribe', (req, res) => {
+      const { email } = req.body;
+      if (!email || typeof email !== 'string') {
+        return res.status(400).json({ error: 'Email is required' });
+      }
+      db.query('INSERT INTO newsletter_subscribers (email) VALUES (?)', [email], (err, result) => {
+        if (err) {
+          if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ error: 'This email is already subscribed.' });
+          }
+          console.error('Error subscribing to newsletter:', err.message);
+          return res.status(500).json({ error: 'Error subscribing to newsletter' });
+        }
+        res.json({ success: true });
+      });
+    });
+
+    // Login endpoint
+    app.post('/api/login', (req, res) => {
+      const { userId, password } = req.body;
+      if (!userId || !password) {
+        return res.status(400).json({ error: 'User ID and password are required.' });
+      }
+      db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
+        if (err) {
+          console.error('Error querying users:', err.message);
+          return res.status(500).json({ error: 'Database error.' });
+        }
+        if (results.length === 0) {
+          return res.status(401).json({ error: 'Invalid credentials.' });
+        }
+        const user = results[0];
+        // Plain text password check (not secure)
+        if (password !== user.password) {
+          return res.status(401).json({ error: 'Invalid credentials.' });
+        }
+        // On success, return user info (omit password)
+        const { password: _, ...userInfo } = user;
+        res.json({ success: true, user: userInfo });
+      });
+    });
+
+    // Change password endpoint
+    app.post('/api/change-password', (req, res) => {
+      const { userId, currentPassword, newPassword } = req.body;
+      if (!userId || !currentPassword || !newPassword) {
+        return res.status(400).json({ error: 'All fields are required.' });
+      }
+      db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
+        if (err) {
+          console.error('Error querying users:', err.message);
+          return res.status(500).json({ error: 'Database error.' });
+        }
+        if (results.length === 0) {
+          return res.status(404).json({ error: 'User not found.' });
+        }
+        const user = results[0];
+        if (user.password !== currentPassword) {
+          return res.status(401).json({ error: 'Current password is incorrect.' });
+        }
+        db.query('UPDATE users SET password = ? WHERE user_id = ?', [newPassword, userId], (err2) => {
+          if (err2) {
+            console.error('Error updating password:', err2.message);
+            return res.status(500).json({ error: 'Failed to update password.' });
+          }
+          res.json({ success: true });
+        });
+      });
+    });
+
+    // Reset password endpoint
+    app.post('/api/reset-password', (req, res) => {
+      const { userId } = req.body;
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID is required.' });
+      }
+      db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
+        if (err) {
+          console.error('Error querying users:', err.message);
+          return res.status(500).json({ error: 'Database error.' });
+        }
+        if (results.length === 0) {
+          return res.status(404).json({ error: 'User not found.' });
+        }
+        db.query('UPDATE users SET password = ? WHERE user_id = ?', ['password123', userId], (err2) => {
+          if (err2) {
+            console.error('Error resetting password:', err2.message);
+            return res.status(500).json({ error: 'Failed to reset password.' });
+          }
+          res.json({ success: true });
+        });
+      });
+    });
+
     // Health check
     app.get('/api/health', (req, res) => {
       res.json({ status: 'OK', message: 'Server is running. MySQL connected' });
+    });
+
+    // Update profile endpoint
+    app.put('/api/profile/:id', (req, res) => {
+      const { id } = req.params;
+      let {
+        name,
+        position_hierarchy,
+        member_type,
+        department,
+        image,
+        linkedin,
+        github,
+        Instagram,
+        bio,
+        hobbies,
+        tags,
+        email
+      } = req.body;
+      // Save hobbies as comma-separated string, tags as JSON
+      if (Array.isArray(hobbies)) hobbies = hobbies.join(',');
+      if (Array.isArray(tags)) tags = JSON.stringify(tags);
+      const query = `UPDATE team_members SET name=?, position_hierarchy=?, member_type=?, department=?, image=?, linkedin=?, github=?, Instagram=?, bio=?, hobbies=?, tags=?, email=? WHERE id=?`;
+      const params = [name, position_hierarchy, member_type, department, image, linkedin, github, Instagram, bio, hobbies, tags, email, id];
+      db.query(query, params, (err, result) => {
+        if (err) {
+          console.error('Error updating profile:', err.message);
+          return res.status(500).json({ error: 'Failed to update profile' });
+        }
+        res.json({ success: true });
+      });
+    });
+
+    // Create profile endpoint
+    app.post('/api/profile', (req, res) => {
+      let {
+        name,
+        position_hierarchy,
+        member_type,
+        department,
+        image,
+        linkedin,
+        github,
+        Instagram,
+        bio,
+        hobbies,
+        tags,
+        email
+      } = req.body;
+      // Save hobbies as comma-separated string, tags as JSON
+      if (Array.isArray(hobbies)) hobbies = hobbies.join(',');
+      if (Array.isArray(tags)) tags = JSON.stringify(tags);
+      const query = `INSERT INTO team_members (name, position_hierarchy, member_type, department, image, linkedin, github, Instagram, bio, hobbies, tags, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      const params = [name, position_hierarchy, member_type, department, image, linkedin, github, Instagram, bio, hobbies, tags, email];
+      db.query(query, params, (err, result) => {
+        if (err) {
+          console.error('Error creating profile:', err.message);
+          return res.status(500).json({ error: 'Failed to create profile' });
+        }
+        res.json({ success: true, id: result.insertId });
+      });
     });
 
     app.listen(port, () => {
@@ -174,3 +383,4 @@ db.connect(err => {
     });
   }
 });
+ 

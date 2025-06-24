@@ -194,7 +194,7 @@ const Contact = () => {
                       {loading ? (
                         <span className="animate-spin mr-2">⏳</span>
                       ) : (
-                        <Send className="w-4 h-4 mr-2" />
+                      <Send className="w-4 h-4 mr-2" />
                       )}
                       {loading ? 'Sending...' : 'Send Message'}
                     </Button>

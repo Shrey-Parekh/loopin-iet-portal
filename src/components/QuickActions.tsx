@@ -1,4 +1,4 @@
-import { Users, Calendar, FileText, MessageSquare, Settings, Trophy, ArrowRight } from 'lucide-react';
+import { Users, Calendar, FileText, MessageSquare, Settings, Trophy, ArrowRight, User } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 
@@ -33,18 +33,18 @@ const QuickActions = () => {
       color: 'bg-gradient-to-br from-orange-500 to-amber-500'
     },
     {
-      icon: Trophy,
-      title: 'Achievements',
-      description: 'Celebrate our accomplishments and milestones.',
-      href: '/achievements',
-      color: 'bg-gradient-to-br from-rose-500 to-pink-500'
-    },
-    {
       icon: Settings,
       title: 'Contact Us',
       description: 'Get in touch with our team for any inquiries.',
       href: '/contact',
       color: 'bg-gradient-to-br from-gray-700 to-gray-800'
+    },
+    {
+      icon: User,
+      title: 'Your Profile',
+      description: 'View and edit your profile details.',
+      href: '/profile',
+      color: 'bg-gradient-to-br from-fuchsia-500 to-purple-500'
     }
   ];
 

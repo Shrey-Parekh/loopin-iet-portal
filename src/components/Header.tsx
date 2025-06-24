@@ -4,18 +4,29 @@ import { Menu, X, User, LogIn, FileText, Users, Calendar, Settings, MessageSquar
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
+import { Avatar } from '@/components/ui/avatar';
+import { motion } from 'framer-motion';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    setIsScrolled(window.scrollY > 10);
+    // Check login state from localStorage
+    setIsLoggedIn(!!localStorage.getItem('isLoggedIn'));
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Listen for login/logout changes across tabs
+  useEffect(() => {
+    const syncLogin = () => setIsLoggedIn(!!localStorage.getItem('isLoggedIn'));
+    window.addEventListener('storage', syncLogin);
+    return () => window.removeEventListener('storage', syncLogin);
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -51,9 +62,9 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-2">
             {navItems.map((item) => (
-              <Link
+              <Link 
                 key={item.name}
-                to={item.href}
+                to={item.href} 
                 className={cn(
                   "px-4 py-2 rounded-lg font-medium transition-colors duration-200",
                   location.pathname === item.href
@@ -68,25 +79,39 @@ const Header = () => {
 
           {/* Desktop Controls */}
           <div className="hidden md:flex items-center space-x-3">
-            <Button
+            {isLoggedIn ? (
+              <div className="relative group">
+                <Avatar className="cursor-pointer border-2 border-purple-500 shadow-sm">
+                  <motion.div
+                    whileHover={{ scale: 1.13, rotate: 8 }}
+                    whileTap={{ scale: 0.97, rotate: -8 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    className="flex items-center justify-center w-full h-full"
+                  >
+                    <User className="w-7 h-7 text-purple-600" />
+                  </motion.div>
+                </Avatar>
+                {/* Dropdown menu */}
+                <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-auto">
+                  <Link to="/profile" className="block px-4 py-3 text-gray-700 hover:bg-purple-50">Profile</Link>
+                  <button
+                    className="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50"
+                    onClick={() => { localStorage.removeItem('isLoggedIn'); localStorage.removeItem('userId'); setIsLoggedIn(false); }}
+                  >Logout</button>
+                </div>
+              </div>
+            ) : (
+            <Button 
               asChild
-              variant="outline"
-              className="border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white transition-all duration-200"
+              variant="outline" 
+                className="border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white transition-all duration-200"
             >
               <Link to="/login">
                 <LogIn className="w-4 h-4 mr-2" />
                 Login
               </Link>
             </Button>
-            <Button
-              asChild
-              className="bg-purple-600 hover:bg-purple-700 text-white transition-all duration-200"
-            >
-              <Link to="/register">
-                <User className="w-4 h-4 mr-2" />
-                Sign Up
-              </Link>
-            </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -103,9 +128,9 @@ const Header = () => {
           <div className="md:hidden pb-4">
             <nav className="flex flex-col space-y-2">
               {navItems.map((item) => (
-                <Link
+                <Link 
                   key={item.name}
-                  to={item.href}
+                  to={item.href} 
                   onClick={() => setIsMenuOpen(false)}
                   className={cn(
                     "px-4 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center",
@@ -119,18 +144,34 @@ const Header = () => {
                 </Link>
               ))}
               <div className="border-t border-gray-200 dark:border-gray-800 mt-4 pt-4 flex flex-col space-y-3">
-                <Button asChild variant="outline" className="w-full text-purple-600 border-purple-500">
+                {isLoggedIn ? (
+                  <div className="relative group">
+                    <Avatar className="cursor-pointer border-2 border-purple-500 shadow-sm mx-auto">
+                      <motion.div
+                        whileHover={{ scale: 1.13, rotate: 8 }}
+                        whileTap={{ scale: 0.97, rotate: -8 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                        className="flex items-center justify-center w-full h-full"
+                      >
+                        <User className="w-7 h-7 text-purple-600" />
+                      </motion.div>
+                    </Avatar>
+                    <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-auto">
+                      <Link to="/profile" className="block px-4 py-3 text-gray-700 hover:bg-purple-50">Profile</Link>
+                      <button
+                        className="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50"
+                        onClick={() => { localStorage.removeItem('isLoggedIn'); localStorage.removeItem('userId'); setIsLoggedIn(false); }}
+                      >Logout</button>
+                    </div>
+                </div>
+                ) : (
+                  <Button asChild variant="outline" className="w-full text-purple-600 border-purple-500">
                   <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                     <LogIn className="w-4 h-4 mr-2" />
                     Login
                   </Link>
                 </Button>
-                <Button asChild className="w-full bg-purple-600 text-white">
-                  <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                    <User className="w-4 h-4 mr-2" />
-                    Sign Up
-                  </Link>
-                </Button>
+                )}
               </div>
             </nav>
           </div>

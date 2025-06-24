@@ -109,14 +109,14 @@ const TeamGrid = ({ members, loading, error }: TeamGridProps) => {
               {member.linkedin && (
                 <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
                   <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
-                    <Linkedin className="w-4 h-4" />
+                <Linkedin className="w-4 h-4" />
                   </a>
-                </Button>
+              </Button>
               )}
               {member.github && (
                 <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
                   <a href={member.github} target="_blank" rel="noopener noreferrer">
-                    <Github className="w-4 h-4" />
+                <Github className="w-4 h-4" />
                   </a>
                 </Button>
               )}
@@ -132,7 +132,7 @@ const TeamGrid = ({ members, loading, error }: TeamGridProps) => {
                   <a href={`mailto:${member.email}`}>
                     <Mail className="w-4 h-4" />
                   </a>
-                </Button>
+              </Button>
               )}
             </div>
           </CardContent>

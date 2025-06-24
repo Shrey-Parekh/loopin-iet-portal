@@ -1,63 +1,49 @@
-
 import Header from '../components/Header';
-import { Bell, Clock, User, ChevronRight, AlertCircle, Star, Calendar } from 'lucide-react';
+import { Bell, Clock, User, ChevronRight, AlertCircle, Star, Calendar, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useAnnouncements } from '@/hooks/useApi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useMemo, useState, useEffect } from 'react';
+
+const sortOptions = [
+  { value: 'date_desc', label: 'Newest First' },
+  { value: 'date_asc', label: 'Oldest First' },
+  { value: 'priority', label: 'Priority' },
+];
+
+const priorityOrder = { high: 1, medium: 2, low: 3 };
 
 const Announcements = () => {
-  const announcements = [
-    {
-      id: 1,
-      title: 'Tech Workshop: Introduction to AI',
-      content: 'Join us for an exciting workshop on Artificial Intelligence basics. Perfect for beginners who want to dive into the world of AI! This comprehensive session will cover machine learning fundamentals, neural networks, and practical applications.',
-      date: '2024-06-25',
-      priority: 'high',
-      author: 'Tech Team',
-      category: 'Workshop',
-      readTime: '3 min read'
-    },
-    {
-      id: 2,
-      title: 'Committee Meeting Minutes Available',
-      content: 'The minutes from our last committee meeting are now available in the member portal. Check out all the important decisions made regarding upcoming events, budget allocations, and new initiatives.',
-      date: '2024-06-23',
-      priority: 'medium',
-      author: 'Secretary',
-      category: 'Meeting',
-      readTime: '2 min read'
-    },
-    {
-      id: 3,
-      title: 'New Member Registration Open',
-      content: 'We are now accepting applications for new committee members. Apply before the deadline and join our amazing team! We are looking for passionate individuals in various roles including technical, marketing, and event management.',
-      date: '2024-06-20',
-      priority: 'high',
-      author: 'HR Team',
-      category: 'Registration',
-      readTime: '4 min read'
-    },
-    {
-      id: 4,
-      title: 'Annual Tech Symposium 2024',
-      content: 'Save the date! Our annual tech symposium is scheduled for July 15th. This year\'s theme focuses on emerging technologies and their impact on society. Registration opens next week.',
-      date: '2024-06-18',
-      priority: 'medium',
-      author: 'Events Team',
-      category: 'Event',
-      readTime: '2 min read'
-    },
-    {
-      id: 5,
-      title: 'Summer Internship Opportunities',
-      content: 'Exciting internship opportunities are now available with our partner companies. Applications are open for students interested in gaining real-world experience in technology and engineering fields.',
-      date: '2024-06-15',
-      priority: 'high',
-      author: 'Career Services',
-      category: 'Opportunities',
-      readTime: '5 min read'
+  const { data, loading, error } = useAnnouncements();
+  const [sortBy, setSortBy] = useState('date_desc');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [sortHighlight, setSortHighlight] = useState(false);
+
+  const announcements = useMemo(() => {
+    if (!data) return [];
+    let arr = [...data];
+    if (sortBy === 'date_asc') {
+      arr.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    } else if (sortBy === 'date_desc') {
+      arr.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    } else if (sortBy === 'priority') {
+      arr.sort((a, b) =>
+        (priorityOrder[a.priority] || 4) - (priorityOrder[b.priority] || 4)
+      );
     }
-  ];
+    return arr;
+  }, [data, sortBy]);
+
+  // Animate highlight when sort changes
+  useEffect(() => {
+    if (!dropdownOpen) {
+      setSortHighlight(true);
+      const timeout = setTimeout(() => setSortHighlight(false), 400);
+      return () => clearTimeout(timeout);
+    }
+  }, [sortBy]);
 
   const getPriorityStyles = (priority: string) => {
     switch (priority) {
@@ -97,61 +83,132 @@ const Announcements = () => {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-6">
-            {announcements.map((announcement) => {
+          {/* Sorting Controls */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.5 }}
+            className="flex justify-end mb-8 max-w-4xl mx-auto"
+          >
+            <div className="relative">
+              <button
+                type="button"
+                className={`flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 shadow-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#4f1b59] ${sortHighlight ? 'ring-2 ring-[#a259c6]/40' : ''}`}
+                onClick={() => setDropdownOpen((open) => !open)}
+                onBlur={() => setTimeout(() => setDropdownOpen(false), 150)}
+                aria-haspopup="listbox"
+                aria-expanded={dropdownOpen}
+              >
+                <span>Sort by: {sortOptions.find(opt => opt.value === sortBy)?.label}</span>
+                <motion.span animate={{ rotate: dropdownOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                  <ChevronDown className="w-4 h-4" />
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.ul
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.18 }}
+                    className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20 overflow-hidden"
+                    tabIndex={-1}
+                  >
+                    {sortOptions.map(opt => (
+                      <li
+                        key={opt.value}
+                        className={`px-4 py-3 cursor-pointer hover:bg-[#f3eafd] transition-colors text-sm ${sortBy === opt.value ? 'bg-[#f8f5fc] font-semibold text-[#4f1b59]' : 'text-gray-700'}`}
+                        onClick={() => { setSortBy(opt.value); setDropdownOpen(false); }}
+                        role="option"
+                        aria-selected={sortBy === opt.value}
+                      >
+                        {opt.label}
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+
+          {loading && (
+            <div className="text-center text-lg text-gray-400 animate-pulse">Loading announcements...</div>
+          )}
+          {error && (
+            <div className="text-center text-red-500">{error}</div>
+          )}
+          <AnimatePresence>
+            {!loading && !error && announcements.length === 0 && (
+              <motion.div
+                className="text-center text-gray-400"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                No announcements found.
+              </motion.div>
+            )}
+            {!loading && !error && announcements.map((announcement: any, idx: number) => {
               const priorityStyles = getPriorityStyles(announcement.priority);
               return (
-                <Card 
-                  key={announcement.id} 
-                  className={`group hover:shadow-lg transition-all duration-200 cursor-pointer border-l-4 ${priorityStyles.border} bg-white`}
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center space-x-3">
-                        {priorityStyles.icon}
-                        <div>
-                          <CardTitle className="text-xl font-semibold text-[#333333] group-hover:text-[#4f1b59] transition-colors">
-                            {announcement.title}
-                          </CardTitle>
-                          <div className="flex items-center space-x-4 mt-1">
-                            <Badge variant="outline" className="text-xs">
-                              {announcement.category}
-                            </Badge>
-                            <span className="text-xs text-gray-500">{announcement.readTime}</span>
+                <div className="py-6 md:py-8" key={announcement.id}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 40 }}
+                    transition={{ delay: idx * 0.08, duration: 0.5, type: 'spring', stiffness: 120 }}
+                  >
+                    <Card
+                      className={`group hover:shadow-2xl transition-all duration-200 cursor-pointer border-l-4 ${priorityStyles.border} bg-white rounded-2xl`}
+                    >
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center space-x-3">
+                            {priorityStyles.icon}
+                            <div>
+                              <CardTitle className="text-xl font-semibold text-[#333333] group-hover:text-[#4f1b59] transition-colors">
+                                {announcement.title}
+                              </CardTitle>
+                              <div className="flex items-center space-x-4 mt-1">
+                                <Badge variant="outline" className="text-xs">
+                                  {announcement.category || 'General'}
+                                </Badge>
+                                <span className="text-xs text-gray-500">{announcement.readTime || ''}</span>
+                              </div>
+                            </div>
                           </div>
+                          <Badge className={`${priorityStyles.badge} font-medium text-xs`}>
+                            {announcement.priority?.toUpperCase()}
+                          </Badge>
                         </div>
-                      </div>
-                      <Badge className={`${priorityStyles.badge} font-medium text-xs`}>
-                        {announcement.priority.toUpperCase()}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="pt-0">
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      {announcement.content}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-6 text-sm text-gray-500">
-                        <div className="flex items-center space-x-2">
-                          <Calendar className="w-4 h-4" />
-                          <span>{new Date(announcement.date).toLocaleDateString()}</span>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <p className="text-gray-600 mb-6 leading-relaxed">
+                          {announcement.content}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-6 text-sm text-gray-500">
+                            <div className="flex items-center space-x-2">
+                              <Calendar className="w-4 h-4" />
+                              <span>{new Date(announcement.date).toLocaleDateString()}</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <User className="w-4 h-4" />
+                              <span className="font-medium text-[#4f1b59]">{announcement.author || 'IET Committee'}</span>
+                            </div>
+                          </div>
+                          <Button variant="ghost" size="sm" className="text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white">
+                            Read More
+                            <ChevronRight className="w-4 h-4 ml-1" />
+                          </Button>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <User className="w-4 h-4" />
-                          <span className="font-medium text-[#4f1b59]">{announcement.author}</span>
-                        </div>
-                      </div>
-                      <Button variant="ghost" size="sm" className="text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white">
-                        Read More
-                        <ChevronRight className="w-4 h-4 ml-1" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                </div>
               );
             })}
-          </div>
+          </AnimatePresence>
 
           {/* Newsletter subscription */}
           <div className="mt-20 text-center bg-white rounded-2xl p-12 shadow-sm border border-gray-200 max-w-4xl mx-auto">

@@ -117,4 +117,8 @@ export function useAnnouncements() {
 
 export function useRecentAnnouncements() {
   return useApi('/announcements/recent');
+}
+
+export function useNewsletters() {
+  return useApi('/newsletters');
 } 

@@ -27,17 +27,17 @@ const Events = () => {
           {/* Filter Bar with glassy effect and animation */}
           <div className="flex w-full justify-center animate-fade-in-up delay-200">
             <div className="w-full max-w-2xl flex justify-center rounded-2xl bg-white/70 backdrop-blur-md shadow-xl border border-gray-100 px-4 py-3 scale-100 opacity-100 transition-all duration-700">
-              <EventsFilter 
-                selectedTimeframe={selectedTimeframe}
-                setSelectedTimeframe={setSelectedTimeframe}
-              />
+          <EventsFilter 
+            selectedTimeframe={selectedTimeframe}
+            setSelectedTimeframe={setSelectedTimeframe}
+          />
             </div>
           </div>
           <div className="mt-8">
-            <EventsList 
-              selectedTimeframe={selectedTimeframe}
+          <EventsList 
+            selectedTimeframe={selectedTimeframe}
               selectedCategory={"all"}
-            />
+          />
           </div>
         </div>
       </div>
