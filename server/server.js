@@ -317,10 +317,28 @@ db.connect(err => {
       res.json({ status: 'OK', message: 'Server is running. MySQL connected' });
     });
 
+    // Get profile for a specific user
+    app.get('/api/profile/:user_id', (req, res) => {
+      const { user_id } = req.params;
+      db.query('SELECT * FROM team_members WHERE user_id = ?', [user_id], (err, results) => {
+        if (err) {
+          console.error('Error fetching profile:', err.message);
+          return res.status(500).json({ error: 'Error fetching profile' });
+        }
+        if (results.length === 0) return res.json(null);
+        // Parse hobbies and tags
+        const row = results[0];
+        row.hobbies = row.hobbies ? parseHobbies(row.hobbies) : [];
+        row.tags = row.tags ? safeJsonParse(row.tags) : [];
+        res.json(row);
+      });
+    });
+
     // Update profile endpoint
     app.put('/api/profile/:id', (req, res) => {
       const { id } = req.params;
       let {
+        user_id,
         name,
         position_hierarchy,
         member_type,
@@ -334,11 +352,11 @@ db.connect(err => {
         tags,
         email
       } = req.body;
-      // Save hobbies as comma-separated string, tags as JSON
+      if (!user_id) return res.status(400).json({ error: 'user_id is required' });
       if (Array.isArray(hobbies)) hobbies = hobbies.join(',');
       if (Array.isArray(tags)) tags = JSON.stringify(tags);
-      const query = `UPDATE team_members SET name=?, position_hierarchy=?, member_type=?, department=?, image=?, linkedin=?, github=?, Instagram=?, bio=?, hobbies=?, tags=?, email=? WHERE id=?`;
-      const params = [name, position_hierarchy, member_type, department, image, linkedin, github, Instagram, bio, hobbies, tags, email, id];
+      const query = `UPDATE team_members SET name=?, position_hierarchy=?, member_type=?, department=?, image=?, linkedin=?, github=?, Instagram=?, bio=?, hobbies=?, tags=?, email=? WHERE id=? AND user_id=?`;
+      const params = [name, position_hierarchy, member_type, department, image, linkedin, github, Instagram, bio, hobbies, tags, email, id, user_id];
       db.query(query, params, (err, result) => {
         if (err) {
           console.error('Error updating profile:', err.message);
@@ -351,6 +369,7 @@ db.connect(err => {
     // Create profile endpoint
     app.post('/api/profile', (req, res) => {
       let {
+        user_id,
         name,
         position_hierarchy,
         member_type,
@@ -364,11 +383,11 @@ db.connect(err => {
         tags,
         email
       } = req.body;
-      // Save hobbies as comma-separated string, tags as JSON
+      if (!user_id) return res.status(400).json({ error: 'user_id is required' });
       if (Array.isArray(hobbies)) hobbies = hobbies.join(',');
       if (Array.isArray(tags)) tags = JSON.stringify(tags);
-      const query = `INSERT INTO team_members (name, position_hierarchy, member_type, department, image, linkedin, github, Instagram, bio, hobbies, tags, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-      const params = [name, position_hierarchy, member_type, department, image, linkedin, github, Instagram, bio, hobbies, tags, email];
+      const query = `INSERT INTO team_members (user_id, name, position_hierarchy, member_type, department, image, linkedin, github, Instagram, bio, hobbies, tags, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      const params = [user_id, name, position_hierarchy, member_type, department, image, linkedin, github, Instagram, bio, hobbies, tags, email];
       db.query(query, params, (err, result) => {
         if (err) {
           console.error('Error creating profile:', err.message);

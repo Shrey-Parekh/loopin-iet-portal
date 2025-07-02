@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus } from 'lucide-react';
+import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
@@ -71,30 +71,56 @@ const Profile = () => {
   const [showHobbies, setShowHobbies] = useState(false);
   const [showTags, setShowTags] = useState(false);
   const [editMode, setEditMode] = useState(true);
+  const [localStorageWarning, setLocalStorageWarning] = useState<string | null>(null);
+  const [profileWarning, setProfileWarning] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Simulate fetching userId from localStorage or context
-  const userId = localStorage.getItem('userId') || 'testuser';
+  const userId = localStorage.getItem('userId') || '';
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   useEffect(() => {
+    // Debug: log localStorage state
+    if (!isLoggedIn || !userId) {
+      setLocalStorageWarning('You are not logged in or your session has expired. Please log in again.');
+      console.warn('Profile page: localStorage missing isLoggedIn or userId', { isLoggedIn, userId });
+      return;
+    } else {
+      setLocalStorageWarning(null);
+    }
     const fetchProfile = async () => {
       setLoading(true);
       try {
-        const res = await fetch('/api/team');
+        const res = await fetch(`/api/profile/${userId}`);
+        if (!res.ok) {
+          throw new Error('Failed to fetch profile.');
+        }
         const data = await res.json();
-        setProfile(data[0] || {});
-        setShowDept(data[0]?.member_type !== 'super_core');
-        if (data[0]?.hobbies && Array.isArray(data[0].hobbies)) setSelectedHobbies(data[0].hobbies);
-        if (data[0]?.tags && Array.isArray(data[0].tags)) setSelectedTags(data[0].tags);
-        setEditMode(!data[0]);
+        if (!data) {
+          setProfileWarning('No profile exists for this user. You can fill out your profile below.');
+          setProfile({});
+          setShowDept(false);
+          setSelectedHobbies([]);
+          setSelectedTags([]);
+          setEditMode(true);
+        } else {
+          setProfileWarning(null);
+          setProfile(data);
+          setShowDept(data?.member_type !== 'super_core');
+          if (data?.hobbies && Array.isArray(data.hobbies)) setSelectedHobbies(data.hobbies);
+          if (data?.tags && Array.isArray(data.tags)) setSelectedTags(data.tags);
+          setEditMode(!data);
+        }
       } catch (e) {
-        toast({ title: 'Error', description: 'Failed to load profile', variant: 'destructive' });
+        setProfileWarning('Error loading profile. Please try again or contact support.');
+        toast({ title: 'Error', description: e.message || 'Failed to load profile', variant: 'destructive' });
+        console.error('Profile page: fetch error', e);
       } finally {
         setLoading(false);
       }
     };
     fetchProfile();
-  }, []);
+  }, [userId, isLoggedIn]);
 
   const handleRoleChange = (value: string) => {
     setProfile((p: any) => ({ ...p, member_type: value }));
@@ -168,6 +194,7 @@ const Profile = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...profile,
+            user_id: userId,
             hobbies: selectedHobbies,
             tags: selectedTags
           }),
@@ -179,6 +206,7 @@ const Profile = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...profile,
+            user_id: userId,
             hobbies: selectedHobbies,
             tags: selectedTags
           }),
@@ -207,9 +235,32 @@ const Profile = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-white">
-      {/* Fade to white at the bottom */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 h-64 z-0" style={{background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, #fff 100%)'}} />
+    <div className="relative min-h-screen bg-gradient-to-br from-[#f8f6ff] via-[#f3e8ff] to-[#e0c3fc] overflow-x-hidden">
+      {localStorageWarning && (
+        <div className="fixed top-0 left-0 w-full bg-red-100 text-red-700 text-center py-2 z-50 font-semibold shadow">
+          {localStorageWarning}
+        </div>
+      )}
+      {profileWarning && !localStorageWarning && (
+        <div className="fixed top-0 left-0 w-full bg-yellow-100 text-yellow-800 text-center py-2 z-40 font-semibold shadow">
+          {profileWarning}
+        </div>
+      )}
+      {/* Animated floating shapes background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.18, scale: 1 }}
+          transition={{ duration: 1.2, ease: 'easeOut' }}
+          className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#7f3fa7] to-[#4f1b59] blur-3xl animate-pulse-slow"
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.12, scale: 1 }}
+          transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
+          className="absolute bottom-[-15%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-tr from-[#f3e8ff] via-[#a259c6] to-[#4f1b59] blur-3xl animate-pulse-slow"
+        />
+      </div>
       <Header />
       <main className="relative z-10 max-w-2xl mx-auto py-16 px-4 w-full">
         {editMode ? (
@@ -223,7 +274,8 @@ const Profile = () => {
             >
               <div className="flex flex-col items-center">
                 <div
-                  className={`relative w-44 h-44 rounded-full border-4 border-purple-300 shadow-xl bg-white flex items-center justify-center transition-all duration-200 cursor-pointer group ${dragActive ? 'ring-4 ring-purple-400' : ''}`}
+                  className={`relative w-48 h-48 rounded-full border-8 border-transparent bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] shadow-2xl flex items-center justify-center transition-all duration-300 cursor-pointer group ${dragActive ? 'ring-8 ring-[#a259c6]/60' : ''}`}
+                  style={{ boxShadow: '0 0 0 8px #e0c3fc, 0 8px 32px 0 rgba(162,89,198,0.15)' }}
                   onClick={handleImageClick}
                   onDragEnter={handleDrag}
                   onDragOver={handleDrag}
@@ -233,14 +285,20 @@ const Profile = () => {
                   role="button"
                   aria-label="Upload profile photo"
                 >
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                    className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#a259c6]/60 via-[#f3e8ff]/40 to-[#4f1b59]/60 blur-2xl z-0 animate-spin-slow"
+                  />
                   {profile.image ? (
                     <img
                       src={profile.image}
                       alt="Profile"
-                      className="w-full h-full object-cover rounded-full transition-all duration-200 group-hover:scale-105 group-hover:brightness-95"
+                      className="w-full h-full object-cover rounded-full border-4 border-white shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:brightness-95 z-10"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center rounded-full bg-gradient-to-br from-[#a259c6] to-[#4f1b59]">
+                    <div className="w-full h-full flex items-center justify-center rounded-full bg-gradient-to-br from-[#a259c6] to-[#4f1b59] z-10">
                       <User className="w-20 h-20 text-white opacity-80" />
                     </div>
                   )}
@@ -253,39 +311,32 @@ const Profile = () => {
                     className="hidden"
                   />
                   {dragActive && (
-                    <div className="absolute inset-0 bg-purple-200/40 rounded-full flex items-center justify-center text-purple-700 text-lg font-semibold pointer-events-none">
+                    <div className="absolute inset-0 bg-[#a259c6]/30 rounded-full flex items-center justify-center text-[#4f1b59] text-lg font-semibold pointer-events-none z-20">
                       Drop image here
                     </div>
                   )}
                 </div>
+                {/* Camera icon button next to the photo div */}
+                <button
+                  type="button"
+                  className="mt-4 bg-gradient-to-tr from-[#a259c6] to-[#4f1b59] p-3 rounded-full shadow-lg hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40"
+                  onClick={handleImageClick}
+                  aria-label="Upload profile photo"
+                >
+                  <Camera className="w-6 h-6 text-white" />
+                </button>
                 {/* Name and email below the photo */}
-                <div className="mt-6 text-center flex flex-col items-center gap-2">
-                  <div className="inline-block px-6 py-2 rounded-xl bg-black/50 backdrop-blur-sm shadow-lg">
-                    <span className="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg tracking-tight">{profile.name || 'Your Name'}</span>
+                <div className="mt-8 text-center flex flex-col items-center gap-2">
+                  <div className="inline-block px-8 py-3 rounded-2xl bg-gradient-to-r from-[#a259c6]/80 to-[#4f1b59]/80 shadow-xl backdrop-blur-md">
+                    <span className="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg tracking-tight animate-gradient-x bg-gradient-to-r from-[#f3e8ff] via-[#a259c6] to-[#4f1b59] bg-clip-text text-transparent">
+                      {profile.name || 'Your Name'}
+                    </span>
                   </div>
-                  <div className="inline-block px-4 py-1 rounded-lg bg-black/40 backdrop-blur-sm shadow text-lg md:text-xl text-white/90 font-medium mt-1">
+                  <div className="inline-block px-5 py-2 rounded-xl bg-gradient-to-r from-[#a259c6]/60 to-[#4f1b59]/60 shadow text-lg md:text-xl text-white/90 font-medium mt-1">
                     {profile.email || 'Email'}
                   </div>
                 </div>
               </div>
-              {/* Camera icon next to the profile image */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.7 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.5, type: 'spring', stiffness: 300 }}
-                className="flex items-center"
-              >
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="bg-white border border-purple-200 shadow-md p-3 rounded-full hover:bg-purple-50"
-                  onClick={handleImageClick}
-                  tabIndex={-1}
-                  aria-label="Change profile photo"
-                >
-                  <Camera className="w-7 h-7 text-purple-600" />
-                </Button>
-              </motion.div>
             </motion.div>
 
             <motion.div
@@ -294,187 +345,175 @@ const Profile = () => {
               variants={{}}
               className="flex flex-col gap-8"
             >
-              {[
-                // Name
-                <div className="relative" key="name">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-300 w-6 h-6" />
-                  <Input name="name" value={profile.name || ''} onChange={handleChange} required placeholder="Full Name" className="h-14 text-lg pl-12" />
-                </div>,
-                // Email
-                <div className="relative" key="email">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-300 w-6 h-6" />
-                  <Input name="email" value={profile.email || ''} onChange={handleChange} required type="email" placeholder="Email" className="h-14 text-lg pl-12" />
-                </div>,
-                // Role/Dept/Position (fix: build array and filter Boolean)
-                <div className="flex flex-col md:flex-row gap-6" key="role-group">
-                  {[
-                    <div className="flex-1 relative" key="role">
-                      <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-300 w-6 h-6" />
-                      <Select value={profile.member_type || ''} onValueChange={handleRoleChange}>
-                        <SelectTrigger className="h-14 text-lg pl-12">
-                          <SelectValue placeholder="Select role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {ROLE_OPTIONS.map(opt => (
-                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>,
-                    showDept && (
-                      <div className="flex-1 relative" key="dept">
-                        <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-300 w-6 h-6" />
-                        <Select value={profile.department || ''} onValueChange={v => handleSelect('department', v)}>
-                          <SelectTrigger className="h-14 text-lg pl-12">
-                            <SelectValue placeholder="Select department" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {DEPARTMENT_OPTIONS.map(opt => (
-                              <SelectItem key={opt} value={opt}>{opt}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    ),
-                    <div className="flex-1 relative" key="position">
-                      <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-300 w-6 h-6" />
-                      <Select value={profile.position_hierarchy || ''} onValueChange={v => handleSelect('position_hierarchy', v)}>
-                        <SelectTrigger className="h-14 text-lg pl-12">
-                          <SelectValue placeholder="Select position" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {POSITION_OPTIONS.map(opt => (
-                            <SelectItem key={opt} value={opt}>{opt}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  ].filter(Boolean)}
-                </div>,
-                // Socials
-                <div className="flex flex-col md:flex-row gap-6" key="socials">
-                  <div className="relative flex-1">
-                    <Linkedin className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-300 w-6 h-6" />
-                    <Input name="linkedin" value={profile.linkedin || ''} onChange={handleChange} placeholder="LinkedIn profile URL" className="h-14 text-lg pl-12" />
-                  </div>,
-                  <div className="relative flex-1">
-                    <Instagram className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-300 w-6 h-6" />
-                    <Input name="Instagram" value={profile.Instagram || ''} onChange={handleChange} placeholder="Instagram profile URL" className="h-14 text-lg pl-12" />
-                  </div>,
-                  <div className="relative flex-1">
-                    <Github className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-300 w-6 h-6" />
-                    <Input name="github" value={profile.github || ''} onChange={handleChange} placeholder="GitHub profile URL" className="h-14 text-lg pl-12" />
-                  </div>
-                </div>,
-                // Bio
-                <div className="relative" key="bio">
-                  <Textarea name="bio" value={profile.bio || ''} onChange={handleChange} rows={4} placeholder="Tell us about yourself..." className="text-lg px-5 py-4 min-h-[100px]" />
-                </div>,
-                // Hobbies with plus button and improved UI and animated transition
-                <div className="flex flex-col gap-2" key="hobbies">
-                  <div className="flex items-center gap-2">
-                    <div className="font-semibold text-[#a259c6]">Select up to 10 hobbies:</div>
-                    <button
-                      type="button"
-                      className="p-1 rounded-full border border-purple-300 bg-white shadow hover:bg-purple-50 transition-all"
-                      onClick={() => setShowHobbies(v => !v)}
-                      aria-label={showHobbies ? 'Hide hobbies' : 'Show hobbies'}
-                    >
-                      <Plus className={`w-5 h-5 ${showHobbies ? 'rotate-45 text-purple-600' : 'text-purple-400'} transition-transform`} />
-                    </button>
-                  </div>
-                  <AnimatePresence>
-                    {showHobbies && (
-                      <motion.div
-                        key="hobbies-chips"
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 24 }}
-                        transition={{ duration: 0.35, ease: 'easeOut' }}
-                        className="flex flex-wrap gap-2 mt-2"
-                      >
-                        {HOBBY_OPTIONS.map(hobby => (
-                          <button
-                            type="button"
-                            key={hobby}
-                            className={`px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-150
-                              ${selectedHobbies.includes(hobby)
-                                ? 'bg-gradient-to-r from-purple-200 to-purple-100 border-purple-400 text-purple-800 shadow-md scale-105'
-                                : 'bg-white border-gray-300 text-gray-500 hover:bg-purple-50 hover:scale-105'}
-                            `}
-                            onClick={() => handleHobbyClick(hobby)}
-                            aria-pressed={selectedHobbies.includes(hobby)}
-                            tabIndex={0}
-                          >
-                            {hobby}
-                          </button>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  <div className="text-xs text-gray-400 mt-1">{selectedHobbies.length} / 10 selected</div>
-                </div>,
-                // Tags with plus button and improved UI and animated transition
-                <div className="flex flex-col gap-2" key="tags">
-                  <div className="flex items-center gap-2">
-                    <div className="font-semibold text-[#a259c6]">Select up to 10 tags:</div>
-                    <button
-                      type="button"
-                      className="p-1 rounded-full border border-purple-300 bg-white shadow hover:bg-purple-50 transition-all"
-                      onClick={() => setShowTags(v => !v)}
-                      aria-label={showTags ? 'Hide tags' : 'Show tags'}
-                    >
-                      <Plus className={`w-5 h-5 ${showTags ? 'rotate-45 text-purple-600' : 'text-purple-400'} transition-transform`} />
-                    </button>
-                  </div>
-                  <AnimatePresence>
-                    {showTags && (
-                      <motion.div
-                        key="tags-chips"
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 24 }}
-                        transition={{ duration: 0.35, ease: 'easeOut' }}
-                        className="flex flex-wrap gap-2 mt-2"
-                      >
-                        {TAG_OPTIONS.map(tag => (
-                          <button
-                            type="button"
-                            key={tag}
-                            className={`px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-150
-                              ${selectedTags.includes(tag)
-                                ? 'bg-gradient-to-r from-purple-200 to-purple-100 border-purple-400 text-purple-800 shadow-md scale-105'
-                                : 'bg-white border-gray-300 text-gray-500 hover:bg-purple-50 hover:scale-105'}
-                            `}
-                            onClick={() => handleTagClick(tag)}
-                            aria-pressed={selectedTags.includes(tag)}
-                            tabIndex={0}
-                          >
-                            {tag}
-                          </button>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  <div className="text-xs text-gray-400 mt-1">{selectedTags.length} / 10 selected</div>
-                </div>,
-                // Button
-                <div key="button">
-                  <Button type="submit" className="mt-4 font-semibold bg-gradient-to-r from-[#a259c6] to-[#4f1b59] hover:from-[#4f1b59] hover:to-[#a259c6] text-white px-10 py-5 rounded-xl shadow-lg text-xl w-full transition-all duration-200 hover:scale-[1.02] active:scale-95" disabled={loading}>
-                    {loading ? 'Saving...' : 'Save Changes'}
-                  </Button>
+              {/* Name */}
+              <div className="relative group">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                <Input name="name" value={profile.name || ''} onChange={handleChange} required placeholder="Full Name" className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200" />
+              </div>
+              {/* Email */}
+              <div className="relative group">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                <Input name="email" value={profile.email || ''} onChange={handleChange} required type="email" placeholder="Email" className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200" />
+              </div>
+              {/* Role/Dept/Position */}
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex-1 relative group">
+                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                  <Select value={profile.member_type || ''} onValueChange={handleRoleChange}>
+                    <SelectTrigger className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200">
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ROLE_OPTIONS.map(opt => (
+                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-              ].filter(Boolean).map((field, i) => (
-                <motion.div
-                  key={i}
-                  custom={i}
-                  initial="hidden"
-                  animate="visible"
-                  variants={fieldAnim}
-                >
-                  {field}
-                </motion.div>
-              ))}
+                {showDept && (
+                  <div className="flex-1 relative group">
+                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                    <Select value={profile.department || ''} onValueChange={v => handleSelect('department', v)}>
+                      <SelectTrigger className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200">
+                        <SelectValue placeholder="Select department" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {DEPARTMENT_OPTIONS.map(opt => (
+                          <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                <div className="flex-1 relative group">
+                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                  <Select value={profile.position_hierarchy || ''} onValueChange={v => handleSelect('position_hierarchy', v)}>
+                    <SelectTrigger className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200">
+                      <SelectValue placeholder="Select position" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {POSITION_OPTIONS.map(opt => (
+                        <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              {/* Socials */}
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="relative flex-1 group">
+                  <Linkedin className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                  <Input name="linkedin" value={profile.linkedin || ''} onChange={handleChange} placeholder="LinkedIn profile URL" className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200" />
+                </div>
+                <div className="relative flex-1 group">
+                  <Instagram className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                  <Input name="Instagram" value={profile.Instagram || ''} onChange={handleChange} placeholder="Instagram profile URL" className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200" />
+                </div>
+                <div className="relative flex-1 group">
+                  <Github className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                  <Input name="github" value={profile.github || ''} onChange={handleChange} placeholder="GitHub profile URL" className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200" />
+                </div>
+              </div>
+              {/* Bio */}
+              <div className="relative group">
+                <Textarea name="bio" value={profile.bio || ''} onChange={handleChange} rows={4} placeholder="Tell us about yourself..." className="text-lg px-5 py-4 min-h-[100px] rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200" />
+              </div>
+              {/* Hobbies */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="font-semibold text-[#a259c6]">Select up to 10 hobbies:</div>
+                  <button
+                    type="button"
+                    className="p-1 rounded-full border border-[#a259c6] bg-white/80 shadow hover:bg-[#a259c6]/10 hover:scale-110 transition-all"
+                    onClick={() => setShowHobbies(v => !v)}
+                    aria-label={showHobbies ? 'Hide hobbies' : 'Show hobbies'}
+                  >
+                    <Plus className={`w-5 h-5 ${showHobbies ? 'rotate-45 text-[#a259c6]' : 'text-[#a259c6]/60'} transition-transform`} />
+                  </button>
+                </div>
+                <AnimatePresence>
+                  {showHobbies && (
+                    <motion.div
+                      key="hobbies-chips"
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 24 }}
+                      transition={{ duration: 0.35, ease: 'easeOut' }}
+                      className="flex flex-wrap gap-2 mt-2"
+                    >
+                      {HOBBY_OPTIONS.map(hobby => (
+                        <button
+                          type="button"
+                          key={hobby}
+                          className={`px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150
+                            ${selectedHobbies.includes(hobby)
+                              ? 'bg-gradient-to-r from-[#a259c6]/30 to-[#f3e8ff]/60 border-[#a259c6] text-[#4f1b59] shadow-md scale-105'
+                              : 'bg-white/80 border-gray-300 text-gray-500 hover:bg-[#a259c6]/10 hover:scale-105'}
+                          `}
+                          onClick={() => handleHobbyClick(hobby)}
+                          aria-pressed={selectedHobbies.includes(hobby)}
+                          tabIndex={0}
+                        >
+                          {hobby}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <div className="text-xs text-gray-400 mt-1">{selectedHobbies.length} / 10 selected</div>
+              </div>
+              {/* Tags */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="font-semibold text-[#a259c6]">Select up to 10 tags:</div>
+                  <button
+                    type="button"
+                    className="p-1 rounded-full border border-[#a259c6] bg-white/80 shadow hover:bg-[#a259c6]/10 hover:scale-110 transition-all"
+                    onClick={() => setShowTags(v => !v)}
+                    aria-label={showTags ? 'Hide tags' : 'Show tags'}
+                  >
+                    <Plus className={`w-5 h-5 ${showTags ? 'rotate-45 text-[#a259c6]' : 'text-[#a259c6]/60'} transition-transform`} />
+                  </button>
+                </div>
+                <AnimatePresence>
+                  {showTags && (
+                    <motion.div
+                      key="tags-chips"
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 24 }}
+                      transition={{ duration: 0.35, ease: 'easeOut' }}
+                      className="flex flex-wrap gap-2 mt-2"
+                    >
+                      {TAG_OPTIONS.map(tag => (
+                        <button
+                          type="button"
+                          key={tag}
+                          className={`px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150
+                            ${selectedTags.includes(tag)
+                              ? 'bg-gradient-to-r from-[#f3e8ff]/60 to-[#a259c6]/30 border-[#a259c6] text-[#4f1b59] shadow-md scale-105'
+                              : 'bg-white/80 border-gray-300 text-gray-500 hover:bg-[#a259c6]/10 hover:scale-105'}
+                          `}
+                          onClick={() => handleTagClick(tag)}
+                          aria-pressed={selectedTags.includes(tag)}
+                          tabIndex={0}
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <div className="text-xs text-gray-400 mt-1">{selectedTags.length} / 10 selected</div>
+              </div>
+              {/* Button */}
+              <div>
+                <Button type="submit" className="mt-4 font-semibold bg-gradient-to-r from-[#a259c6] to-[#4f1b59] hover:from-[#4f1b59] hover:to-[#a259c6] text-white px-10 py-5 rounded-xl shadow-xl text-xl w-full transition-all duration-200 hover:scale-[1.03] active:scale-95 focus:ring-4 focus:ring-[#a259c6]/30" disabled={loading}>
+                  {loading ? (
+                    <span className="flex items-center gap-2"><Sparkles className="w-5 h-5 animate-spin" />Saving...</span>
+                  ) : 'Save Changes'}
+                </Button>
+              </div>
             </motion.div>
           </form>
         ) : (

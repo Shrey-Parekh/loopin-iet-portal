@@ -18,6 +18,9 @@ import Profile from './pages/Profile';
 
 const queryClient = new QueryClient();
 
+// Add a helper function to check login state
+const isUserAuthenticated = () => localStorage.getItem('isLoggedIn') === 'true' && !!localStorage.getItem('userId');
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
@@ -35,7 +38,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/profile" element={
-              localStorage.getItem('isLoggedIn') && localStorage.getItem('userId') ? <Profile /> : <Navigate to="/login" />
+              isUserAuthenticated() ? <Profile /> : <Navigate to="/login" />
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

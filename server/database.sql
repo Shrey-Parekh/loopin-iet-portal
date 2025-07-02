@@ -5,11 +5,12 @@ Show tables;
 -- Create team_members table with enhanced structure
 CREATE TABLE IF NOT EXISTS team_members (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(50) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     position_hierarchy ENUM('Chairperson', 'Vice-chairperson', 'Secretary', 'Director', 'Head', 'Subhead', 'Member') DEFAULT 'Member',
     department ENUM('Technicals', 'Research', 'SMCW', 'Digital Creatives', 'Marketing', 'Public Relations', 'Logistics', 'Inhouse Creatives', 'Photography') DEFAULT NULL,
     member_type ENUM('super_core', 'core', 'member') DEFAULT 'member',
-    image VARCHAR(255),
+    image MEDIUMTEXT,
     linkedin VARCHAR(255),
     github VARCHAR(255),
     Instagram VARCHAR(255),
@@ -140,7 +141,7 @@ CREATE TABLE IF NOT EXISTS users (
     role VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
+select * from users; 
 -- Demo user: user_id = testuser, password = password123 (plain text)
 DELETE FROM users WHERE user_id = 'testuser';
 INSERT INTO users (user_id, password, name, role) VALUES ('testuser', 'password123', 'Test User', 'member'); 
