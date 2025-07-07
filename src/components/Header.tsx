@@ -160,7 +160,7 @@ const Header = () => {
                       <User className="w-7 h-7 text-purple-600" />
                     </motion.div>
                   </Avatar>
-                  <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-auto">
+                  <div className="static mt-4 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20 opacity-100 transition-opacity duration-200 pointer-events-auto">
                     <Link to="/profile" className="block px-4 py-3 text-gray-700 hover:bg-purple-50">Profile</Link>
                     <button
                       className="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50"
