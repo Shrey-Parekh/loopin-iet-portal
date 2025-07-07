@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus, Sparkles } from 'lucide-react';
+import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus, Sparkles, CheckCircle, Loader2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
@@ -74,6 +74,8 @@ const Profile = () => {
   const [localStorageWarning, setLocalStorageWarning] = useState<string | null>(null);
   const [profileWarning, setProfileWarning] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [cardPulse, setCardPulse] = useState(false);
 
   // Simulate fetching userId from localStorage or context
   const userId = localStorage.getItem('userId') || '';
@@ -234,8 +236,55 @@ const Profile = () => {
     setTimeout(() => navigate('/login'), 700);
   };
 
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaveState('saving');
+    try {
+      let res;
+      if (profile.id) {
+        // Update existing profile
+        res = await fetch(`/api/profile/${profile.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...profile,
+            user_id: userId,
+            hobbies: selectedHobbies,
+            tags: selectedTags
+          }),
+        });
+      } else {
+        // Create new profile
+        res = await fetch('/api/profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...profile,
+            user_id: userId,
+            hobbies: selectedHobbies,
+            tags: selectedTags
+          }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setProfile((p: any) => ({ ...p, id: data.id }));
+        }
+      }
+      if (!res.ok) throw new Error('Failed to save profile');
+      setSaveState('success');
+      setCardPulse(true);
+      setTimeout(() => setCardPulse(false), 1200);
+      setTimeout(() => setSaveState('idle'), 1500);
+      toast({ title: 'Profile Saved', description: 'Your profile was updated successfully!', variant: 'success' });
+    } catch (err) {
+      setSaveState('error');
+      setTimeout(() => setSaveState('idle'), 1500);
+      toast({ title: 'Error', description: 'Failed to save profile', variant: 'destructive' });
+    }
+  };
+
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-[#f8f6ff] via-[#f3e8ff] to-[#e0c3fc] overflow-x-hidden">
+    <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
       {localStorageWarning && (
         <div className="fixed top-0 left-0 w-full bg-red-100 text-red-700 text-center py-2 z-50 font-semibold shadow">
           {localStorageWarning}
@@ -247,24 +296,17 @@ const Profile = () => {
         </div>
       )}
       {/* Animated floating shapes background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.18, scale: 1 }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
-          className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#7f3fa7] to-[#4f1b59] blur-3xl animate-pulse-slow"
-        />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.12, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
-          className="absolute bottom-[-15%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-tr from-[#f3e8ff] via-[#a259c6] to-[#4f1b59] blur-3xl animate-pulse-slow"
-        />
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.13, scale: 1 }} transition={{ duration: 2, ease: 'easeOut' }} className="absolute top-[-12%] left-[-10%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.09, scale: 1 }} transition={{ duration: 2, delay: 0.5, ease: 'easeOut' }} className="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-br from-[#4f1b59] via-[#f3e8ff] to-[#fff] blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 0.07, scale: 1 }} transition={{ duration: 2.2, delay: 0.8, ease: 'easeOut' }} className="absolute top-[30%] left-[-15%] w-[40vw] h-[40vw] rounded-full bg-gradient-to-br from-[#f9e7ff] via-[#ffe6fa] to-[#fff] blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 0.06, scale: 1 }} transition={{ duration: 2.2, delay: 1.1, ease: 'easeOut' }} className="absolute bottom-[10%] right-[-18%] w-[38vw] h-[38vw] rounded-full bg-gradient-to-br from-[#fff] via-[#e0c3fc] to-[#f3e8ff] blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white/80 via-white/0 to-transparent" />
       </div>
       <Header />
       <main className="relative z-10 max-w-2xl mx-auto py-16 px-4 w-full">
         {editMode ? (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-12 w-full">
+          <form onSubmit={handleSave} className="flex flex-col gap-12 w-full">
             {/* Profile Image + Camera icon horizontally aligned */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -359,45 +401,45 @@ const Profile = () => {
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="flex-1 relative group">
                   <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
-                  <Select value={profile.member_type || ''} onValueChange={handleRoleChange}>
+                      <Select value={profile.member_type || ''} onValueChange={handleRoleChange}>
                     <SelectTrigger className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200">
-                      <SelectValue placeholder="Select role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ROLE_OPTIONS.map(opt => (
-                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                          <SelectValue placeholder="Select role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {ROLE_OPTIONS.map(opt => (
+                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                 </div>
                 {showDept && (
                   <div className="flex-1 relative group">
                     <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
-                    <Select value={profile.department || ''} onValueChange={v => handleSelect('department', v)}>
+                        <Select value={profile.department || ''} onValueChange={v => handleSelect('department', v)}>
                       <SelectTrigger className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200">
-                        <SelectValue placeholder="Select department" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {DEPARTMENT_OPTIONS.map(opt => (
-                          <SelectItem key={opt} value={opt}>{opt}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                            <SelectValue placeholder="Select department" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {DEPARTMENT_OPTIONS.map(opt => (
+                              <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
                 )}
                 <div className="flex-1 relative group">
                   <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
-                  <Select value={profile.position_hierarchy || ''} onValueChange={v => handleSelect('position_hierarchy', v)}>
+                      <Select value={profile.position_hierarchy || ''} onValueChange={v => handleSelect('position_hierarchy', v)}>
                     <SelectTrigger className="h-14 text-lg pl-12 rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200">
-                      <SelectValue placeholder="Select position" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {POSITION_OPTIONS.map(opt => (
-                        <SelectItem key={opt} value={opt}>{opt}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                          <SelectValue placeholder="Select position" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {POSITION_OPTIONS.map(opt => (
+                            <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
               </div>
               {/* Socials */}
               <div className="flex flex-col md:flex-row gap-6">
@@ -417,102 +459,130 @@ const Profile = () => {
               {/* Bio */}
               <div className="relative group">
                 <Textarea name="bio" value={profile.bio || ''} onChange={handleChange} rows={4} placeholder="Tell us about yourself..." className="text-lg px-5 py-4 min-h-[100px] rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200" />
-              </div>
+                  </div>
               {/* Hobbies */}
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <div className="font-semibold text-[#a259c6]">Select up to 10 hobbies:</div>
-                  <button
-                    type="button"
+                  <div className="flex items-center gap-2">
+                    <div className="font-semibold text-[#a259c6]">Select up to 10 hobbies:</div>
+                    <button
+                      type="button"
                     className="p-1 rounded-full border border-[#a259c6] bg-white/80 shadow hover:bg-[#a259c6]/10 hover:scale-110 transition-all"
-                    onClick={() => setShowHobbies(v => !v)}
-                    aria-label={showHobbies ? 'Hide hobbies' : 'Show hobbies'}
-                  >
-                    <Plus className={`w-5 h-5 ${showHobbies ? 'rotate-45 text-[#a259c6]' : 'text-[#a259c6]/60'} transition-transform`} />
-                  </button>
-                </div>
-                <AnimatePresence>
-                  {showHobbies && (
-                    <motion.div
-                      key="hobbies-chips"
-                      initial={{ opacity: 0, y: 24 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 24 }}
-                      transition={{ duration: 0.35, ease: 'easeOut' }}
-                      className="flex flex-wrap gap-2 mt-2"
+                      onClick={() => setShowHobbies(v => !v)}
+                      aria-label={showHobbies ? 'Hide hobbies' : 'Show hobbies'}
                     >
-                      {HOBBY_OPTIONS.map(hobby => (
-                        <button
-                          type="button"
-                          key={hobby}
+                    <Plus className={`w-5 h-5 ${showHobbies ? 'rotate-45 text-[#a259c6]' : 'text-[#a259c6]/60'} transition-transform`} />
+                    </button>
+                  </div>
+                  <AnimatePresence>
+                    {showHobbies && (
+                      <motion.div
+                        key="hobbies-chips"
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 24 }}
+                        transition={{ duration: 0.35, ease: 'easeOut' }}
+                        className="flex flex-wrap gap-2 mt-2"
+                      >
+                        {HOBBY_OPTIONS.map(hobby => (
+                          <button
+                            type="button"
+                            key={hobby}
                           className={`px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150
-                            ${selectedHobbies.includes(hobby)
+                              ${selectedHobbies.includes(hobby)
                               ? 'bg-gradient-to-r from-[#a259c6]/30 to-[#f3e8ff]/60 border-[#a259c6] text-[#4f1b59] shadow-md scale-105'
                               : 'bg-white/80 border-gray-300 text-gray-500 hover:bg-[#a259c6]/10 hover:scale-105'}
-                          `}
-                          onClick={() => handleHobbyClick(hobby)}
-                          aria-pressed={selectedHobbies.includes(hobby)}
-                          tabIndex={0}
-                        >
-                          {hobby}
-                        </button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                <div className="text-xs text-gray-400 mt-1">{selectedHobbies.length} / 10 selected</div>
+                            `}
+                            onClick={() => handleHobbyClick(hobby)}
+                            aria-pressed={selectedHobbies.includes(hobby)}
+                            tabIndex={0}
+                          >
+                            {hobby}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  <div className="text-xs text-gray-400 mt-1">{selectedHobbies.length} / 10 selected</div>
               </div>
               {/* Tags */}
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <div className="font-semibold text-[#a259c6]">Select up to 10 tags:</div>
-                  <button
-                    type="button"
+                  <div className="flex items-center gap-2">
+                    <div className="font-semibold text-[#a259c6]">Select up to 10 tags:</div>
+                    <button
+                      type="button"
                     className="p-1 rounded-full border border-[#a259c6] bg-white/80 shadow hover:bg-[#a259c6]/10 hover:scale-110 transition-all"
-                    onClick={() => setShowTags(v => !v)}
-                    aria-label={showTags ? 'Hide tags' : 'Show tags'}
-                  >
-                    <Plus className={`w-5 h-5 ${showTags ? 'rotate-45 text-[#a259c6]' : 'text-[#a259c6]/60'} transition-transform`} />
-                  </button>
-                </div>
-                <AnimatePresence>
-                  {showTags && (
-                    <motion.div
-                      key="tags-chips"
-                      initial={{ opacity: 0, y: 24 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 24 }}
-                      transition={{ duration: 0.35, ease: 'easeOut' }}
-                      className="flex flex-wrap gap-2 mt-2"
+                      onClick={() => setShowTags(v => !v)}
+                      aria-label={showTags ? 'Hide tags' : 'Show tags'}
                     >
-                      {TAG_OPTIONS.map(tag => (
-                        <button
-                          type="button"
-                          key={tag}
+                    <Plus className={`w-5 h-5 ${showTags ? 'rotate-45 text-[#a259c6]' : 'text-[#a259c6]/60'} transition-transform`} />
+                    </button>
+                  </div>
+                  <AnimatePresence>
+                    {showTags && (
+                      <motion.div
+                        key="tags-chips"
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 24 }}
+                        transition={{ duration: 0.35, ease: 'easeOut' }}
+                        className="flex flex-wrap gap-2 mt-2"
+                      >
+                        {TAG_OPTIONS.map(tag => (
+                          <button
+                            type="button"
+                            key={tag}
                           className={`px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150
-                            ${selectedTags.includes(tag)
+                              ${selectedTags.includes(tag)
                               ? 'bg-gradient-to-r from-[#f3e8ff]/60 to-[#a259c6]/30 border-[#a259c6] text-[#4f1b59] shadow-md scale-105'
                               : 'bg-white/80 border-gray-300 text-gray-500 hover:bg-[#a259c6]/10 hover:scale-105'}
-                          `}
-                          onClick={() => handleTagClick(tag)}
-                          aria-pressed={selectedTags.includes(tag)}
-                          tabIndex={0}
-                        >
-                          {tag}
-                        </button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                <div className="text-xs text-gray-400 mt-1">{selectedTags.length} / 10 selected</div>
-              </div>
+                            `}
+                            onClick={() => handleTagClick(tag)}
+                            aria-pressed={selectedTags.includes(tag)}
+                            tabIndex={0}
+                          >
+                            {tag}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  <div className="text-xs text-gray-400 mt-1">{selectedTags.length} / 10 selected</div>
+                </div>
               {/* Button */}
               <div>
-                <Button type="submit" className="mt-4 font-semibold bg-gradient-to-r from-[#a259c6] to-[#4f1b59] hover:from-[#4f1b59] hover:to-[#a259c6] text-white px-10 py-5 rounded-xl shadow-xl text-xl w-full transition-all duration-200 hover:scale-[1.03] active:scale-95 focus:ring-4 focus:ring-[#a259c6]/30" disabled={loading}>
-                  {loading ? (
-                    <span className="flex items-center gap-2"><Sparkles className="w-5 h-5 animate-spin" />Saving...</span>
-                  ) : 'Save Changes'}
-                </Button>
+                <motion.button
+                  type="submit"
+                  className={`mt-4 font-semibold bg-gradient-to-r from-[#a259c6] to-[#4f1b59] hover:from-[#4f1b59] hover:to-[#a259c6] text-white px-10 py-5 rounded-xl shadow-xl text-xl w-full transition-all duration-200 hover:scale-[1.03] active:scale-95 focus:ring-4 focus:ring-[#a259c6]/30
+                    ${saveState === 'saving' ? 'bg-purple-400 text-white cursor-wait' : ''}
+                    ${saveState === 'success' ? 'bg-green-500 text-white' : ''}
+                    ${saveState === 'error' ? 'bg-red-500 text-white animate-shake' : ''}
+                  `}
+                  disabled={saveState === 'saving'}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    {saveState === 'saving' && (
+                      <motion.span key="saving" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <Loader2 className="w-5 h-5 animate-spin" /> Saving...
+                      </motion.span>
+                    )}
+                    {saveState === 'success' && (
+                      <motion.span key="success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <CheckCircle className="w-5 h-5" /> Saved!
+                      </motion.span>
+                    )}
+                    {saveState === 'error' && (
+                      <motion.span key="error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <XCircle className="w-5 h-5" /> Error
+                      </motion.span>
+                    )}
+                    {saveState === 'idle' && (
+                      <motion.span key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        Save Profile
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
               </div>
             </motion.div>
           </form>
@@ -531,7 +601,12 @@ const Profile = () => {
                 {/* Animated gradient border */}
                 <span className="absolute w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-tr from-blue-400 via-purple-400 to-pink-400 animate-spin-slow blur-xl opacity-60 scale-110" style={{ zIndex: 1 }} />
                 {/* Avatar circle with thick border and shadow */}
-                <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full border-8 border-white bg-white shadow-2xl flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:rotate-3 group-hover:scale-105" style={{ boxShadow: '0 0 0 8px #a259c6, 0 8px 32px 0 rgba(79,27,89,0.25)', zIndex: 3 }}>
+                <motion.div
+                  className="relative w-40 h-40 md:w-48 md:h-48 rounded-full border-8 border-white bg-white shadow-2xl flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:rotate-3 group-hover:scale-105"
+                  style={{ boxShadow: '0 0 0 8px #a259c6, 0 8px 32px 0 rgba(162,89,198,0.25)', zIndex: 3 }}
+                  animate={cardPulse ? { boxShadow: '0 0 0 8px #a259c6, 0 8px 32px 0 rgba(162,89,198,0.25)' } : {}}
+                  transition={{ duration: 0.8, type: 'spring' }}
+                >
                   {profile.image ? (
                     <img
                       src={profile.image}
@@ -545,7 +620,7 @@ const Profile = () => {
                   )}
                   {/* Glass shine overlay */}
                   <span className="absolute left-0 top-0 w-full h-full rounded-full pointer-events-none" style={{ background: 'linear-gradient(120deg,rgba(255,255,255,0.45) 0%,rgba(255,255,255,0.15) 60%,rgba(255,255,255,0) 100%)', zIndex: 4 }} />
-                </div>
+                </motion.div>
               </div>
               {/* Floating Glass Card */}
               <div className="w-full max-w-3xl bg-white/70 backdrop-blur-lg rounded-3xl shadow-2xl p-10 pt-32 mt-[-3rem] flex flex-col gap-10 border border-purple-100 relative z-20" style={{ boxShadow: '0 8px 40px 0 rgba(162,89,198,0.15)' }}>

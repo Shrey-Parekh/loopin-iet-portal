@@ -1,10 +1,25 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
-import TeamGrid from '../components/TeamGrid';
 import { useTeam, useDepartments } from '@/hooks/useApi';
 import { Button } from '@/components/ui/button';
-import { X, Filter } from 'lucide-react';
+import { X, Filter, Github, Instagram, Linkedin, Users, Award, Building2, Crown, UserCheck } from 'lucide-react';
+import './team-glimmer.css';
 
+// Complete list of all departments from database
+const DEPARTMENTS = [
+  'Technicals',
+  'Research', 
+  'SMCW',
+  'Digital Creatives',
+  'Marketing',
+  'Public Relations',
+  'Logistics',
+  'Inhouse Creatives',
+  'Photography'
+];
+
+// Complete list of all positions from database
 const POSITIONS = [
   'Chairperson',
   'Vice-chairperson',
@@ -12,11 +27,20 @@ const POSITIONS = [
   'Director',
   'Head',
   'Subhead',
+  'Member'
+];
+
+// Member types for additional filtering
+const MEMBER_TYPES = [
+  'super_core',
+  'core',
+  'member'
 ];
 
 const Team = () => {
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
+  const [selectedMemberType, setSelectedMemberType] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState<boolean>(false);
 
   const { data: teamMembers = [], loading, error } = useTeam() as { data: any[]; loading: boolean; error?: string };
@@ -26,7 +50,8 @@ const Team = () => {
   const filteredMembers = teamMembers?.filter(member => {
     const departmentMatch = !selectedDepartment || member.department === selectedDepartment;
     const positionMatch = !selectedPosition || member.position_hierarchy === selectedPosition;
-    return departmentMatch && positionMatch;
+    const memberTypeMatch = !selectedMemberType || member.member_type === selectedMemberType;
+    return departmentMatch && positionMatch && memberTypeMatch;
   }) || [];
 
   // Group members by department for better organization
@@ -41,186 +66,458 @@ const Team = () => {
 
   // Active filters for display
   const activeFilters = [
-    selectedDepartment && { label: selectedDepartment, onRemove: () => setSelectedDepartment(null) },
-    selectedPosition && { label: selectedPosition, onRemove: () => setSelectedPosition(null) },
+    selectedDepartment && { label: selectedDepartment, onRemove: () => setSelectedDepartment(null), type: 'department' },
+    selectedPosition && { label: selectedPosition, onRemove: () => setSelectedPosition(null), type: 'position' },
+    selectedMemberType && { label: selectedMemberType.replace('_', ' ').toUpperCase(), onRemove: () => setSelectedMemberType(null), type: 'member_type' },
   ].filter(Boolean);
 
   // Filter out selected filters from chips
-  const availableDepartments = departments?.filter((dept: string) => dept !== selectedDepartment) || [];
+  const availableDepartments = DEPARTMENTS.filter((dept: string) => dept !== selectedDepartment);
   const availablePositions = POSITIONS.filter(pos => pos !== selectedPosition);
+  const availableMemberTypes = MEMBER_TYPES.filter(type => type !== selectedMemberType);
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.9, y: 20 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0
+    },
+    hover: {
+      scale: 1.05,
+      y: -8
+    }
+  };
+
+  // Helper function to get filter icon
+  const getFilterIcon = (type: string) => {
+    switch (type) {
+      case 'department':
+        return <Building2 className="w-4 h-4" />;
+      case 'position':
+        return <Award className="w-4 h-4" />;
+      case 'member_type':
+        return <UserCheck className="w-4 h-4" />;
+      default:
+        return <Users className="w-4 h-4" />;
+    }
+  };
+
+  // Helper function to get filter color
+  const getFilterColor = (type: string) => {
+    switch (type) {
+      case 'department':
+        return 'from-blue-500 to-blue-600';
+      case 'position':
+        return 'from-purple-500 to-purple-600';
+      case 'member_type':
+        return 'from-green-500 to-green-600';
+      default:
+        return 'from-gray-500 to-gray-600';
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50">
+    <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
+      {/* Animated background elements */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Main dreamy blobs */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.13, scale: 1 }}
+          transition={{ duration: 2, ease: 'easeOut' }}
+          className="absolute top-[-12%] left-[-10%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] blur-3xl"
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.09, scale: 1 }}
+          transition={{ duration: 2, delay: 0.5, ease: 'easeOut' }}
+          className="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-br from-[#4f1b59] via-[#f3e8ff] to-[#fff] blur-3xl"
+        />
+        {/* Extra dreamy blobs for depth */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 0.07, scale: 1 }}
+          transition={{ duration: 2.2, delay: 0.8, ease: 'easeOut' }}
+          className="absolute top-[30%] left-[-15%] w-[40vw] h-[40vw] rounded-full bg-gradient-to-br from-[#f9e7ff] via-[#ffe6fa] to-[#fff] blur-3xl"
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 0.06, scale: 1 }}
+          transition={{ duration: 2.2, delay: 1.1, ease: 'easeOut' }}
+          className="absolute bottom-[10%] right-[-18%] w-[38vw] h-[38vw] rounded-full bg-gradient-to-br from-[#fff] via-[#e0c3fc] to-[#f3e8ff] blur-3xl"
+        />
+        {/* Faint radial fade at bottom for extra depth */}
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white/80 via-white/0 to-transparent" />
+      </div>
+
       <Header />
-      <div className="py-20">
+      
+      <div className="relative z-10 py-20">
         <div className="container mx-auto px-4">
-          {/* Section Heading with animation */}
-          <div className="text-center mb-16 animate-fade-in-up">
-            <span className="inline-block px-4 py-2 bg-[#4f1b59] text-white rounded-full text-sm font-medium mb-4 shadow-md animate-fade-in">
+          {/* Enhanced Section Heading */}
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <motion.span 
+              className="inline-block px-6 py-3 bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white rounded-full text-sm font-semibold mb-6 shadow-lg"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Users className="inline-block w-4 h-4 mr-2" />
               Our Team
-            </span>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-[#333333] mb-6 tracking-tight animate-fade-in-up">
+            </motion.span>
+            <motion.h1 
+              className="text-5xl md:text-6xl font-extrabold text-[#2d1b3d] mb-6 tracking-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
               Meet Our Committee
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed animate-fade-in-up delay-100">
+            </motion.h1>
+            <motion.p 
+              className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               Get to know the passionate individuals who make the IET Committee an amazing community. 
               Our diverse team brings together expertise, creativity, and dedication.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
-          {/* Seamless Horizontal Filter Bar */}
-          <div className="mb-10">
-            <div className="w-full rounded-2xl bg-white/70 backdrop-blur-md flex flex-row flex-wrap items-center gap-x-2 gap-y-2 px-4 py-3 shadow-lg border border-gray-100 transition-all duration-300">
-              {/* Mobile filter icon */}
+          {/* Enhanced Filter Bar */}
+          <motion.div 
+            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <div className="w-full rounded-3xl bg-white/80 backdrop-blur-xl flex flex-row flex-wrap items-center gap-3 px-6 py-4 shadow-2xl border border-white/20 transition-all duration-300">
+              {/* Mobile filter toggle */}
               <Button
                 variant="outline"
                 size="sm"
-                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium bg-white text-[#4f1b59] border border-purple-200 hover:bg-purple-50 transition-all md:hidden`}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white/90 text-[#4f1b59] border border-purple-200 hover:bg-purple-50 transition-all md:hidden shadow-md"
                 onClick={() => setShowFilters(v => !v)}
               >
-                <Filter className="w-4 h-4 mr-1" /> Filters
+                <Filter className="w-4 h-4" /> Filters
               </Button>
-              {/* Filter chips: always visible on desktop, togglable on mobile */}
+              
+              {/* Filter chips */}
+              <AnimatePresence>
               {(showFilters || typeof window !== 'undefined' && window.innerWidth >= 768) && (
                 <>
-                  {/* Department filter chips */}
+                    {/* Department filters */}
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-xs font-semibold text-gray-600 mr-2 flex items-center">
+                        <Building2 className="w-3 h-3 mr-1" />
+                        Departments:
+                      </span>
                   {availableDepartments.map((dept: string, i) => (
-                    <button
+                        <motion.button
                       key={dept}
-                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1 border shadow-sm
-                        bg-gray-100 text-[#4f1b59] border-gray-200 hover:bg-purple-50 hover:border-purple-300 hover:scale-105 focus:scale-105 focus:ring-2 focus:ring-purple-300 animate-fade-in-up`}
-                      style={{ animationDelay: `${i * 40}ms` }}
+                          className="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 flex items-center gap-1 border shadow-md bg-gradient-to-r from-white to-blue-50 text-[#4f1b59] border-blue-200 hover:from-blue-100 hover:to-blue-200 hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-blue-300"
                       onClick={() => setSelectedDepartment(dept)}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.3, delay: i * 0.05 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                     >
                       {dept}
-                    </button>
+                        </motion.button>
                   ))}
-                  {/* Position filter chips */}
+                    </div>
+
+                    {/* Position filters */}
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-xs font-semibold text-gray-600 mr-2 flex items-center">
+                        <Award className="w-3 h-3 mr-1" />
+                        Positions:
+                      </span>
                   {availablePositions.map((pos, i) => (
-                    <button
+                        <motion.button
                       key={pos}
-                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1 border shadow-sm
-                        bg-gray-100 text-[#4f1b59] border-gray-200 hover:bg-purple-50 hover:border-purple-300 hover:scale-105 focus:scale-105 focus:ring-2 focus:ring-purple-300 animate-fade-in-up`}
-                      style={{ animationDelay: `${(availableDepartments.length + i) * 40}ms` }}
+                          className="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 flex items-center gap-1 border shadow-md bg-gradient-to-r from-white to-purple-50 text-[#4f1b59] border-purple-200 hover:from-purple-100 hover:to-purple-200 hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-purple-300"
                       onClick={() => setSelectedPosition(pos)}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.3, delay: (availableDepartments.length + i) * 0.05 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                     >
                       {pos}
-                    </button>
+                        </motion.button>
                   ))}
+                    </div>
+
+                    {/* Member type filters */}
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-xs font-semibold text-gray-600 mr-2 flex items-center">
+                        <UserCheck className="w-3 h-3 mr-1" />
+                        Member Type:
+                      </span>
+                      {availableMemberTypes.map((type, i) => (
+                        <motion.button
+                          key={type}
+                          className="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 flex items-center gap-1 border shadow-md bg-gradient-to-r from-white to-green-50 text-[#4f1b59] border-green-200 hover:from-green-100 hover:to-green-200 hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-green-300"
+                          onClick={() => setSelectedMemberType(type)}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.3, delay: (availableDepartments.length + availablePositions.length + i) * 0.05 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {type.replace('_', ' ').toUpperCase()}
+                        </motion.button>
+                      ))}
+                    </div>
                 </>
               )}
-              {/* Active filter chips and Clear all */}
-              {activeFilters.length > 0 && activeFilters.map((f, i) => (
-                <span
+              </AnimatePresence>
+              
+              {/* Active filters */}
+              <AnimatePresence>
+                {activeFilters.map((f, i) => (
+                  <motion.span
                   key={f.label}
-                  className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-br from-[#7c3aed] to-[#4f1b59] text-white shadow-md border border-purple-300 flex items-center gap-1 animate-fade-in-up"
-                  style={{ animationDelay: `${(availableDepartments.length + availablePositions.length + i) * 40}ms` }}
+                    className={`px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r ${getFilterColor(f.type)} text-white shadow-lg border border-white/20 flex items-center gap-2`}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.3, delay: i * 0.1 }}
                 >
+                    {getFilterIcon(f.type)}
                   {f.label}
-                  <button onClick={f.onRemove} className="ml-1 hover:bg-white/20 rounded-full p-0.5 transition-colors">
+                    <button 
+                      onClick={f.onRemove} 
+                      className="ml-1 hover:bg-white/20 rounded-full p-1 transition-colors"
+                    >
                     <X className="w-4 h-4" />
                   </button>
-                </span>
+                  </motion.span>
               ))}
+              </AnimatePresence>
+              
+              {/* Clear all button */}
               {activeFilters.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-purple-600 hover:text-white hover:bg-[#4f1b59] px-3 py-1 rounded-full font-medium transition-all animate-fade-in-up"
-                  style={{ animationDelay: `${(availableDepartments.length + availablePositions.length + activeFilters.length) * 40}ms` }}
+                <motion.button
+                  className="text-purple-600 hover:text-white hover:bg-[#4f1b59] px-4 py-2 rounded-full font-medium transition-all shadow-md"
                   onClick={() => {
                     setSelectedDepartment(null);
                     setSelectedPosition(null);
+                    setSelectedMemberType(null);
                   }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Clear all
-                </Button>
+                </motion.button>
               )}
             </div>
-          </div>
+          </motion.div>
 
           {/* Team Members */}
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
               {[...Array(6)].map((_, index) => (
-                <div key={index} className="animate-pulse">
-                  <div className="bg-gray-200 h-64 rounded-t-lg"></div>
-                  <div className="bg-white p-6 rounded-b-lg">
-                    <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded mb-4"></div>
-                    <div className="h-16 bg-gray-200 rounded"></div>
+                <motion.div key={index} className="animate-pulse" variants={itemVariants}>
+                  <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8">
+                    <div className="bg-gray-200 h-32 w-32 rounded-full mx-auto mb-6"></div>
+                    <div className="h-6 bg-gray-200 rounded-full mb-3"></div>
+                    <div className="h-4 bg-gray-200 rounded-full mb-4 w-2/3 mx-auto"></div>
+                    <div className="h-4 bg-gray-200 rounded-full mb-6 w-1/2 mx-auto"></div>
+                    <div className="h-16 bg-gray-200 rounded-lg"></div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : error ? (
-            <div className="text-center py-8 animate-fade-in">
-              <p className="text-red-500">Error loading team members: {error}</p>
-            </div>
+            <motion.div 
+              className="text-center py-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <p className="text-red-500 text-lg">Error loading team members: {error}</p>
+            </motion.div>
           ) : filteredMembers.length === 0 ? (
-            <div className="text-center py-8 animate-fade-in">
-              <p className="text-gray-500">No team members found with the selected filters.</p>
-            </div>
+            <motion.div 
+              className="text-center py-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <p className="text-gray-600 text-lg">No team members found with the selected filters.</p>
+            </motion.div>
           ) : (
-            <div className="space-y-16">
+            <motion.div 
+              className="space-y-20"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
               {Object.entries(groupedMembers).map(([department, members], i) => (
-                <div key={department} className="animate-fade-in-up" style={{ animationDelay: `${i * 80}ms` }}>
-                  <h2 className="text-2xl font-bold text-[#4f1b59] mb-8 text-center tracking-tight animate-fade-in-up">
+                <motion.div key={department} variants={itemVariants}>
+                  <motion.h2 
+                    className="text-3xl font-bold text-[#2d1b3d] mb-12 text-center tracking-tight"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: i * 0.1 }}
+                  >
+                    <span className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] bg-clip-text text-transparent">
                     {department}
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    </span>
+                  </motion.h2>
+                  <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                    variants={containerVariants}
+                  >
                     {(members as any[]).map((member, j) => (
-                      <div
+                      <motion.div
                         key={member.id}
-                        className="bg-white/90 rounded-2xl shadow-xl border border-gray-100 p-6 flex flex-col items-center transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl animate-fade-in-up"
-                        style={{ animationDelay: `${j * 60}ms` }}
+                        className="group relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 flex flex-col items-center transition-all duration-300 cursor-pointer overflow-hidden"
+                        variants={cardVariants}
+                        whileHover="hover"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,246,255,0.8) 100%)',
+                          boxShadow: '0 20px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.2)'
+                        }}
                       >
-                        {/* Avatar */}
-                        <img
-                          src={member.photo || '/public/placeholder.svg'}
+                        {/* Glimmer glass effect overlay */}
+                        <span className="pointer-events-none absolute inset-0 z-20 rounded-3xl overflow-hidden">
+                          <span className="glimmer-effect group-hover:animate-glimmer" />
+                        </span>
+                        {/* Animated gradient border effect */}
+                        <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#a259c6] via-[#4f1b59] to-[#a259c6] opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+                        
+                        {/* Avatar with enhanced styling */}
+                        <div className="relative mb-6">
+                          <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#a259c6] to-[#4f1b59] p-1 shadow-xl">
+                            <img
+                              src={member.image || '/placeholder.svg'}
                           alt={member.name}
-                          className="w-28 h-28 rounded-full object-cover border-4 border-purple-100 mb-4 shadow-md"
-                        />
-                        {/* Name */}
-                        <h3 className="text-lg font-semibold text-[#4f1b59] mb-1 text-center">{member.name}</h3>
-                        {/* Position */}
-                        <p className="text-sm text-purple-700 font-medium mb-2 text-center">{member.position_hierarchy}</p>
-                        {/* Department */}
-                        <p className="text-xs text-gray-500 mb-3 text-center">{member.department}</p>
-                        {/* Bio or Description */}
+                              className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
+                              onError={(e) => {
+                                e.currentTarget.src = '/placeholder.svg';
+                              }}
+                            />
+                          </div>
+                          {/* Position badge */}
+                          <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-[#7c3aed] to-[#4f1b59] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
+                            {member.position_hierarchy}
+                          </div>
+                        </div>
+                        
+                        {/* Member info */}
+                        <h3 className="text-xl font-bold text-[#2d1b3d] mb-2 text-center">{member.name}</h3>
+                        <p className="text-sm text-purple-700 font-medium mb-3 text-center">{member.department}</p>
+                        
+                        {/* Member type badge */}
+                        <div className="mb-4">
+                          <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
+                            member.member_type === 'super_core' 
+                              ? 'bg-gradient-to-r from-red-500 to-red-600 text-white' 
+                              : member.member_type === 'core'
+                              ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white'
+                              : 'bg-gradient-to-r from-gray-500 to-gray-600 text-white'
+                          }`}>
+                            {member.member_type?.replace('_', ' ').toUpperCase() || 'MEMBER'}
+                          </span>
+                        </div>
+                        
+                        {/* Bio */}
                         {member.bio && (
-                          <p className="text-sm text-gray-700 text-center mb-2 line-clamp-3">{member.bio}</p>
+                          <p className="text-sm text-gray-700 text-center mb-6 line-clamp-3 leading-relaxed">
+                            {member.bio}
+                          </p>
                         )}
-                        {/* Socials */}
-                        <div className="flex gap-3 mt-2">
+                        
+                        {/* Enhanced social links */}
+                        <div className="flex gap-4 mt-auto">
                           {member.linkedin && (
-                            <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-[#4f1b59] transition-colors">
-                              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm15.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.868 0-2.154 1.459-2.154 2.968v5.699h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.844-1.563 3.042 0 3.604 2.003 3.604 4.605v5.591z"/></svg>
-                            </a>
+                            <motion.a 
+                              href={member.linkedin} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                              whileHover={{ scale: 1.1, y: -2 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <Linkedin className="w-5 h-5" />
+                            </motion.a>
                           )}
-                          {member.instagram && (
-                            <a href={member.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-[#4f1b59] transition-colors">
-                              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.242 1.308 3.608.058 1.266.069 1.646.069 4.851s-.011 3.584-.069 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.242 1.246-3.608 1.308-1.266.058-1.646.069-4.85.069s-3.584-.011-4.85-.069c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.242-1.308-3.608-.058-1.266-.069-1.646-.069-4.85s.011-3.584.069-4.851c.062-1.366.334-2.633 1.308-3.608.974-.974 2.242-1.246 3.608-1.308 1.266-.058 1.646-.069 4.85-.069zm0-2.163c-3.259 0-3.667.012-4.947.07-1.276.058-2.687.334-3.678 1.325-.991.991-1.267 2.402-1.325 3.678-.058 1.28-.07 1.688-.07 4.947s.012 3.667.07 4.947c.058 1.276.334 2.687 1.325 3.678.991.991 2.402 1.267 3.678 1.325 1.28.058 1.688.07 4.947.07s3.667-.012 4.947-.07c1.276-.058 2.687-.334 3.678-1.325.991-.991 1.267-2.402 1.325-3.678.058-1.28.07-1.688.07-4.947s-.012-3.667-.07-4.947c-.058-1.276-.334-2.687-1.325-3.678-.991-.991-2.402-1.267-3.678-1.325-1.28-.058-1.688-.07-4.947-.07zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-                            </a>
+                          {member.github && (
+                            <motion.a 
+                              href={member.github} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="p-3 rounded-full bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                              whileHover={{ scale: 1.1, y: -2 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <Github className="w-5 h-5" />
+                            </motion.a>
+                          )}
+                          {member.Instagram && (
+                            <motion.a 
+                              href={member.Instagram} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="p-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                              whileHover={{ scale: 1.1, y: -2 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <Instagram className="w-5 h-5" />
+                            </motion.a>
                           )}
                         </div>
-                      </div>
+                        
+                        {/* Hover effect overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#a259c6]/10 to-[#4f1b59]/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </motion.div>
                     ))}
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
       </div>
-      {/* Animations */}
-      <style>{`
-        .animate-fade-in { animation: fadeIn 0.7s both; }
-        .animate-fade-in-up { animation: fadeInUp 0.7s both; }
-        .animate-fade-in-up.delay-100 { animation-delay: 0.1s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-      `}</style>
     </div>
   );
 };

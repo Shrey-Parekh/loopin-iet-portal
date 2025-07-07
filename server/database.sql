@@ -147,3 +147,6 @@ DELETE FROM users WHERE user_id = 'testuser';
 INSERT INTO users (user_id, password, name, role) VALUES ('testuser', 'password123', 'Test User', 'member'); 
 INSERT INTO users (user_id, password, name, role) VALUES ('testuser2', 'password123', 'Test User', 'member'); 
 INSERT INTO users (user_id, password, name, role) VALUES ('testuser3', 'password123', 'Test User', 'member'); 
+INSERT INTO users (user_id, password, name, role) VALUES ('testuser4', 'password123', 'Test User', 'member'); 
+INSERT INTO users (user_id, password, name, role) VALUES ('testuser5', 'password123', 'Test User', 'member'); 
+INSERT INTO users (user_id, password, name, role) VALUES ('testuser6', 'password123', 'Test User', 'member'); 

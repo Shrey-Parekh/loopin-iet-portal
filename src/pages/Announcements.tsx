@@ -69,19 +69,49 @@ const Announcements = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
+      {/* Animated background shapes */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.13, scale: 1 }} transition={{ duration: 2, ease: 'easeOut' }} className="absolute top-[-12%] left-[-10%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.09, scale: 1 }} transition={{ duration: 2, delay: 0.5, ease: 'easeOut' }} className="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-br from-[#4f1b59] via-[#f3e8ff] to-[#fff] blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 0.07, scale: 1 }} transition={{ duration: 2.2, delay: 0.8, ease: 'easeOut' }} className="absolute top-[30%] left-[-15%] w-[40vw] h-[40vw] rounded-full bg-gradient-to-br from-[#f9e7ff] via-[#ffe6fa] to-[#fff] blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 0.06, scale: 1 }} transition={{ duration: 2.2, delay: 1.1, ease: 'easeOut' }} className="absolute bottom-[10%] right-[-18%] w-[38vw] h-[38vw] rounded-full bg-gradient-to-br from-[#fff] via-[#e0c3fc] to-[#f3e8ff] blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white/80 via-white/0 to-transparent" />
+      </div>
       <Header />
-      <div className="py-20">
+      <div className="py-20 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-[#4f1b59] text-white rounded-full text-sm font-medium mb-4">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          >
+            <motion.span
+              className="inline-block px-6 py-3 bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white rounded-full text-sm font-semibold mb-6 shadow-lg"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               Latest Updates
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold text-[#333333] mb-6">Announcements</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            </motion.span>
+            <motion.h1
+              className="text-5xl md:text-6xl font-extrabold text-[#2d1b3d] mb-6 tracking-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              Announcements
+            </motion.h1>
+            <motion.p
+              className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               Stay updated with the latest news, events, and important information from the IET Committee
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           {/* Sorting Controls */}
           <motion.div
@@ -158,8 +188,9 @@ const Announcements = () => {
                     exit={{ opacity: 0, y: 40 }}
                     transition={{ delay: idx * 0.08, duration: 0.5, type: 'spring', stiffness: 120 }}
                   >
-                    <Card
-                      className={`group hover:shadow-2xl transition-all duration-200 cursor-pointer border-l-4 ${priorityStyles.border} bg-white rounded-2xl`}
+                    <motion.div
+                      className={`group hover:shadow-2xl transition-all duration-200 cursor-pointer border-l-4 ${priorityStyles.border} bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20`}
+                      whileHover={{ scale: 1.02, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.12)' }}
                     >
                       <CardHeader className="pb-3">
                         <div className="flex items-start justify-between">
@@ -197,13 +228,17 @@ const Announcements = () => {
                               <span className="font-medium text-[#4f1b59]">{announcement.author || 'IET Committee'}</span>
                             </div>
                           </div>
-                          <Button variant="ghost" size="sm" className="text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white">
+                          <motion.button
+                            className="text-[#a259c6] hover:bg-[#a259c6] hover:text-white px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-1"
+                            whileHover={{ scale: 1.08 }}
+                            whileTap={{ scale: 0.96 }}
+                          >
                             Read More
                             <ChevronRight className="w-4 h-4 ml-1" />
-                          </Button>
+                          </motion.button>
                         </div>
                       </CardContent>
-                    </Card>
+                    </motion.div>
                   </motion.div>
                 </div>
               );
@@ -211,18 +246,30 @@ const Announcements = () => {
           </AnimatePresence>
 
           {/* Newsletter subscription */}
-          <div className="mt-20 text-center bg-white rounded-2xl p-12 shadow-sm border border-gray-200 max-w-4xl mx-auto">
-            <Bell className="w-12 h-12 text-[#4f1b59] mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-4 text-[#333333]">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ delay: 0.2, duration: 0.7 }}
+            className="mt-20 text-center bg-white/80 backdrop-blur-xl rounded-2xl p-12 shadow-xl border border-white/20 max-w-4xl mx-auto"
+            animate={{ scale: 1 }}
+            whileHover={{ scale: 1.02, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.12)' }}
+          >
+            <Bell className="w-12 h-12 text-[#a259c6] mx-auto mb-4" />
+            <h3 className="text-2xl font-bold mb-4 text-[#2d1b3d]">
               Never Miss an Update
             </h3>
             <p className="text-gray-600 mb-6 max-w-xl mx-auto">
               Subscribe to get notifications about new announcements and important updates
             </p>
-            <Button className="bg-[#4f1b59] hover:bg-[#3d1445] text-white px-8 py-3">
+            <motion.button
+              className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] hover:from-[#4f1b59] hover:to-[#a259c6] text-white px-8 py-3 rounded-full font-semibold shadow-lg transition-all"
+              whileHover={{ scale: 1.06 }}
+              whileTap={{ scale: 0.97 }}
+            >
               Subscribe to Notifications
-            </Button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
       </div>
     </div>

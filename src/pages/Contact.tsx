@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [sendState, setSendState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [pulse, setPulse] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -27,7 +30,7 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSendState('sending');
     setError('');
     setSuccess(false);
     try {
@@ -38,9 +41,15 @@ const Contact = () => {
       });
       if (!res.ok) throw new Error('Failed to send message.');
       setSuccess(true);
+      setSendState('success');
+      setPulse(true);
+      setTimeout(() => setPulse(false), 1200);
+      setTimeout(() => setSendState('idle'), 1500);
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
       setError('Something went wrong. Please try again.');
+      setSendState('error');
+      setTimeout(() => setSendState('idle'), 1500);
     } finally {
       setLoading(false);
     }
@@ -101,36 +110,69 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50">
+    <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
+      {/* Animated background shapes */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.13, scale: 1 }} transition={{ duration: 2, ease: 'easeOut' }} className="absolute top-[-12%] left-[-10%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.09, scale: 1 }} transition={{ duration: 2, delay: 0.5, ease: 'easeOut' }} className="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-br from-[#4f1b59] via-[#f3e8ff] to-[#fff] blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 0.07, scale: 1 }} transition={{ duration: 2.2, delay: 0.8, ease: 'easeOut' }} className="absolute top-[30%] left-[-15%] w-[40vw] h-[40vw] rounded-full bg-gradient-to-br from-[#f9e7ff] via-[#ffe6fa] to-[#fff] blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 0.06, scale: 1 }} transition={{ duration: 2.2, delay: 1.1, ease: 'easeOut' }} className="absolute bottom-[10%] right-[-18%] w-[38vw] h-[38vw] rounded-full bg-gradient-to-br from-[#fff] via-[#e0c3fc] to-[#f3e8ff] blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white/80 via-white/0 to-transparent" />
+      </div>
       <Header />
-      <div className="py-20">
+      <div className="py-20 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <span className="inline-block px-4 py-2 bg-[#4f1b59] text-white rounded-full text-sm font-medium mb-4 shadow-md animate-fade-in">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          >
+            <motion.span
+              className="inline-block px-6 py-3 bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white rounded-full text-sm font-semibold mb-6 shadow-lg"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               Get in Touch
-            </span>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-[#333333] mb-4 tracking-tight animate-fade-in-up">
+            </motion.span>
+            <motion.h1
+              className="text-5xl md:text-6xl font-extrabold text-[#2d1b3d] mb-6 tracking-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
               Contact Us
-            </h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-[#4f1b59] to-purple-400 mx-auto mt-2 rounded-full animate-underline" />
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed animate-fade-in-up delay-100">
+            </motion.h1>
+            <motion.p
+              className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               Have questions or want to get involved? We'd love to hear from you. Reach out to us anytime.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Contact Form */}
-            <div className="animate-fade-in-up delay-200">
-              <Card className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-100">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-[#333333] flex items-center">
-                    <MessageSquare className="w-6 h-6 mr-2 text-[#4f1b59]" />
-                    Send us a Message
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className=""
+            >
+              <motion.div
+                className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8"
+                animate={pulse ? { boxShadow: '0 0 0 8px #a259c6, 0 8px 32px 0 rgba(162,89,198,0.25)' } : {}}
+                transition={{ duration: 0.8, type: 'spring' }}
+              >
+                <div className="flex items-center mb-6">
+                  <MessageSquare className="w-7 h-7 mr-3 text-[#a259c6]" />
+                  <span className="text-2xl font-bold text-[#2d1b3d]">Send us a Message</span>
+                </div>
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="space-y-2 animate-fade-in-up delay-300">
+                  <div className="space-y-2">
                       <Label htmlFor="name" className="text-[#333333] font-medium">Full Name</Label>
                       <Input
                         id="name"
@@ -138,12 +180,11 @@ const Contact = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder="Your full name"
-                        className="border-gray-300"
+                      className="border-gray-300 focus:ring-2 focus:ring-[#a259c6]/40 transition-all"
                         required
                       />
                     </div>
-
-                    <div className="space-y-2 animate-fade-in-up delay-400">
+                  <div className="space-y-2">
                       <Label htmlFor="email" className="text-[#333333] font-medium">Email Address</Label>
                       <Input
                         id="email"
@@ -152,12 +193,11 @@ const Contact = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="your.email@example.com"
-                        className="border-gray-300"
+                      className="border-gray-300 focus:ring-2 focus:ring-[#a259c6]/40 transition-all"
                         required
                       />
                     </div>
-
-                    <div className="space-y-2 animate-fade-in-up delay-500">
+                  <div className="space-y-2">
                       <Label htmlFor="subject" className="text-[#333333] font-medium">Subject</Label>
                       <Input
                         id="subject"
@@ -165,12 +205,11 @@ const Contact = () => {
                         value={formData.subject}
                         onChange={handleInputChange}
                         placeholder="What is this about?"
-                        className="border-gray-300"
+                      className="border-gray-300 focus:ring-2 focus:ring-[#a259c6]/40 transition-all"
                         required
                       />
                     </div>
-
-                    <div className="space-y-2 animate-fade-in-up delay-600">
+                  <div className="space-y-2">
                       <Label htmlFor="message" className="text-[#333333] font-medium">Message</Label>
                       <Textarea
                         id="message"
@@ -178,105 +217,156 @@ const Contact = () => {
                         value={formData.message}
                         onChange={handleInputChange}
                         placeholder="Tell us more about your inquiry..."
-                        className="border-gray-300 min-h-[120px]"
+                      className="border-gray-300 min-h-[120px] focus:ring-2 focus:ring-[#a259c6]/40 transition-all"
                         required
                       />
                     </div>
-
-                    {error && <div className="text-red-500 text-sm animate-fade-in-up flex items-center gap-2"><span className='text-lg'>❌</span>{error}</div>}
-                    {success && <div className="text-green-600 text-sm animate-fade-in-up flex items-center gap-2"><span className='text-lg'>✅</span>Thank you! Your message has been sent.</div>}
-
-                    <Button 
+                  <AnimatePresence>
+                    {error && <motion.div className="text-red-500 text-sm flex items-center gap-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><span className='text-lg'>❌</span>{error}</motion.div>}
+                    {success && <motion.div className="text-green-600 text-sm flex items-center gap-2" initial={{ opacity: 0 }} animate={{ opacity: 1, scale: 1.1 }} exit={{ opacity: 0 }}><span className='text-lg'>✅</span>Thank you! Your message has been sent.</motion.div>}
+                  </AnimatePresence>
+                  <motion.button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-purple-600 to-[#4f1b59] hover:from-[#4f1b59] hover:to-purple-600 text-white py-3 text-lg font-semibold flex items-center justify-center transition-transform duration-200 animate-fade-in-up delay-700 hover:scale-105"
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <span className="animate-spin mr-2">⏳</span>
-                      ) : (
-                      <Send className="w-4 h-4 mr-2" />
+                    className={`w-full py-3 rounded-full font-extrabold text-lg flex items-center justify-center gap-2 transition-all duration-300
+                      shadow-xl backdrop-blur-md
+                      ${sendState === 'sending' ? 'bg-purple-400 text-white cursor-wait' : ''}
+                      ${sendState === 'success' ? 'bg-green-500 text-white' : ''}
+                      ${sendState === 'error' ? 'bg-red-500 text-white animate-shake' : 'bg-gradient-to-r from-[#4f1b59] via-[#a259c6] to-[#b993d6] text-white'}
+                    `}
+                    style={{
+                      textShadow: '0 2px 8px rgba(79,27,89,0.12)',
+                      boxShadow: '0 4px 24px 0 rgba(162,89,198,0.18)',
+                      letterSpacing: '0.02em',
+                    }}
+                    disabled={sendState === 'sending'}
+                    whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.25)' }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <AnimatePresence mode="wait" initial={false}>
+                      {sendState === 'sending' && (
+                        <motion.span key="sending" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                          <span className="animate-spin mr-2">⏳</span> Sending...
+                        </motion.span>
                       )}
-                      {loading ? 'Sending...' : 'Send Message'}
-                    </Button>
+                      {sendState === 'success' && (
+                        <motion.span key="success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                          <span className="mr-2">✅</span> Sent!
+                        </motion.span>
+                      )}
+                      {sendState === 'error' && (
+                        <motion.span key="error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                          <span className="mr-2">❌</span> Error
+                        </motion.span>
+                      )}
+                      {sendState === 'idle' && (
+                        <motion.span key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2">
+                          <motion.span
+                            className="inline-block"
+                            whileHover={{ x: 6, rotate: -12 }}
+                            transition={{ type: 'spring', stiffness: 300 }}
+                          >
+                            <Send className="w-5 h-5" />
+                          </motion.span>
+                          Send Message
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.button>
                   </form>
-                </CardContent>
-              </Card>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Contact Information */}
-            <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="space-y-8"
+            >
               {/* Quick Contact Info */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {contactInfo.map((info, index) => (
-                  <Card key={index} className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-100 animate-fade-in-up" style={{ animationDelay: `${index * 80 + 300}ms` }}>
-                    <CardContent className="p-6 text-center">
-                      <info.icon className="w-8 h-8 text-[#4f1b59] mx-auto mb-3" />
-                      <h3 className="font-semibold text-[#333333] mb-1">{info.title}</h3>
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6 text-center hover:shadow-2xl transition-all"
+                  >
+                    <info.icon className="w-8 h-8 text-[#a259c6] mx-auto mb-3" />
+                    <h3 className="font-semibold text-[#2d1b3d] mb-1">{info.title}</h3>
                       <p className="text-[#4f1b59] font-medium mb-1">{info.content}</p>
                       <p className="text-sm text-gray-600">{info.description}</p>
-                    </CardContent>
-                  </Card>
+                  </motion.div>
                 ))}
               </div>
 
               {/* Team Contacts */}
-              <Card className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-100 animate-fade-in-up" style={{ animationDelay: `700ms` }}>
-                <CardHeader>
-                  <CardTitle className="text-xl text-[#333333] flex items-center">
-                    <User className="w-5 h-5 mr-2 text-[#4f1b59]" />
-                    Direct Team Contacts
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+                className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6"
+              >
+                <div className="flex items-center mb-4">
+                  <User className="w-5 h-5 mr-2 text-[#a259c6]" />
+                  <span className="text-xl font-bold text-[#2d1b3d]">Direct Team Contacts</span>
+                </div>
                   <div className="space-y-4">
                     {teamContacts.map((contact, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 border border-gray-100 rounded-lg hover:border-[#4f1b59] transition-colors animate-fade-in-up" style={{ animationDelay: `${index * 60 + 800}ms` }}>
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: index * 0.08 }}
+                      className="flex items-center justify-between p-4 border border-white/20 rounded-lg hover:border-[#a259c6] transition-colors"
+                    >
                         <div>
-                          <h4 className="font-semibold text-[#333333]">{contact.name}</h4>
+                        <h4 className="font-semibold text-[#2d1b3d]">{contact.name}</h4>
                           <p className="text-sm text-gray-600">{contact.role}</p>
                           <p className="text-xs text-gray-500">{contact.department}</p>
-                        </div>
-                        <Button variant="ghost" size="sm" className="text-[#4f1b59] hover:bg-[#4f1b59] hover:text-white">
-                          <Mail className="w-4 h-4 mr-1" />
-                          Email
-                        </Button>
                       </div>
+                      <a href={`mailto:${contact.email}`} target="_blank" rel="noopener noreferrer">
+                        <motion.button
+                          className="text-[#a259c6] hover:bg-[#a259c6] hover:text-white px-4 py-2 rounded-lg font-semibold transition-all"
+                          whileHover={{ scale: 1.08 }}
+                          whileTap={{ scale: 0.96 }}
+                        >
+                          <Mail className="w-4 h-4 mr-1 inline-block" /> Email
+                        </motion.button>
+                      </a>
+                    </motion.div>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
+              </motion.div>
 
               {/* Additional Info */}
-              <Card className="bg-gradient-to-br from-[#4f1b59] to-purple-600 text-white shadow-2xl rounded-2xl animate-fade-in-up" style={{ animationDelay: `1000ms` }}>
-                <CardContent className="p-6 text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 }}
+                className="bg-gradient-to-br from-[#a259c6] to-[#4f1b59] text-white shadow-2xl rounded-2xl p-6 text-center"
+              >
                   <h3 className="text-xl font-bold mb-2">Join Our Community</h3>
                   <p className="mb-4 opacity-90">
                     Interested in becoming a member? We're always looking for passionate individuals to join our team.
                   </p>
-                  <Button className="bg-[#4f1b59] hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-lg transition-transform duration-200 hover:scale-105">
+                <motion.button
+                  className="bg-white/20 hover:bg-white/40 text-white font-semibold px-6 py-2 rounded-lg transition-transform duration-200 hover:scale-105"
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.96 }}
+                >
                     Learn More
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
+                </motion.button>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>
-      {/* Animations */}
+      {/* Add shake animation for error */}
       <style>{`
-        .animate-fade-in { animation: fadeIn 0.7s both; }
-        .animate-fade-in-up { animation: fadeInUp 0.8s both; }
-        .animate-fade-in-up.delay-100 { animation-delay: 0.1s; }
-        .animate-fade-in-up.delay-200 { animation-delay: 0.2s; }
-        .animate-fade-in-up.delay-300 { animation-delay: 0.3s; }
-        .animate-fade-in-up.delay-400 { animation-delay: 0.4s; }
-        .animate-fade-in-up.delay-500 { animation-delay: 0.5s; }
-        .animate-fade-in-up.delay-600 { animation-delay: 0.6s; }
-        .animate-fade-in-up.delay-700 { animation-delay: 0.7s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px) scale(0.98); } to { opacity: 1; transform: none; } }
-        .animate-underline { animation: underlineGrow 1s cubic-bezier(0.4,0,0.2,1) both; }
-        @keyframes underlineGrow { from { width: 0; opacity: 0; } to { width: 6rem; opacity: 1; } }
+        .animate-shake { animation: shake 0.4s; }
+        @keyframes shake { 10%, 90% { transform: translateX(-2px); } 20%, 80% { transform: translateX(4px); } 30%, 50%, 70% { transform: translateX(-8px); } 40%, 60% { transform: translateX(8px); } }
       `}</style>
     </div>
   );
