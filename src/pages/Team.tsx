@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import { useTeam, useDepartments } from '@/hooks/useApi';
 import { Button } from '@/components/ui/button';
-import { X, Filter, Github, Instagram, Linkedin, Users, Award, Building2, Crown, UserCheck } from 'lucide-react';
+import { X, Filter, Github, Instagram, Linkedin, Users, Award, Building2, Crown, UserCheck, Search } from 'lucide-react';
 import './team-glimmer.css';
+import { Input } from '@/components/ui/input';
 
 // Complete list of all departments from database
 const DEPARTMENTS = [
@@ -42,16 +43,18 @@ const Team = () => {
   const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
   const [selectedMemberType, setSelectedMemberType] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const { data: teamMembers = [], loading, error } = useTeam() as { data: any[]; loading: boolean; error?: string };
   const { data: departments = [] } = useDepartments() as { data: string[] };
 
-  // Filter team members based on selections
+  // Filter team members based on selections and search term
   const filteredMembers = teamMembers?.filter(member => {
     const departmentMatch = !selectedDepartment || member.department === selectedDepartment;
     const positionMatch = !selectedPosition || member.position_hierarchy === selectedPosition;
     const memberTypeMatch = !selectedMemberType || member.member_type === selectedMemberType;
-    return departmentMatch && positionMatch && memberTypeMatch;
+    const nameMatch = !searchTerm || member.name?.toLowerCase().includes(searchTerm.toLowerCase());
+    return departmentMatch && positionMatch && memberTypeMatch && nameMatch;
   }) || [];
 
   // Group members by department for better organization
@@ -217,7 +220,30 @@ const Team = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <div className="w-full rounded-3xl bg-white/80 backdrop-blur-xl flex flex-row flex-wrap items-center gap-3 px-6 py-4 shadow-2xl border border-white/20 transition-all duration-300">
+            <div className="w-full rounded-3xl bg-white/80 backdrop-blur-xl flex flex-col md:flex-row flex-wrap items-center gap-3 px-6 py-4 shadow-2xl border border-white/20 transition-all duration-300">
+              {/* Search input */}
+              <div className="w-full sm:w-2/3 md:w-1/2 lg:w-[340px] xl:w-[400px] mb-2 md:mb-0 mx-auto">
+                <motion.div
+                  className="relative rounded-full p-[2.5px] bg-white/0 shadow-lg"
+                  initial={false}
+                  animate={searchTerm ? { scale: 1.04, boxShadow: '0 0 0 4px #a259c633, 0 8px 32px 0 rgba(162,89,198,0.12)' } : { scale: 1, boxShadow: '0 2px 16px 0 rgba(162,89,198,0.08)' }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="relative w-full h-12 flex items-center rounded-full bg-white/70 backdrop-blur-xl border-2 border-[#a259c6] focus-within:border-[#7f3fa7] transition-colors">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] opacity-80">
+                      <Search className="w-5 h-5" />
+                    </span>
+                    <input
+                      type="text"
+                      aria-label="Search by name"
+                      placeholder="Search by name..."
+                      value={searchTerm}
+                      onChange={e => setSearchTerm(e.target.value)}
+                      className="h-12 w-full pl-12 pr-4 rounded-full bg-transparent text-[#4f1b59] placeholder:text-gray-400 focus:outline-none text-base font-medium"
+                    />
+                  </div>
+                </motion.div>
+              </div>
               {/* Mobile filter toggle */}
               <Button
                 variant="outline"

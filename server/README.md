@@ -1,6 +1,6 @@
 # LoopIn IET Portal - Backend Server
 
-This is the backend server for the LoopIn IET Portal, built with Node.js, Express, and MySQL.
+This is the backend server for the LoopIn IET Portal, now using Supabase (PostgreSQL) as the database and storage backend.
 
 ## Setup Instructions
 
@@ -9,10 +9,8 @@ This is the backend server for the LoopIn IET Portal, built with Node.js, Expres
 Create a `.env` file in the `server` directory with the following content:
 
 ```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=shrey123
-DB_NAME=loopin_portal
+SUPABASE_URL=https://fjyjzkaidooclhqgweai.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeWp6a2FpZG9vY2xocWd3ZWFpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTg4MzIyOSwiZXhwIjoyMDY3NDU5MjI5fQ.ptN1u2bg-SeUolWXR-9nzcd6-r-PFJx217gBxld1spI
 PORT=3001
 ```
 
@@ -22,15 +20,7 @@ PORT=3001
 npm install
 ```
 
-### 3. Initialize Database
-
-Run the database initialization script to create tables and insert dummy data:
-
-```bash
-npm run init-db
-```
-
-### 4. Start the Server
+### 3. Start the Server
 
 For development (with auto-restart):
 ```bash
@@ -54,6 +44,8 @@ The server will start on port 3001 (or the port specified in your .env file).
 - `GET /api/announcements/recent` - Get recent announcements (for homepage)
 
 ## Database Schema
+
+The schema is managed in Supabase. You can view and edit tables using the Supabase dashboard.
 
 ### team_members
 - id (INT, AUTO_INCREMENT, PRIMARY KEY)
@@ -83,4 +75,8 @@ The server will start on port 3001 (or the port specified in your .env file).
 - content (TEXT)
 - date (DATE)
 - priority (ENUM: 'low', 'medium', 'high')
-- created_at (TIMESTAMP) 
+- created_at (TIMESTAMP)
+
+## Storage
+
+Images and files are now managed using Supabase Storage. Refer to the Supabase dashboard for managing buckets and files. 

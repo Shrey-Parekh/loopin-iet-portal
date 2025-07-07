@@ -7,34 +7,34 @@
   opacity: 1;
   pointer-events: none;
   transform: skewX(-20deg);
-  filter: blur(4px) drop-shadow(0 0 32px #fff) drop-shadow(0 0 64px #fff) drop-shadow(0 0 128px #fff);
+  filter: blur(4px) drop-shadow(0 0 48px #fff) drop-shadow(0 0 96px #fff);
   border-left: 2px solid #fff;
   border-right: 2px solid #fff;
-  box-sizing: border-box;
   transition: filter 0.2s;
+  z-index: 30;
 }
 
 @keyframes glimmer {
   0% {
     left: -60%;
     opacity: 0.4;
-    filter: blur(4px) drop-shadow(0 0 24px #fff) drop-shadow(0 0 48px #fff);
+    filter: blur(4px) drop-shadow(0 0 24px #fff);
     transform: skewX(-20deg) scaleY(1);
   }
   20% {
     opacity: 1;
     filter: blur(8px) drop-shadow(0 0 64px #fff) drop-shadow(0 0 128px #fff);
-    transform: skewX(-20deg) scaleY(1.14);
+    transform: skewX(-20deg) scaleY(1.13);
   }
   60% {
     opacity: 1;
     filter: blur(8px) drop-shadow(0 0 64px #fff) drop-shadow(0 0 128px #fff);
-    transform: skewX(-20deg) scaleY(1.14);
+    transform: skewX(-20deg) scaleY(1.13);
   }
   100% {
     left: 110%;
     opacity: 0.4;
-    filter: blur(4px) drop-shadow(0 0 24px #fff) drop-shadow(0 0 48px #fff);
+    filter: blur(4px) drop-shadow(0 0 24px #fff);
     transform: skewX(-20deg) scaleY(1);
   }
 }

@@ -150,3 +150,4 @@ INSERT INTO users (user_id, password, name, role) VALUES ('testuser3', 'password
 INSERT INTO users (user_id, password, name, role) VALUES ('testuser4', 'password123', 'Test User', 'member'); 
 INSERT INTO users (user_id, password, name, role) VALUES ('testuser5', 'password123', 'Test User', 'member'); 
 INSERT INTO users (user_id, password, name, role) VALUES ('testuser6', 'password123', 'Test User', 'member'); 
+INSERT INTO users (user_id, password, name, role) VALUES ('testuser7', 'password123', 'Test User', 'member'); 
