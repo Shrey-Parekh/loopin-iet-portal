@@ -5,7 +5,7 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Hero = () => {
   // Scroll animations for each main element
-  const badgeRef = useScrollAnimation(0.1, 'animate-fade-in-up') as React.RefObject<HTMLDivElement>;
+  const badgeRef = useScrollAnimation(0.1, 'animate-fade-in') as React.RefObject<HTMLDivElement>;
   const headingRef = useScrollAnimation(0.1, 'animate-scale-in') as React.RefObject<HTMLHeadingElement>;
   const subtitleRef = useScrollAnimation(0.1, 'animate-fade-in-up-late') as React.RefObject<HTMLParagraphElement>;
   const ctaRef = useScrollAnimation(0.1, 'animate-fade-in-up-latest') as React.RefObject<HTMLDivElement>;
@@ -59,8 +59,8 @@ const Hero = () => {
             </span>
           </div>
           {/* REVISED heading */}
-          <h1 ref={headingRef} className="text-5xl md:text-7xl font-extrabold mb-4 text-white leading-tight tracking-tight drop-shadow-2xl">
-            <span className="animate-text-gradient bg-gradient-to-r from-purple-200 via-white to-purple-200 bg-clip-text text-transparent">
+          <h1 ref={headingRef} className="text-5xl md:text-7xl font-normal mb-4 text-white leading-tight tracking-tight drop-shadow-2xl font-[Bevan,serif]">
+            <span className="animate-text-gradient bg-gradient-to-r from-purple-200 via-white to-purple-200 bg-clip-text text-transparent font-[Bevan,serif] font-normal">
               Welcome to LoopIn
             </span>
           </h1>

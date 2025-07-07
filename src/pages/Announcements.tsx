@@ -244,32 +244,6 @@ const Announcements = () => {
               );
             })}
           </AnimatePresence>
-
-          {/* Newsletter subscription */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            className="mt-20 text-center bg-white/80 backdrop-blur-xl rounded-2xl p-12 shadow-xl border border-white/20 max-w-4xl mx-auto"
-            animate={{ scale: 1 }}
-            whileHover={{ scale: 1.02, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.12)' }}
-          >
-            <Bell className="w-12 h-12 text-[#a259c6] mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-4 text-[#2d1b3d]">
-              Never Miss an Update
-            </h3>
-            <p className="text-gray-600 mb-6 max-w-xl mx-auto">
-              Subscribe to get notifications about new announcements and important updates
-            </p>
-            <motion.button
-              className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] hover:from-[#4f1b59] hover:to-[#a259c6] text-white px-8 py-3 rounded-full font-semibold shadow-lg transition-all"
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              Subscribe to Notifications
-            </motion.button>
-          </motion.div>
         </div>
       </div>
     </div>

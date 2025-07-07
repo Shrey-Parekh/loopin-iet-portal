@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-export const useScrollAnimation = (threshold: number = 0.1, animationClass: string = 'animate-fade-in-up') => {
-  const elementRef = useRef<HTMLElement>(null);
+export const useScrollAnimation = <T extends HTMLElement = HTMLElement>(threshold: number = 0.1, animationClass: string = 'animate-fade-in-up') => {
+  const elementRef = useRef<T>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -12,8 +12,6 @@ const Footer = () => {
   const resourceLinks = [
     { name: 'Newsletter', href: '/newsletter' },
     { name: 'Contact Us', href: '/contact' },
-    { name: 'Privacy Policy', href: '/privacy' },
-    { name: 'Terms of Service', href: '/terms' },
   ];
   
   const socialLinks = [
@@ -29,8 +27,8 @@ const Footer = () => {
   );
 
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-800/60 mt-20">
-      <div className="container mx-auto px-8 py-12">
+    <footer className="bg-gradient-to-t from-gray-100 via-white to-white dark:from-gray-900 dark:via-gray-900/80 dark:to-gray-900 border-t border-gray-200 dark:border-gray-800/60 mt-20">
+      <div className="container mx-auto px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Logo and About */}
           <div className="col-span-1 md:col-span-2 lg:col-span-1">
@@ -43,14 +41,14 @@ const Footer = () => {
                 <p className="text-sm text-gray-500 dark:text-gray-400">IET Committee</p>
               </div>
             </Link>
-            <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-              Connecting and empowering the next generation of engineers and innovators.
+            <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mt-2">
+            Build Connect & Grow!
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-bold text-lg text-[#333333] dark:text-white mb-4">Quick Links</h3>
+            <h3 className="font-bold text-lg text-[#333333] dark:text-white mb-4 tracking-wide">Quick Links</h3>
             <nav className="flex flex-col space-y-3">
               {quickLinks.map(link => <FooterLink key={link.name} href={link.href}>{link.name}</FooterLink>)}
             </nav>
@@ -58,7 +56,7 @@ const Footer = () => {
 
           {/* Resources */}
           <div>
-            <h3 className="font-bold text-lg text-[#333333] dark:text-white mb-4">Resources</h3>
+            <h3 className="font-bold text-lg text-[#333333] dark:text-white mb-4 tracking-wide">Resources</h3>
             <nav className="flex flex-col space-y-3">
               {resourceLinks.map(link => <FooterLink key={link.name} href={link.href}>{link.name}</FooterLink>)}
             </nav>
@@ -66,15 +64,15 @@ const Footer = () => {
 
           {/* Social and Contact */}
           <div>
-            <h3 className="font-bold text-lg text-[#333333] dark:text-white mb-4">Get in Touch</h3>
-            <div className="flex space-x-4">
+            <h3 className="font-bold text-lg text-[#333333] dark:text-white mb-4 tracking-wide">Get in Touch</h3>
+            <div className="flex space-x-4 mb-2">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-purple-100 dark:hover:bg-purple-600/50 text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-white transition-all duration-300"
+                  className="p-3 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-purple-100 dark:hover:bg-purple-600/50 text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-white transition-all duration-300 shadow-md"
                   aria-label={social.name}
                 >
                   <social.icon className="w-5 h-5" />
@@ -86,8 +84,7 @@ const Footer = () => {
             </p>
           </div>
         </div>
-
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-800/60 pt-8 flex flex-col sm:flex-row items-center justify-between">
+        <div className="mt-14 border-t border-gray-200 dark:border-gray-800/60 pt-8 flex flex-col sm:flex-row items-center justify-between">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             &copy; {new Date().getFullYear()} LoopIn IET Committee. All rights reserved.
           </p>

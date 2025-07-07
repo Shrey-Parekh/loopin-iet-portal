@@ -7,9 +7,9 @@ import UpcomingEvents from '../components/UpcomingEvents';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Index = () => {
-  const quickActionsRef = useScrollAnimation(0.15, 'animate-fade-in-up');
-  const announcementsRef = useScrollAnimation(0.15, 'animate-fade-in-up-late');
-  const eventsRef = useScrollAnimation(0.15, 'animate-fade-in-up-latest');
+  const quickActionsRef = useScrollAnimation<HTMLDivElement>(0.15, 'animate-fade-in-up');
+  const announcementsRef = useScrollAnimation<HTMLDivElement>(0.15, 'animate-fade-in-up-late');
+  const eventsRef = useScrollAnimation<HTMLDivElement>(0.15, 'animate-fade-in-up-latest');
 
   return (
     <div className="min-h-screen bg-white">
