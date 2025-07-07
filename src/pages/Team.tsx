@@ -434,46 +434,33 @@ const Team = () => {
                     variants={containerVariants}
                   >
                     {(members as any[]).map((member, j) => (
-                      <motion.div
+                      <div
                         key={member.id}
-                        className="group relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 flex flex-col items-center transition-all duration-300 cursor-pointer overflow-hidden"
-                        variants={cardVariants}
-                        whileHover="hover"
+                        className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 flex flex-col items-center transition-all duration-300 cursor-pointer overflow-hidden"
                         style={{
                           background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,246,255,0.8) 100%)',
                           boxShadow: '0 20px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.2)'
                         }}
                       >
-                        {/* Glimmer glass effect overlay */}
-                        <span className="pointer-events-none absolute inset-0 z-20 rounded-3xl overflow-hidden">
-                          <span className="glimmer-effect group-hover:animate-glimmer" />
-                        </span>
-                        {/* Animated gradient border effect */}
-                        <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#a259c6] via-[#4f1b59] to-[#a259c6] opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-                        
-                        {/* Avatar with enhanced styling */}
+                        {/* Glimmer glass effect overlay removed */}
+                        {/* Animated gradient border effect removed */}
                         <div className="relative mb-6">
                           <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#a259c6] to-[#4f1b59] p-1 shadow-xl">
                             <img
                               src={member.image || '/placeholder.svg'}
-                          alt={member.name}
+                              alt={member.name}
                               className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
                               onError={(e) => {
                                 e.currentTarget.src = '/placeholder.svg';
                               }}
                             />
                           </div>
-                          {/* Position badge */}
                           <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-[#7c3aed] to-[#4f1b59] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
                             {member.position_hierarchy}
                           </div>
                         </div>
-                        
-                        {/* Member info */}
                         <h3 className="text-xl font-bold text-[#2d1b3d] mb-2 text-center">{member.name}</h3>
                         <p className="text-sm text-purple-700 font-medium mb-3 text-center">{member.department}</p>
-                        
-                        {/* Member type badge */}
                         <div className="mb-4">
                           <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
                             member.member_type === 'super_core' 
@@ -485,57 +472,45 @@ const Team = () => {
                             {member.member_type?.replace('_', ' ').toUpperCase() || 'MEMBER'}
                           </span>
                         </div>
-                        
-                        {/* Bio */}
                         {member.bio && (
                           <p className="text-sm text-gray-700 text-center mb-6 line-clamp-3 leading-relaxed">
                             {member.bio}
                           </p>
                         )}
-                        
-                        {/* Enhanced social links */}
                         <div className="flex gap-4 mt-auto">
                           {member.linkedin && (
-                            <motion.a 
+                            <a 
                               href={member.linkedin} 
                               target="_blank" 
                               rel="noopener noreferrer" 
-                              className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                              whileHover={{ scale: 1.1, y: -2 }}
-                              whileTap={{ scale: 0.95 }}
+                              className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
                             >
                               <Linkedin className="w-5 h-5" />
-                            </motion.a>
+                            </a>
                           )}
                           {member.github && (
-                            <motion.a 
+                            <a 
                               href={member.github} 
                               target="_blank" 
                               rel="noopener noreferrer" 
-                              className="p-3 rounded-full bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                              whileHover={{ scale: 1.1, y: -2 }}
-                              whileTap={{ scale: 0.95 }}
+                              className="p-3 rounded-full bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-lg"
                             >
                               <Github className="w-5 h-5" />
-                            </motion.a>
+                            </a>
                           )}
                           {member.Instagram && (
-                            <motion.a 
+                            <a 
                               href={member.Instagram} 
                               target="_blank" 
                               rel="noopener noreferrer" 
-                              className="p-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                              whileHover={{ scale: 1.1, y: -2 }}
-                              whileTap={{ scale: 0.95 }}
+                              className="p-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg"
                             >
                               <Instagram className="w-5 h-5" />
-                            </motion.a>
+                            </a>
                           )}
                         </div>
-                        
-                        {/* Hover effect overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#a259c6]/10 to-[#4f1b59]/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </motion.div>
+                        {/* Hover effect overlay removed */}
+                      </div>
                     ))}
                   </motion.div>
                 </motion.div>

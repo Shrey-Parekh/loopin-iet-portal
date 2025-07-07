@@ -37,14 +37,17 @@ const DEPARTMENT_OPTIONS = [
 
 // Add 50 hobbies and 50 tags
 const HOBBY_OPTIONS = [
-  'Reading', 'Writing', 'Drawing', 'Painting', 'Photography', 'Cooking', 'Baking', 'Gardening', 'Traveling', 'Hiking',
-  'Cycling', 'Running', 'Swimming', 'Dancing', 'Singing', 'Playing Guitar', 'Playing Piano', 'Playing Drums', 'Chess', 'Board Games',
-  'Video Games', 'Coding', 'Blogging', 'Podcasting', 'Yoga', 'Meditation', 'Fishing', 'Camping', 'Bird Watching', 'Collecting',
-  'Knitting', 'Sewing', 'Origami', 'Calligraphy', 'Scrapbooking', 'Magic Tricks', 'Martial Arts', 'Surfing', 'Skateboarding', 'Skiing',
-  'Snowboarding', 'Rock Climbing', 'Volunteering', 'Astronomy', 'Investing', 'Languages', 'Public Speaking', 'Comics', 'Anime', 'DIY Projects',
-  'Pottery', 'Woodworking', 'Leathercraft', 'Metalworking', 'Jewelry Making', 'Soap Making', 'Candle Making', 'Model Building', 'Lego', 'RC Cars',
-  'Geocaching', 'Parkour', 'Archery', 'Fencing', 'Golf', 'Tennis', 'Badminton', 'Table Tennis', 'Squash', 'Bowling', 'Paintball',
-  'Laser Tag', 'Escape Rooms', 'Trivia', 'Fantasy Sports', 'Cosplay', 'Makeup Art', 'Fashion Design', 'Thrifting', 'Antiquing', 'Wine Tasting'
+    "Singing", "Dancing", "Instruments", "Painting", "Photography", "Acting", "Movies", "Music", "Crafting", "Writing",
+    "Cricket", "Badminton", "Football", "Kabaddi", "Yoga", "Gym", "Running", "Cycling", "Swimming", "TableTennis",
+    "Trekking", "Birdwatching", "Nature", "Camping",
+    "Cooking", "Baking", "Dining", "Foodblogging",
+    "Gaming", "Boardgames", "Puzzles", "Cardgames",
+    "SocialMedia", "Vlogging", "Podcasting", "Memes", "Coding", "Trading", "BingeWatching", "TechExploring",
+    "Traveling", "Backpacking", "Sightseeing", "Roadtrips",
+    "Reading", "Languages", "Speaking", "Quizzing",
+    "Volunteering", "Festivals", "Spirituality", "Pets",
+    "Collecting", "Fashion", "Decorating", "Anime",
+    "Streaming", "Esports", "Kpop", "Thrifting"
 ];
 const TAG_OPTIONS = [
   'Leadership', 'Teamwork', 'Creativity', 'Problem Solving', 'Critical Thinking', 'Communication', 'Adaptability', 'Time Management', 'Organization', 'Empathy',
@@ -503,6 +506,7 @@ const Profile = () => {
                     )}
                   </AnimatePresence>
                   <div className="text-xs text-gray-400 mt-1">{selectedHobbies.length} / 10 selected</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Won't be visible to others.</div>
               </div>
               {/* Tags */}
               <div className="flex flex-col gap-2">
@@ -547,6 +551,7 @@ const Profile = () => {
                     )}
                   </AnimatePresence>
                   <div className="text-xs text-gray-400 mt-1">{selectedTags.length} / 10 selected</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Won't be visible to others.</div>
                 </div>
               {/* Button */}
               <div>

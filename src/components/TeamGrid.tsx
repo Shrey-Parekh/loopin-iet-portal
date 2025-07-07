@@ -67,12 +67,12 @@ const TeamGrid = ({ members, loading, error }: TeamGridProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {members.map((member) => (
-        <Card key={member.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-2">
+        <Card key={member.id} className="shadow-lg transition-all duration-300 overflow-hidden hover:shadow-2xl hover:scale-105">
           <div className="relative">
             <img 
               src={member.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face'} 
               alt={member.name}
-              className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+              className="w-full h-64 object-cover transition-transform duration-300"
             />
             <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1">
               <span className="text-sm font-medium text-[#4f1b59]">{member.role}</span>
@@ -107,28 +107,28 @@ const TeamGrid = ({ members, loading, error }: TeamGridProps) => {
             
             <div className="flex items-center space-x-2">
               {member.linkedin && (
-                <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
+                <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white hover:scale-110 hover:shadow-lg transition-all duration-200" asChild>
                   <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
-                <Linkedin className="w-4 h-4" />
+                    <Linkedin className="w-4 h-4" />
                   </a>
-              </Button>
+                </Button>
               )}
               {member.github && (
-                <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
+                <Button size="sm" variant="outline" className="p-2 hover:bg-[#333] hover:text-white hover:scale-110 hover:shadow-lg transition-all duration-200" asChild>
                   <a href={member.github} target="_blank" rel="noopener noreferrer">
-                <Github className="w-4 h-4" />
+                    <Github className="w-4 h-4" />
                   </a>
                 </Button>
               )}
               {member.twitter && (
-                <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
+                <Button size="sm" variant="outline" className="p-2 hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-600 hover:text-white hover:scale-110 hover:shadow-lg transition-all duration-200" asChild>
                   <a href={member.twitter} target="_blank" rel="noopener noreferrer">
                     <Twitter className="w-4 h-4" />
                   </a>
                 </Button>
               )}
               {member.email && (
-                <Button size="sm" variant="outline" className="p-2 hover:bg-[#4f1b59] hover:text-white" asChild>
+                <Button size="sm" variant="outline" className="p-2 hover:bg-blue-500 hover:text-white hover:scale-110 hover:shadow-lg transition-all duration-200" asChild>
                   <a href={`mailto:${member.email}`}>
                     <Mail className="w-4 h-4" />
                   </a>
