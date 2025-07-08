@@ -6,8 +6,8 @@ interface ApiResponse<T> {
   error: string | null;
 }
 
-// Use environment variable for backend API URL, fallback to relative for local dev
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+// Use relative URL for Vite proxy
+const API_BASE_URL = '/api';
 
 export function useApi<T>(endpoint: string): ApiResponse<T> {
   const [data, setData] = useState<T | null>(null);
