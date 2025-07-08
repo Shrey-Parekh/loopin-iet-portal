@@ -6,7 +6,10 @@ require('dotenv').config();
 const app = express();
 const port = 3001;
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://your-frontend-url.vercel.app', // TODO: Replace with your actual Vercel frontend URL
+  credentials: true
+}));
 app.use(express.json({ limit: '20mb' }));
 
 // Supabase client
