@@ -7,10 +7,10 @@ const app = express();
 const port = 3001;
 
 app.use(cors({
-  origin: 'https://your-frontend-url.vercel.app', // TODO: Replace with your actual Vercel frontend URL
+  origin: 'https://loopin-iet-portal-ss9n.vercel.app/', // TODO: Replace with your actual Vercel frontend URL
   credentials: true
 }));
-app.use(express.json({ limit: '20mb' }));
+app.use(express.json({ limit: '45mb' }));
 
 // Supabase client
 const SUPABASE_URL = 'https://fjyjzkaidooclhqgweai.supabase.co';
