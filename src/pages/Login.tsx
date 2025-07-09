@@ -33,7 +33,7 @@ const Login = () => {
     setLoading(true);
     setResetMessage('');
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch('https://loopin-iet-portal-1.onrender.com/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: formData.userId, password: formData.password })
@@ -63,7 +63,7 @@ const Login = () => {
     setLoading(true);
     setResetMessage('');
     try {
-      const res = await fetch('/api/reset-password', {
+      const res = await fetch('https://loopin-iet-portal-1.onrender.com/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: formData.userId })

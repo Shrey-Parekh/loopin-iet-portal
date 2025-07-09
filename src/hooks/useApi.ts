@@ -7,7 +7,7 @@ interface ApiResponse<T> {
 }
 
 // Use relative URL for Vite proxy
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://loopin-iet-portal-1.onrender.com';
 
 export function useApi<T>(endpoint: string): ApiResponse<T> {
   const [data, setData] = useState<T | null>(null);

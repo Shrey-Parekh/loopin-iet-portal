@@ -34,7 +34,7 @@ const Contact = () => {
     setError('');
     setSuccess(false);
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://loopin-iet-portal-1.onrender.com/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

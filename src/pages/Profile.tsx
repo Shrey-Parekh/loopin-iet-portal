@@ -96,7 +96,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/profile/${userId}`);
+        const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${userId}`);
         if (!res.ok) {
           throw new Error('Failed to fetch profile.');
         }
@@ -194,7 +194,7 @@ const Profile = () => {
       let res;
       if (profile.id) {
         // Update existing profile
-        res = await fetch(`/api/profile/${profile.id}`, {
+        res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${profile.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -206,7 +206,7 @@ const Profile = () => {
         });
       } else {
         // Create new profile
-        res = await fetch('/api/profile', {
+        res = await fetch('https://loopin-iet-portal-1.onrender.com/api/profile', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -246,7 +246,7 @@ const Profile = () => {
       let res;
       if (profile.id) {
         // Update existing profile
-        res = await fetch(`/api/profile/${profile.id}`, {
+        res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${profile.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -258,7 +258,7 @@ const Profile = () => {
         });
       } else {
         // Create new profile
-        res = await fetch('/api/profile', {
+        res = await fetch('https://loopin-iet-portal-1.onrender.com/api/profile', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

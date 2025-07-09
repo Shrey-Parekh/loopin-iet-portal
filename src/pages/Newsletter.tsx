@@ -50,7 +50,7 @@ const Newsletter = () => {
     if (!email || submitting) return;
     setSubmitting(true);
     try {
-      const res = await fetch('/api/newsletters/subscribe', {
+      const res = await fetch('https://loopin-iet-portal-1.onrender.com/api/newsletters/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

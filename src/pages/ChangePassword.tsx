@@ -35,7 +35,7 @@ const ChangePassword = () => {
     }
     setLoading(true);
     try {
-      const res = await fetch('/api/change-password', {
+      const res = await fetch('https://loopin-iet-portal-1.onrender.com/api/change-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, currentPassword, newPassword })
