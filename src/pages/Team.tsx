@@ -32,7 +32,7 @@ const POSITIONS = [
   'Member'
 ];
 
-// Member types for additional filtering
+// Update MEMBER_TYPES and all filter labels/options to use 'executive' instead of 'member'.
 const MEMBER_TYPES = [
   'super_core',
   'core',

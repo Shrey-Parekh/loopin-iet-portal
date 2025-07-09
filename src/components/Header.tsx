@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Menu, X, User, LogIn, FileText, Users, Calendar, Settings, MessageSquare, Phone } from 'lucide-react';
+import { Menu, X, User, LogIn, FileText, Users, Calendar, Settings, MessageSquare, Phone, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -11,6 +11,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const Header = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const navItems = [
-    { name: 'Home', href: '/', icon: Settings },
+    { name: 'Home', href: '/', icon: Home },
     { name: 'Team', href: '/team', icon: Users },
     { name: 'Events', href: '/events', icon: Calendar },
     { name: 'Newsletter', href: '/newsletter', icon: FileText },
@@ -126,7 +127,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         <div className={cn(
-          "md:hidden transition-all duration-300 overflow-hidden",
+          "md:hidden transition-all duration-300 overflow-hidden w-80",
           isMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         )}>
           <nav className="flex flex-col space-y-2 pb-4">
@@ -150,7 +151,7 @@ const Header = () => {
             <div className="border-t border-gray-200 dark:border-gray-800 mt-4 pt-4 flex flex-col space-y-3">
               {isLoggedIn ? (
                 <div className="relative group">
-                  <Avatar className="cursor-pointer border-2 border-purple-500 shadow-sm mx-auto">
+                  <Avatar className="cursor-pointer border-2 border-purple-500 shadow-sm mx-auto" onClick={() => setShowProfileModal(true)}>
                     <motion.div
                       whileHover={{ scale: 1.13, rotate: 8 }}
                       whileTap={{ scale: 0.97, rotate: -8 }}
@@ -160,13 +161,20 @@ const Header = () => {
                       <User className="w-7 h-7 text-purple-600" />
                     </motion.div>
                   </Avatar>
-                  <div className="static mt-4 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20 opacity-100 transition-opacity duration-200 pointer-events-auto">
-                    <Link to="/profile" className="block px-4 py-3 text-gray-700 hover:bg-purple-50">Profile</Link>
-                    <button
-                      className="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50"
-                      onClick={() => { localStorage.removeItem('isLoggedIn'); localStorage.removeItem('userId'); setIsLoggedIn(false); }}
-                    >Logout</button>
-                  </div>
+                  {/* Change the dropdown div to be absolutely positioned, centered horizontally, and with a higher z-index. */}
+                  {showProfileModal && (
+                    <>
+                      <div className="fixed inset-0 bg-black/40 z-50" onClick={() => setShowProfileModal(false)} />
+                      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 bg-white border border-gray-200 rounded-2xl shadow-2xl z-50 p-6 flex flex-col items-center">
+                        <Link to="/profile" className="block w-full px-4 py-4 text-gray-700 hover:bg-purple-50 rounded-lg text-base font-semibold text-center mb-2" onClick={() => setShowProfileModal(false)}>Profile</Link>
+                        <button
+                          className="w-full text-center px-4 py-4 text-red-600 hover:bg-red-50 rounded-lg text-base font-semibold"
+                          onClick={() => { localStorage.removeItem('isLoggedIn'); localStorage.removeItem('userId'); setIsLoggedIn(false); setShowProfileModal(false); }}
+                        >Logout</button>
+                        <button className="mt-4 text-xs text-gray-400 hover:text-gray-700" onClick={() => setShowProfileModal(false)}>Close</button>
+                      </div>
+                    </>
+                  )}
               </div>
               ) : (
                 <Button asChild variant="outline" className="w-full text-purple-600 border-purple-500 shadow-sm">
