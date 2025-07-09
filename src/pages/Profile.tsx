@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus, Sparkles, CheckCircle, Loader2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { Label } from '@/components/ui/label';
 
 const ROLE_OPTIONS = [
   { label: 'Super Core', value: 'super_core' },
@@ -56,6 +57,11 @@ const TAG_OPTIONS = [
   'Goal-oriented', 'Listener', 'Planner', 'Negotiation', 'Mentoring', 'Coaching', 'Research', 'Presentation', 'Writing', 'Design',
   'Tech-savvy', 'Multitasking', 'Decision Making', 'Learning', 'Self-starter', 'Energetic', 'Supportive', 'Friendly', 'Detail-oriented', 'Fast Learner'
 ];
+
+// 1. Add COURSE_OPTIONS, YEAR_OPTIONS, STREAM_OPTIONS at the top
+const COURSE_OPTIONS = ["B. Tech.", "BTI", "MCA", "M. Tech"];
+const YEAR_OPTIONS = ["1", "2", "3", "4", "5", "6"];
+const STREAM_OPTIONS = ["AI", "CS", "CE", "DS", "EXTC", "Cyber", "IT", "CSDS", "CSBS", "Mech", "MXTC", "MCA"];
 
 const fieldAnim = {
   hidden: { opacity: 0, y: 32 },
@@ -201,7 +207,10 @@ const Profile = () => {
             ...profile,
             user_id: userId,
             hobbies: selectedHobbies,
-            tags: selectedTags
+            tags: selectedTags,
+            course: profile.course || '',
+            year: profile.year || '',
+            stream: profile.stream || '',
           }),
         });
       } else {
@@ -213,7 +222,10 @@ const Profile = () => {
             ...profile,
             user_id: userId,
             hobbies: selectedHobbies,
-            tags: selectedTags
+            tags: selectedTags,
+            course: profile.course || '',
+            year: profile.year || '',
+            stream: profile.stream || '',
           }),
         });
         if (res.ok) {
@@ -253,7 +265,10 @@ const Profile = () => {
             ...profile,
             user_id: userId,
             hobbies: selectedHobbies,
-            tags: selectedTags
+            tags: selectedTags,
+            course: profile.course || '',
+            year: profile.year || '',
+            stream: profile.stream || '',
           }),
         });
       } else {
@@ -265,7 +280,10 @@ const Profile = () => {
             ...profile,
             user_id: userId,
             hobbies: selectedHobbies,
-            tags: selectedTags
+            tags: selectedTags,
+            course: profile.course || '',
+            year: profile.year || '',
+            stream: profile.stream || '',
           }),
         });
         if (res.ok) {
@@ -463,6 +481,59 @@ const Profile = () => {
               <div className="relative group">
                 <Textarea name="bio" value={profile.bio || ''} onChange={handleChange} rows={4} placeholder="Tell us about yourself..." className="text-lg px-5 py-4 min-h-[100px] rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200" />
                   </div>
+              {/* Academic Details */}
+              <div className="bg-gradient-to-br from-[#f8f5fc] via-[#e9d8fd] to-[#f3eafd] rounded-2xl shadow-lg p-6 mb-6 flex flex-col gap-4 border border-[#a259c6]/10">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  {/* Course */}
+                  <div className="flex-1">
+                    <Label htmlFor="course" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                      <Briefcase className="w-5 h-5 text-[#a259c6]" /> Course
+                    </Label>
+                    <Select name="course" value={profile.course || ''} onValueChange={val => handleSelect('course', val)}>
+                      <SelectTrigger id="course" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
+                        <SelectValue placeholder="Select course" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {COURSE_OPTIONS.map(option => (
+                          <SelectItem key={option} value={option}>{option}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {/* Year */}
+                  <div className="flex-1">
+                    <Label htmlFor="year" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                      <Sparkles className="w-5 h-5 text-[#a259c6]" /> Year
+                    </Label>
+                    <Select name="year" value={profile.year || ''} onValueChange={val => handleSelect('year', val)}>
+                      <SelectTrigger id="year" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
+                        <SelectValue placeholder="Select year" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {YEAR_OPTIONS.map(option => (
+                          <SelectItem key={option} value={option}>{option} {option === "1" ? 'st' : option === "2" ? 'nd' : option === "3" ? 'rd' : 'th'} year</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {/* Stream */}
+                  <div className="flex-1">
+                    <Label htmlFor="stream" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                      <Building2 className="w-5 h-5 text-[#a259c6]" /> Stream
+                    </Label>
+                    <Select name="stream" value={profile.stream || ''} onValueChange={val => handleSelect('stream', val)}>
+                      <SelectTrigger id="stream" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
+                        <SelectValue placeholder="Select stream" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {STREAM_OPTIONS.map(option => (
+                          <SelectItem key={option} value={option}>{option}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
               {/* Hobbies */}
               <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
@@ -669,6 +740,25 @@ const Profile = () => {
                   <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><User className="w-5 h-5" />Bio</div>
                   <div className="text-gray-700 whitespace-pre-line text-lg mt-1">{profile.bio || '-'}</div>
                 </div>
+                {/* Academic Details in view mode */}
+                {(profile.course || profile.year || profile.stream) && (
+                  <div className="border-t border-purple-100 pt-6">
+                    <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1">
+                      <Briefcase className="w-5 h-5" /> Academic Details
+                    </div>
+                    <div className="flex flex-wrap gap-4 mt-1 text-base text-gray-800">
+                      {profile.course && (
+                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#e9d8fd] to-[#f3eafd] text-[#4f1b59] font-semibold shadow-sm">{profile.course}</span>
+                      )}
+                      {profile.year && (
+                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#f8f5fc] to-[#e9d8fd] text-[#4f1b59] font-semibold shadow-sm">{profile.year}{profile.year === "1" ? 'st' : profile.year === "2" ? 'nd' : profile.year === "3" ? 'rd' : 'th'} year</span>
+                      )}
+                      {profile.stream && (
+                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#f3e8fd] to-[#e9d8fd] text-[#4f1b59] font-semibold shadow-sm">{profile.stream}</span>
+                      )}
+                    </div>
+                  </div>
+                )}
                 <div className="border-t border-purple-100 pt-6">
                   <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><span className="w-5 h-5 inline-block"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L6 21m0 0l-3.75-4M6 21V3m12 0l3.75 4M18 3v18m0 0l-3.75-4" /></svg></span>Hobbies</div>
                   <div className="flex flex-wrap gap-2 mt-1">
