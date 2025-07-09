@@ -25,7 +25,7 @@ const POSITION_OPTIONS = [
   'Head',
   'Subhead',
   'Executive',
-  'Faculty mentor',
+  'Mentor',
 ];
 const DEPARTMENT_OPTIONS = [
   'Technicals',
@@ -322,7 +322,7 @@ const Profile = () => {
     } else if (memberType === 'executive') {
       return ['Executive'];
     } else if (memberType === 'mentor') {
-      return ['Faculty mentor'];
+      return ['Mentor'];
     }
     return POSITION_OPTIONS;
   };
