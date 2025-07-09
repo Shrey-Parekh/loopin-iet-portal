@@ -366,6 +366,7 @@ app.put('/api/profile/:id', (req, res) => {
     course,
     year,
     stream,
+    timetable_image,
   } = req.body;
   if (!user_id) return res.status(400).json({ error: 'user_id is required' });
   if (Array.isArray(hobbies)) hobbies = hobbies.join(',');
@@ -386,6 +387,7 @@ app.put('/api/profile/:id', (req, res) => {
     course,
     year,
     stream,
+    timetable_image,
   }).eq('id', id).eq('user_id', user_id).then(result => {
     if (result.error) {
       console.error('Error updating profile:', result.error.message);
@@ -417,6 +419,7 @@ app.post('/api/profile', (req, res) => {
     course,
     year,
     stream,
+    timetable_image,
   } = req.body;
   if (!user_id) return res.status(400).json({ error: 'user_id is required' });
   if (Array.isArray(hobbies)) hobbies = hobbies.join(',');
@@ -439,6 +442,7 @@ app.post('/api/profile', (req, res) => {
       course,
       year,
       stream,
+      timetable_image,
     })
     .select()
     .then(result => {

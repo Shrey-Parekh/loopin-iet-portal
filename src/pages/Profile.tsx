@@ -570,17 +570,27 @@ const Profile = () => {
                 </div>
               </div>
               {/* Timetable Photo Upload */}
-              <div className="flex flex-col gap-2 mt-4">
+              <div className="flex flex-col gap-2 mt-4 items-start">
                 <Label htmlFor="timetable_image" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
                   <Sparkles className="w-5 h-5 text-[#a259c6]" /> Timetable Photo
                 </Label>
-                <input
-                  type="file"
-                  name="timetable_image"
-                  accept="image/*"
-                  onChange={handleChange}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#a259c6]/10 file:text-[#a259c6] hover:file:bg-[#a259c6]/20"
-                />
+                <div className="flex items-center gap-4">
+                  <label htmlFor="timetable_image" className="cursor-pointer inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white rounded-lg shadow hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200 font-semibold">
+                    <Camera className="w-5 h-5 mr-2" />
+                    {profile.timetable_image ? 'Change Timetable' : 'Choose Timetable'}
+                  </label>
+                  <input
+                    id="timetable_image"
+                    type="file"
+                    name="timetable_image"
+                    accept="image/*"
+                    onChange={handleChange}
+                    className="hidden"
+                  />
+                  {profile.timetable_image && (
+                    <span className="text-sm text-[#a259c6] font-medium">Selected</span>
+                  )}
+                </div>
                 {profile.timetable_image && (
                   <img src={profile.timetable_image} alt="Timetable" className="mt-2 rounded-lg shadow max-w-xs max-h-60 border border-[#a259c6]/30" />
                 )}
@@ -855,9 +865,11 @@ const Profile = () => {
                   </div>
                 )}
                 {profile.timetable_image && (
-                  <div className="mt-8">
-                    <div className="font-semibold text-[#a259c6] mb-2">Timetable</div>
-                    <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 border border-[#a259c6]/30" />
+                  <div className="flex flex-col items-center mt-8 mb-8">
+                    <div className="font-semibold text-[#a259c6] mb-2 text-lg">Timetable</div>
+                    <div className="bg-white rounded-xl shadow-lg border border-[#a259c6]/20 p-4 flex flex-col items-center max-w-xs">
+                      <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 border border-[#a259c6]/30 object-contain" />
+                    </div>
                   </div>
                 )}
                 <div className="border-t border-purple-100 pt-6">
