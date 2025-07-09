@@ -142,8 +142,9 @@ const Profile = () => {
     fetchProfile();
   }, [userId, isLoggedIn]);
 
+  // In handleRoleChange, if value is 'super_core' or 'mentor', set department to null
   const handleRoleChange = (value: string) => {
-    setProfile((p: any) => ({ ...p, member_type: value }));
+    setProfile((p: any) => ({ ...p, member_type: value, department: (value === 'super_core' || value === 'mentor') ? null : p.department }));
     setShowDept(value !== 'super_core');
   };
 
@@ -155,6 +156,13 @@ const Profile = () => {
         setProfile((p: any) => ({ ...p, image: reader.result }));
       };
       reader.readAsDataURL(files[0]);
+    } else if (name === 'timetable_image' && files && files[0]) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfile((p: any) => ({ ...p, timetable_image: reader.result }));
+      };
+      reader.readAsDataURL(files[0]);
+      return;
     } else {
       setProfile((p: any) => ({ ...p, [name]: value }));
     }
@@ -220,6 +228,7 @@ const Profile = () => {
             course: profile.course || '',
             year: profile.year || '',
             stream: profile.stream || '',
+            timetable_image: profile.timetable_image || '',
           }),
         });
       } else {
@@ -235,6 +244,7 @@ const Profile = () => {
             course: profile.course || '',
             year: profile.year || '',
             stream: profile.stream || '',
+            timetable_image: profile.timetable_image || '',
           }),
         });
         if (res.ok) {
@@ -278,6 +288,7 @@ const Profile = () => {
             course: profile.course || '',
             year: profile.year || '',
             stream: profile.stream || '',
+            timetable_image: profile.timetable_image || '',
           }),
         });
       } else {
@@ -293,6 +304,7 @@ const Profile = () => {
             course: profile.course || '',
             year: profile.year || '',
             stream: profile.stream || '',
+            timetable_image: profile.timetable_image || '',
           }),
         });
         if (res.ok) {
@@ -844,6 +856,12 @@ const Profile = () => {
                     {(!profile.tags || profile.tags.length === 0) && selectedTags.length === 0 && <span className="text-gray-400">-</span>}
                   </div>
                 </div>
+                {profile.timetable_image && (
+                  <div className="mt-8">
+                    <div className="font-semibold text-[#a259c6] mb-2">Timetable</div>
+                    <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 border border-[#a259c6]/30" />
+                  </div>
+                )}
                 <div className="flex justify-end mt-6">
                   <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-10 py-4 rounded-xl shadow-lg font-bold text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => setEditMode(true)}>
                     Edit Profile

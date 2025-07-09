@@ -35,7 +35,8 @@ const POSITIONS = [
 const MEMBER_TYPES = [
   'super_core',
   'core',
-  'member'
+  'executive',
+  'mentor',
 ];
 
 const Team = () => {
