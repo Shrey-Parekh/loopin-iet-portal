@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus, Sparkles, CheckCircle, Loader2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Label } from '@/components/ui/label';
 
 const ROLE_OPTIONS = [
@@ -98,6 +98,10 @@ const Profile = () => {
   // Simulate fetching userId from localStorage or context
   const userId = localStorage.getItem('userId') || '';
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const { id: routeId } = useParams();
+
+  // Determine if viewing own profile or another's
+  const isOwnProfile = !routeId || routeId === userId;
 
   useEffect(() => {
     // Debug: log localStorage state
@@ -111,25 +115,26 @@ const Profile = () => {
     const fetchProfile = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${userId}`);
+        const fetchId = routeId || userId;
+        const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${fetchId}`);
         if (!res.ok) {
           throw new Error('Failed to fetch profile.');
         }
         const data = await res.json();
         if (!data) {
-          setProfileWarning('No profile exists for this user. You can fill out your profile below.');
+          setProfileWarning('No profile exists for this user.');
           setProfile({});
           setShowDept(false);
           setSelectedHobbies([]);
           setSelectedTags([]);
-          setEditMode(true);
+          setEditMode(isOwnProfile); // Only allow edit if own profile
         } else {
           setProfileWarning(null);
           setProfile(data);
           setShowDept(data?.member_type !== 'super_core');
           if (data?.hobbies && Array.isArray(data.hobbies)) setSelectedHobbies(data.hobbies);
           if (data?.tags && Array.isArray(data.tags)) setSelectedTags(data.tags);
-          setEditMode(!data);
+          setEditMode(isOwnProfile ? !data : false); // Only allow edit if own profile
         }
       } catch (e) {
         setProfileWarning('Error loading profile. Please try again or contact support.');
@@ -140,7 +145,7 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [userId, isLoggedIn]);
+  }, [userId, isLoggedIn, routeId]);
 
   // In handleRoleChange, if value is 'super_core' or 'mentor', set department to null
   const handleRoleChange = (value: string) => {
@@ -864,30 +869,7 @@ const Profile = () => {
                     </div>
                   </div>
                 )}
-                {/* Timetable image (view mode, after tags) */}
-                {!editMode && profile.timetable_image && (
-                  <div className="flex flex-col items-center mt-8 mb-8">
-                    <div className="font-semibold text-[#a259c6] mb-2 text-lg flex items-center gap-2">
-                      <Sparkles className="w-5 h-5 text-[#a259c6]" /> Timetable
-                      <a
-                        href={profile.timetable_image}
-                        download="timetable.jpg"
-                        className="ml-2 px-2 py-1 text-xs bg-[#a259c6]/10 text-[#a259c6] rounded hover:bg-[#a259c6]/20 transition"
-                        title="Download timetable"
-                      >
-                        Download
-                      </a>
-                    </div>
-                    <div className="bg-white rounded-xl shadow-lg border border-[#a259c6]/20 p-4 flex flex-col items-center max-w-xs w-full">
-                      <img
-                        src={profile.timetable_image}
-                        alt="Timetable"
-                        className="rounded-lg shadow max-w-full max-h-72 border border-[#a259c6]/30 object-contain"
-                        style={{ background: '#f8f5fc' }}
-                      />
-                    </div>
-                  </div>
-                )}
+                {/* Hobbies */}
                 <div className="border-t border-purple-100 pt-6">
                   <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><span className="w-5 h-5 inline-block"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L6 21m0 0l-3.75-4M6 21V3m12 0l3.75 4M18 3v18m0 0l-3.75-4" /></svg></span>Hobbies</div>
                   <div className="flex flex-wrap gap-2 mt-1">
@@ -906,12 +888,31 @@ const Profile = () => {
                     {(!profile.tags || profile.tags.length === 0) && selectedTags.length === 0 && <span className="text-gray-400">-</span>}
                   </div>
                 </div>
-                <div className="flex justify-end mt-6">
-                  <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-10 py-4 rounded-xl shadow-lg font-bold text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => setEditMode(true)}>
-                    Edit Profile
-                  </Button>
-                </div>
+                {isOwnProfile && (
+                  <div className="flex justify-end mt-6">
+                    <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-10 py-4 rounded-xl shadow-lg font-bold text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => setEditMode(true)}>
+                      Edit Profile
+                    </Button>
+                  </div>
+                )}
               </div>
+              {/* In the non-edit (view) mode, move the timetable image card to be the last child inside the main white profile card div. */}
+              {!editMode && profile.timetable_image && (
+                <div className="flex flex-col items-center mt-8 mb-8 w-full">
+                  <div className="font-semibold text-[#a259c6] mb-2 text-lg flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-[#a259c6]" /> Timetable
+                    <a
+                      href={profile.timetable_image}
+                      download="timetable.jpg"
+                      className="ml-2 px-2 py-1 text-xs bg-[#a259c6]/10 text-[#a259c6] rounded hover:bg-[#a259c6]/20 transition"
+                      title="Download timetable"
+                    >
+                      Download
+                    </a>
+                  </div>
+                  <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 md:max-w-lg md:max-h-96 border border-[#a259c6]/30 object-contain" />
+                </div>
+              )}
             </div>
           </motion.div>
         )}

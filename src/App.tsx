@@ -40,6 +40,7 @@ const App = () => (
             <Route path="/profile" element={
               isUserAuthenticated() ? <Profile /> : <Navigate to="/login" />
             } />
+            <Route path="/profile/:id" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
