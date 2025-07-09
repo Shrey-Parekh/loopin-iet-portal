@@ -569,6 +569,22 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
+              {/* Timetable Photo Upload */}
+              <div className="flex flex-col gap-2 mt-4">
+                <Label htmlFor="timetable_image" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                  <Sparkles className="w-5 h-5 text-[#a259c6]" /> Timetable Photo
+                </Label>
+                <input
+                  type="file"
+                  name="timetable_image"
+                  accept="image/*"
+                  onChange={handleChange}
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#a259c6]/10 file:text-[#a259c6] hover:file:bg-[#a259c6]/20"
+                />
+                {profile.timetable_image && (
+                  <img src={profile.timetable_image} alt="Timetable" className="mt-2 rounded-lg shadow max-w-xs max-h-60 border border-[#a259c6]/30" />
+                )}
+              </div>
               {/* Hobbies */}
               <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
@@ -838,6 +854,12 @@ const Profile = () => {
                     </div>
                   </div>
                 )}
+                {profile.timetable_image && (
+                  <div className="mt-8">
+                    <div className="font-semibold text-[#a259c6] mb-2">Timetable</div>
+                    <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 border border-[#a259c6]/30" />
+                  </div>
+                )}
                 <div className="border-t border-purple-100 pt-6">
                   <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><span className="w-5 h-5 inline-block"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L6 21m0 0l-3.75-4M6 21V3m12 0l3.75 4M18 3v18m0 0l-3.75-4" /></svg></span>Hobbies</div>
                   <div className="flex flex-wrap gap-2 mt-1">
@@ -856,12 +878,6 @@ const Profile = () => {
                     {(!profile.tags || profile.tags.length === 0) && selectedTags.length === 0 && <span className="text-gray-400">-</span>}
                   </div>
                 </div>
-                {profile.timetable_image && (
-                  <div className="mt-8">
-                    <div className="font-semibold text-[#a259c6] mb-2">Timetable</div>
-                    <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 border border-[#a259c6]/30" />
-                  </div>
-                )}
                 <div className="flex justify-end mt-6">
                   <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-10 py-4 rounded-xl shadow-lg font-bold text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => setEditMode(true)}>
                     Edit Profile
