@@ -13,16 +13,19 @@ import { Label } from '@/components/ui/label';
 const ROLE_OPTIONS = [
   { label: 'Super Core', value: 'super_core' },
   { label: 'Core', value: 'core' },
-  { label: 'Executive', value: 'member' },
+  { label: 'Executive', value: 'executive' },
+  { label: 'Mentor', value: 'mentor' },
 ];
 const POSITION_OPTIONS = [
   'Chairperson',
   'Vice-chairperson',
   'Secretary',
   'Director',
+  'Treasurer',
   'Head',
   'Subhead',
-  'Member',
+  'Executive',
+  'Faculty mentor',
 ];
 const DEPARTMENT_OPTIONS = [
   'Technicals',
@@ -310,6 +313,20 @@ const Profile = () => {
     }
   };
 
+  // Add filteredPositionOptions based on member_type
+  const getFilteredPositions = (memberType: string) => {
+    if (memberType === 'super_core') {
+      return ['Chairperson', 'Vice-chairperson', 'Secretary', 'Director', 'Treasurer'];
+    } else if (memberType === 'core') {
+      return ['Head', 'Subhead'];
+    } else if (memberType === 'executive') {
+      return ['Executive'];
+    } else if (memberType === 'mentor') {
+      return ['Faculty mentor'];
+    }
+    return POSITION_OPTIONS;
+  };
+
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
       {localStorageWarning && (
@@ -439,7 +456,7 @@ const Profile = () => {
                         </SelectContent>
                       </Select>
                 </div>
-                {showDept && (
+                {showDept && profile.member_type !== 'mentor' && (
                   <div className="flex-1 relative group">
                     <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
                         <Select value={profile.department || ''} onValueChange={v => handleSelect('department', v)}>
@@ -461,7 +478,7 @@ const Profile = () => {
                           <SelectValue placeholder="Select position" />
                         </SelectTrigger>
                         <SelectContent>
-                          {POSITION_OPTIONS.map(opt => (
+                          {getFilteredPositions(profile.member_type || '').map(opt => (
                             <SelectItem key={opt} value={opt}>{opt}</SelectItem>
                           ))}
                         </SelectContent>
@@ -589,11 +606,17 @@ const Profile = () => {
                           <Plus className="w-4 h-4" />
                         </button>
                         {addingCustomHobby && (
-                          <form onSubmit={e => { e.preventDefault(); if (customHobby.trim()) { setSelectedHobbies(prev => prev.length < 10 ? [...prev, customHobby.trim()] : prev); setCustomHobby(''); setAddingCustomHobby(false); } }} className="flex gap-2 mt-2">
-                            <Input value={customHobby} onChange={e => setCustomHobby(e.target.value)} placeholder="Custom hobby" className="h-8 text-sm" />
-                            <Button type="submit" size="sm">Add</Button>
+                          <div className="flex gap-2 mt-2">
+                            <Input value={customHobby} onChange={e => setCustomHobby(e.target.value)} placeholder="Custom hobby" className="h-8 text-sm" autoFocus />
+                            <Button type="button" size="sm" onClick={() => {
+                              if (customHobby.trim() && !selectedHobbies.includes(customHobby.trim()) && selectedHobbies.length < 10) {
+                                setSelectedHobbies(prev => [...prev, customHobby.trim()]);
+                                setCustomHobby('');
+                                setAddingCustomHobby(false);
+                              }
+                            }}>Add</Button>
                             <Button type="button" size="sm" variant="ghost" onClick={() => { setCustomHobby(''); setAddingCustomHobby(false); }}>Cancel</Button>
-                          </form>
+                          </div>
                         )}
                       </motion.div>
                     )}
@@ -650,11 +673,17 @@ const Profile = () => {
                           <Plus className="w-4 h-4" />
                         </button>
                         {addingCustomTag && (
-                          <form onSubmit={e => { e.preventDefault(); if (customTag.trim()) { setSelectedTags(prev => prev.length < 10 ? [...prev, customTag.trim()] : prev); setCustomTag(''); setAddingCustomTag(false); } }} className="flex gap-2 mt-2">
-                            <Input value={customTag} onChange={e => setCustomTag(e.target.value)} placeholder="Custom tag" className="h-8 text-sm" />
-                            <Button type="submit" size="sm">Add</Button>
+                          <div className="flex gap-2 mt-2">
+                            <Input value={customTag} onChange={e => setCustomTag(e.target.value)} placeholder="Custom tag" className="h-8 text-sm" autoFocus />
+                            <Button type="button" size="sm" onClick={() => {
+                              if (customTag.trim() && !selectedTags.includes(customTag.trim()) && selectedTags.length < 10) {
+                                setSelectedTags(prev => [...prev, customTag.trim()]);
+                                setCustomTag('');
+                                setAddingCustomTag(false);
+                              }
+                            }}>Add</Button>
                             <Button type="button" size="sm" variant="ghost" onClick={() => { setCustomTag(''); setAddingCustomTag(false); }}>Cancel</Button>
-                          </form>
+                          </div>
                         )}
                       </motion.div>
                     )}
@@ -749,7 +778,7 @@ const Profile = () => {
                     <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Briefcase className="w-5 h-5" />Role</div>
                     <div className="text-gray-800 text-lg font-medium">{ROLE_OPTIONS.find(r => r.value === profile.member_type)?.label || '-'}</div>
                   </div>
-                  {profile.member_type !== 'super_core' && (
+                  {profile.member_type !== 'mentor' && (
                     <div>
                       <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Building2 className="w-5 h-5" />Department</div>
                       <div className="text-gray-800 text-lg font-medium">{profile.department || '-'}</div>
