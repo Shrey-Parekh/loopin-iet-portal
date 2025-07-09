@@ -864,11 +864,27 @@ const Profile = () => {
                     </div>
                   </div>
                 )}
-                {profile.timetable_image && (
+                {/* Timetable image (view mode, after tags) */}
+                {!editMode && profile.timetable_image && (
                   <div className="flex flex-col items-center mt-8 mb-8">
-                    <div className="font-semibold text-[#a259c6] mb-2 text-lg">Timetable</div>
-                    <div className="bg-white rounded-xl shadow-lg border border-[#a259c6]/20 p-4 flex flex-col items-center max-w-xs">
-                      <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 border border-[#a259c6]/30 object-contain" />
+                    <div className="font-semibold text-[#a259c6] mb-2 text-lg flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-[#a259c6]" /> Timetable
+                      <a
+                        href={profile.timetable_image}
+                        download="timetable.jpg"
+                        className="ml-2 px-2 py-1 text-xs bg-[#a259c6]/10 text-[#a259c6] rounded hover:bg-[#a259c6]/20 transition"
+                        title="Download timetable"
+                      >
+                        Download
+                      </a>
+                    </div>
+                    <div className="bg-white rounded-xl shadow-lg border border-[#a259c6]/20 p-4 flex flex-col items-center max-w-xs w-full">
+                      <img
+                        src={profile.timetable_image}
+                        alt="Timetable"
+                        className="rounded-lg shadow max-w-full max-h-72 border border-[#a259c6]/30 object-contain"
+                        style={{ background: '#f8f5fc' }}
+                      />
                     </div>
                   </div>
                 )}
