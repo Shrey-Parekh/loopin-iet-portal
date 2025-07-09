@@ -913,6 +913,39 @@ const Profile = () => {
                   <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 md:max-w-lg md:max-h-96 border border-[#a259c6]/30 object-contain" />
                 </div>
               )}
+              {/* In non-edit mode, if isOwnProfile and profile.timetable_image, show a Remove Timetable button next to Download. */}
+              {!editMode && profile.timetable_image && isOwnProfile && (
+                <button
+                  className="ml-2 px-2 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200 transition"
+                  onClick={async () => {
+                    setProfile((p: any) => ({ ...p, timetable_image: null }));
+                    // Save profile with timetable_image removed
+                    setLoading(true);
+                    try {
+                      const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${profile.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...profile, timetable_image: null }),
+                      });
+                      if (!res.ok) throw new Error('Failed to remove timetable');
+                      toast({ title: 'Timetable removed', description: 'Your timetable was removed from your profile.' });
+                    } catch (e) {
+                      toast({ title: 'Error', description: 'Failed to remove timetable', variant: 'destructive' });
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                  type="button"
+                >Remove Timetable</button>
+              )}
+              {/* In edit mode, if profile.timetable_image, show a Remove button below the image preview. */}
+              {editMode && profile.timetable_image && (
+                <button
+                  className="mt-2 px-3 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200 transition"
+                  onClick={() => setProfile((p: any) => ({ ...p, timetable_image: null }))}
+                  type="button"
+                >Remove Timetable</button>
+              )}
             </div>
           </motion.div>
         )}
