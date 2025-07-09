@@ -86,6 +86,12 @@ const Profile = () => {
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [cardPulse, setCardPulse] = useState(false);
 
+  // 1. Add state for custom hobby/tag input and editing
+  const [customHobby, setCustomHobby] = useState('');
+  const [addingCustomHobby, setAddingCustomHobby] = useState(false);
+  const [customTag, setCustomTag] = useState('');
+  const [addingCustomTag, setAddingCustomTag] = useState(false);
+
   // Simulate fetching userId from localStorage or context
   const userId = localStorage.getItem('userId') || '';
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -573,6 +579,22 @@ const Profile = () => {
                             {hobby}
                           </button>
                         ))}
+                        {/* Add custom hobby input */}
+                        <button
+                          type="button"
+                          className="px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150 bg-white/80 border-gray-300 text-[#a259c6] hover:bg-[#a259c6]/10 hover:scale-105 flex items-center gap-1"
+                          onClick={() => setAddingCustomHobby(true)}
+                          aria-label="Add custom hobby"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                        {addingCustomHobby && (
+                          <form onSubmit={e => { e.preventDefault(); if (customHobby.trim()) { setSelectedHobbies(prev => prev.length < 10 ? [...prev, customHobby.trim()] : prev); setCustomHobby(''); setAddingCustomHobby(false); } }} className="flex gap-2 mt-2">
+                            <Input value={customHobby} onChange={e => setCustomHobby(e.target.value)} placeholder="Custom hobby" className="h-8 text-sm" />
+                            <Button type="submit" size="sm">Add</Button>
+                            <Button type="button" size="sm" variant="ghost" onClick={() => { setCustomHobby(''); setAddingCustomHobby(false); }}>Cancel</Button>
+                          </form>
+                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -618,6 +640,22 @@ const Profile = () => {
                             {tag}
                           </button>
                         ))}
+                        {/* Add custom tag input */}
+                        <button
+                          type="button"
+                          className="px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150 bg-white/80 border-gray-300 text-[#a259c6] hover:bg-[#a259c6]/10 hover:scale-105 flex items-center gap-1"
+                          onClick={() => setAddingCustomTag(true)}
+                          aria-label="Add custom tag"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                        {addingCustomTag && (
+                          <form onSubmit={e => { e.preventDefault(); if (customTag.trim()) { setSelectedTags(prev => prev.length < 10 ? [...prev, customTag.trim()] : prev); setCustomTag(''); setAddingCustomTag(false); } }} className="flex gap-2 mt-2">
+                            <Input value={customTag} onChange={e => setCustomTag(e.target.value)} placeholder="Custom tag" className="h-8 text-sm" />
+                            <Button type="submit" size="sm">Add</Button>
+                            <Button type="button" size="sm" variant="ghost" onClick={() => { setCustomTag(''); setAddingCustomTag(false); }}>Cancel</Button>
+                          </form>
+                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>

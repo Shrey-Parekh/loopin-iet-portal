@@ -461,6 +461,13 @@ const Team = () => {
                         </div>
                         <h3 className="text-xl font-bold text-[#2d1b3d] mb-2 text-center">{member.name}</h3>
                         <p className="text-sm text-purple-700 font-medium mb-3 text-center">{member.department}</p>
+                        {(member.course || member.year || member.stream) && (
+                          <div className="mb-2 text-xs text-gray-600 text-center">
+                            {member.course && <span className="font-semibold">{member.course}</span>}
+                            {member.year && <span> &middot; {member.year}{member.year === "1" ? 'st' : member.year === "2" ? 'nd' : member.year === "3" ? 'rd' : 'th'} year</span>}
+                            {member.stream && <span> &middot; {member.stream}</span>}
+                          </div>
+                        )}
                         <div className="mb-4">
                           <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
                             member.member_type === 'super_core' 
