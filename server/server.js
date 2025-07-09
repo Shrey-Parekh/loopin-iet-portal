@@ -442,6 +442,12 @@ app.post('/api/profile', (req, res) => {
     });
 });
 
+app.post('/api/contact', (req, res) => {
+  // You can process the contact form data here (e.g., save to DB, send email, etc.)
+  // For now, just return a success response
+  res.json({ success: true, message: 'Contact form submitted!' });
+});
+
 app.listen(port, () => {
   console.log(`🚀 Server is running on port ${port}`);
 });

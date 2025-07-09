@@ -88,37 +88,37 @@ export function useTeamMembers(filters?: {
 
 // Specific hooks for different data types
 export function useTeam() {
-  return useApi('/team');
+  return useApi('/api/team');
 }
 
 export function useSuperCore() {
-  return useApi('/team/super-core');
+  return useApi('/api/team/super-core');
 }
 
 export function useCore() {
-  return useApi('/team/core');
+  return useApi('/api/team/core');
 }
 
 export function useDepartments() {
-  return useApi('/departments');
+  return useApi('/api/departments');
 }
 
 export function useEvents() {
-  return useApi('/events');
+  return useApi('/api/events');
 }
 
 export function useUpcomingEvents() {
-  return useApi('/events/upcoming');
+  return useApi('/api/events/upcoming');
 }
 
 export function useAnnouncements() {
-  return useApi('/announcements');
+  return useApi('/api/announcements');
 }
 
 export function useRecentAnnouncements() {
-  return useApi('/announcements/recent');
+  return useApi('/api/announcements/recent');
 }
 
 export function useNewsletters() {
-  return useApi('/newsletters');
+  return useApi('/api/newsletters');
 } 
