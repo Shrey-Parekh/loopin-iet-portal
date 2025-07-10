@@ -20,6 +20,7 @@ const Contact = () => {
   const [error, setError] = useState('');
   const [sendState, setSendState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [pulse, setPulse] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -59,7 +60,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email Us',
-      content: 'committee@iet.edu',
+      content: 'iet.mpstme.core@gmail.com',
       description: 'Send us an email anytime'
     },
     {
@@ -285,19 +286,24 @@ const Contact = () => {
             >
               {/* Quick Contact Info */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {contactInfo.map((info, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6 text-center hover:shadow-2xl transition-all"
+                {contactInfo.map((info, idx) => (
+                  <div
+                    key={info.title}
+                    className={`flex items-center gap-4 p-4 rounded-xl shadow bg-white/70 border border-[#a259c6]/10 mb-4 transition-all duration-200 ${info.title === 'Email Us' ? 'cursor-pointer hover:bg-[#a259c6]/10' : ''}`}
+                    onClick={info.title === 'Email Us' ? async () => {
+                      await navigator.clipboard.writeText(info.content);
+                      setEmailCopied(true);
+                      setTimeout(() => setEmailCopied(false), 1500);
+                    } : undefined}
+                    title={info.title === 'Email Us' ? 'Click to copy email' : undefined}
                   >
-                    <info.icon className="w-8 h-8 text-[#a259c6] mx-auto mb-3" />
-                    <h3 className="font-semibold text-[#2d1b3d] mb-1">{info.title}</h3>
-                      <p className="text-[#4f1b59] font-medium mb-1">{info.content}</p>
-                      <p className="text-sm text-gray-600">{info.description}</p>
-                  </motion.div>
+                    <info.icon className="w-6 h-6 text-[#a259c6]" />
+                    <div>
+                      <div className="font-semibold text-[#4f1b59]">{info.title}</div>
+                      <div className="text-sm text-[#a259c6] font-mono">{info.content}</div>
+                      <div className="text-xs text-gray-500">{info.description}</div>
+                    </div>
+                  </div>
                 ))}
               </div>
 
@@ -367,6 +373,16 @@ const Contact = () => {
       <style>{`
         .animate-shake { animation: shake 0.4s; }
         @keyframes shake { 10%, 90% { transform: translateX(-2px); } 20%, 80% { transform: translateX(4px); } 30%, 50%, 70% { transform: translateX(-8px); } 40%, 60% { transform: translateX(8px); } }
+      `}</style>
+      {emailCopied && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-[#a259c6] text-white px-6 py-3 rounded-xl shadow-lg z-50 text-base font-semibold animate-slide-in-up">
+          Email copied to clipboard!
+        </div>
+      )}
+      {/* Add animation for slide-in-up */}
+      <style>{`
+        @keyframes slide-in-up { from { opacity: 0; transform: translateY(40px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .animate-slide-in-up { animation: slide-in-up 0.4s cubic-bezier(.4,0,.2,1) both; }
       `}</style>
     </div>
   );

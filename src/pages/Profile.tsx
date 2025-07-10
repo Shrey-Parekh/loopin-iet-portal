@@ -32,7 +32,6 @@ const DEPARTMENT_OPTIONS = [
   'Research',
   'Digital Creatives',
   'Inhouse Creatives',
-  'SMCW',
   'Social Media and Content Writing',
   'Photography',
   'Logistics',
