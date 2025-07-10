@@ -40,6 +40,13 @@ const MEMBER_TYPES = [
   'member'
 ];
 
+function getYearSuffix(year) {
+  if (year === 1) return 'st';
+  if (year === 2) return 'nd';
+  if (year === 3) return 'rd';
+  return 'th';
+}
+
 const Team = () => {
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
@@ -475,7 +482,7 @@ const Team = () => {
                         {(member.course || member.year || member.stream) && (
                           <div className="mb-2 text-xs text-gray-600 text-center">
                             {member.course && <span className="font-semibold">{member.course}</span>}
-                            {member.year && <span> &middot; {member.year}{member.year === 1 ? 'st' : member.year === 2 ? 'nd' : member.year === 3 ? 'rd' : 'th'} year</span>}
+                            {member.year && <span> &middot; {member.year}{getYearSuffix(member.year)} year</span>}
                             {member.stream && <span> &middot; {member.stream}</span>}
                           </div>
                         )}
