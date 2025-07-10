@@ -41,9 +41,10 @@ const MEMBER_TYPES = [
 ];
 
 function getYearSuffix(year) {
-  if (year === 1) return 'st';
-  if (year === 2) return 'nd';
-  if (year === 3) return 'rd';
+  const n = Number(year);
+  if (n === 1) return 'st';
+  if (n === 2) return 'nd';
+  if (n === 3) return 'rd';
   return 'th';
 }
 
