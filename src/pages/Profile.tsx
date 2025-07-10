@@ -7,31 +7,29 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus, Sparkles, CheckCircle, Loader2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Label } from '@/components/ui/label';
 
 const ROLE_OPTIONS = [
   { label: 'Super Core', value: 'super_core' },
   { label: 'Core', value: 'core' },
-  { label: 'Executive', value: 'executive' },
-  { label: 'Mentor', value: 'mentor' },
+  { label: 'Executive', value: 'member' },
 ];
 const POSITION_OPTIONS = [
   'Chairperson',
   'Vice-chairperson',
   'Secretary',
   'Director',
-  'Treasurer',
   'Head',
   'Subhead',
-  'Executive',
-  'Mentor',
+  'Member',
 ];
 const DEPARTMENT_OPTIONS = [
   'Technicals',
   'Research',
   'Digital Creatives',
   'Inhouse Creatives',
+  'SMCW',
   'Social Media and Content Writing',
   'Photography',
   'Logistics',
@@ -60,9 +58,8 @@ const TAG_OPTIONS = [
   'Tech-savvy', 'Multitasking', 'Decision Making', 'Learning', 'Self-starter', 'Energetic', 'Supportive', 'Friendly', 'Detail-oriented', 'Fast Learner'
 ];
 
-// 1. Add COURSE_OPTIONS, YEAR_OPTIONS, STREAM_OPTIONS at the top
 const COURSE_OPTIONS = ["B. Tech.", "BTI", "MCA", "M. Tech"];
-const YEAR_OPTIONS = ["1", "2", "3", "4", "5", "6"];
+const YEAR_OPTIONS = [1, 2, 3, 4, 5, 6];
 const STREAM_OPTIONS = ["AI", "CS", "CE", "DS", "EXTC", "Cyber", "IT", "CSDS", "CSBS", "Mech", "MXTC", "MCA"];
 
 const fieldAnim = {
@@ -88,19 +85,9 @@ const Profile = () => {
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [cardPulse, setCardPulse] = useState(false);
 
-  // 1. Add state for custom hobby/tag input and editing
-  const [customHobby, setCustomHobby] = useState('');
-  const [addingCustomHobby, setAddingCustomHobby] = useState(false);
-  const [customTag, setCustomTag] = useState('');
-  const [addingCustomTag, setAddingCustomTag] = useState(false);
-
   // Simulate fetching userId from localStorage or context
   const userId = localStorage.getItem('userId') || '';
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const { id: routeId } = useParams();
-
-  // Determine if viewing own profile or another's
-  const isOwnProfile = !routeId || routeId === userId;
 
   useEffect(() => {
     // Debug: log localStorage state
@@ -114,26 +101,25 @@ const Profile = () => {
     const fetchProfile = async () => {
       setLoading(true);
       try {
-        const fetchId = routeId || userId;
-        const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${fetchId}`);
+        const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${userId}`);
         if (!res.ok) {
           throw new Error('Failed to fetch profile.');
         }
         const data = await res.json();
         if (!data) {
-          setProfileWarning('No profile exists for this user.');
+          setProfileWarning('No profile exists for this user. You can fill out your profile below.');
           setProfile({});
           setShowDept(false);
           setSelectedHobbies([]);
           setSelectedTags([]);
-          setEditMode(isOwnProfile); // Only allow edit if own profile
+          setEditMode(true);
         } else {
           setProfileWarning(null);
           setProfile(data);
           setShowDept(data?.member_type !== 'super_core');
           if (data?.hobbies && Array.isArray(data.hobbies)) setSelectedHobbies(data.hobbies);
           if (data?.tags && Array.isArray(data.tags)) setSelectedTags(data.tags);
-          setEditMode(isOwnProfile ? !data : false); // Only allow edit if own profile
+          setEditMode(!data);
         }
       } catch (e) {
         setProfileWarning('Error loading profile. Please try again or contact support.');
@@ -144,11 +130,10 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [userId, isLoggedIn, routeId]);
+  }, [userId, isLoggedIn]);
 
-  // In handleRoleChange, if value is 'super_core' or 'mentor', set department to null
   const handleRoleChange = (value: string) => {
-    setProfile((p: any) => ({ ...p, member_type: value, department: (value === 'super_core' || value === 'mentor') ? null : p.department }));
+    setProfile((p: any) => ({ ...p, member_type: value }));
     setShowDept(value !== 'super_core');
   };
 
@@ -160,13 +145,6 @@ const Profile = () => {
         setProfile((p: any) => ({ ...p, image: reader.result }));
       };
       reader.readAsDataURL(files[0]);
-    } else if (name === 'timetable_image' && files && files[0]) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setProfile((p: any) => ({ ...p, timetable_image: reader.result }));
-      };
-      reader.readAsDataURL(files[0]);
-      return;
     } else {
       setProfile((p: any) => ({ ...p, [name]: value }));
     }
@@ -231,8 +209,7 @@ const Profile = () => {
             tags: selectedTags,
             course: profile.course || '',
             year: profile.year || '',
-            stream: profile.stream || '',
-            timetable_image: profile.timetable_image || '',
+            stream: profile.stream || ''
           }),
         });
       } else {
@@ -247,8 +224,7 @@ const Profile = () => {
             tags: selectedTags,
             course: profile.course || '',
             year: profile.year || '',
-            stream: profile.stream || '',
-            timetable_image: profile.timetable_image || '',
+            stream: profile.stream || ''
           }),
         });
         if (res.ok) {
@@ -291,8 +267,7 @@ const Profile = () => {
             tags: selectedTags,
             course: profile.course || '',
             year: profile.year || '',
-            stream: profile.stream || '',
-            timetable_image: profile.timetable_image || '',
+            stream: profile.stream || ''
           }),
         });
       } else {
@@ -307,8 +282,7 @@ const Profile = () => {
             tags: selectedTags,
             course: profile.course || '',
             year: profile.year || '',
-            stream: profile.stream || '',
-            timetable_image: profile.timetable_image || '',
+            stream: profile.stream || ''
           }),
         });
         if (res.ok) {
@@ -327,20 +301,6 @@ const Profile = () => {
       setTimeout(() => setSaveState('idle'), 1500);
       toast({ title: 'Error', description: 'Failed to save profile', variant: 'destructive' });
     }
-  };
-
-  // Add filteredPositionOptions based on member_type
-  const getFilteredPositions = (memberType: string) => {
-    if (memberType === 'super_core') {
-      return ['Chairperson', 'Vice-chairperson', 'Secretary', 'Director', 'Treasurer'];
-    } else if (memberType === 'core') {
-      return ['Head', 'Subhead'];
-    } else if (memberType === 'executive') {
-      return ['Executive'];
-    } else if (memberType === 'mentor') {
-      return ['Mentor'];
-    }
-    return POSITION_OPTIONS;
   };
 
   return (
@@ -472,7 +432,7 @@ const Profile = () => {
                         </SelectContent>
                       </Select>
                 </div>
-                {showDept && profile.member_type !== 'mentor' && (
+                {showDept && (
                   <div className="flex-1 relative group">
                     <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
                         <Select value={profile.department || ''} onValueChange={v => handleSelect('department', v)}>
@@ -494,7 +454,7 @@ const Profile = () => {
                           <SelectValue placeholder="Select position" />
                         </SelectTrigger>
                         <SelectContent>
-                          {getFilteredPositions(profile.member_type || '').map(opt => (
+                          {POSITION_OPTIONS.map(opt => (
                             <SelectItem key={opt} value={opt}>{opt}</SelectItem>
                           ))}
                         </SelectContent>
@@ -520,7 +480,7 @@ const Profile = () => {
               <div className="relative group">
                 <Textarea name="bio" value={profile.bio || ''} onChange={handleChange} rows={4} placeholder="Tell us about yourself..." className="text-lg px-5 py-4 min-h-[100px] rounded-xl bg-white/80 shadow-md border-2 border-transparent focus:border-[#a259c6] focus:ring-2 focus:ring-[#a259c6]/30 transition-all duration-200" />
                   </div>
-              {/* Academic Details */}
+              {/* Academic Details Section - styled, no animation */}
               <div className="bg-gradient-to-br from-[#f8f5fc] via-[#e9d8fd] to-[#f3eafd] rounded-2xl shadow-lg p-6 mb-6 flex flex-col gap-4 border border-[#a259c6]/10">
                 <div className="flex flex-col sm:flex-row gap-4">
                   {/* Course */}
@@ -544,13 +504,13 @@ const Profile = () => {
                     <Label htmlFor="year" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
                       <Sparkles className="w-5 h-5 text-[#a259c6]" /> Year
                     </Label>
-                    <Select name="year" value={profile.year || ''} onValueChange={val => handleSelect('year', val)}>
+                    <Select name="year" value={profile.year ? String(profile.year) : ''} onValueChange={val => handleSelect('year', parseInt(val))}>
                       <SelectTrigger id="year" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
                         <SelectValue placeholder="Select year" />
                       </SelectTrigger>
                       <SelectContent>
                         {YEAR_OPTIONS.map(option => (
-                          <SelectItem key={option} value={option}>{option} {option === "1" ? 'st' : option === "2" ? 'nd' : option === "3" ? 'rd' : 'th'} year</SelectItem>
+                          <SelectItem key={option} value={String(option)}>{option} {option === 1 ? 'st' : option === 2 ? 'nd' : option === 3 ? 'rd' : 'th'} year</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -572,32 +532,6 @@ const Profile = () => {
                     </Select>
                   </div>
                 </div>
-              </div>
-              {/* Timetable Photo Upload */}
-              <div className="flex flex-col gap-2 mt-4 items-start">
-                <Label htmlFor="timetable_image" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
-                  <Sparkles className="w-5 h-5 text-[#a259c6]" /> Timetable Photo
-                </Label>
-                <div className="flex items-center gap-4">
-                  <label htmlFor="timetable_image" className="cursor-pointer inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white rounded-lg shadow hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200 font-semibold">
-                    <Camera className="w-5 h-5 mr-2" />
-                    {profile.timetable_image ? 'Change Timetable' : 'Choose Timetable'}
-                  </label>
-                  <input
-                    id="timetable_image"
-                    type="file"
-                    name="timetable_image"
-                    accept="image/*"
-                    onChange={handleChange}
-                    className="hidden"
-                  />
-                  {profile.timetable_image && (
-                    <span className="text-sm text-[#a259c6] font-medium">Selected</span>
-                  )}
-                </div>
-                {profile.timetable_image && (
-                  <img src={profile.timetable_image} alt="Timetable" className="mt-2 rounded-lg shadow max-w-xs max-h-60 border border-[#a259c6]/30" />
-                )}
               </div>
               {/* Hobbies */}
               <div className="flex flex-col gap-2">
@@ -638,28 +572,6 @@ const Profile = () => {
                             {hobby}
                           </button>
                         ))}
-                        {/* Add custom hobby input */}
-                        <button
-                          type="button"
-                          className="px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150 bg-white/80 border-gray-300 text-[#a259c6] hover:bg-[#a259c6]/10 hover:scale-105 flex items-center gap-1"
-                          onClick={() => setAddingCustomHobby(true)}
-                          aria-label="Add custom hobby"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </button>
-                        {addingCustomHobby && (
-                          <div className="flex gap-2 mt-2">
-                            <Input value={customHobby} onChange={e => setCustomHobby(e.target.value)} placeholder="Custom hobby" className="h-8 text-sm" autoFocus />
-                            <Button type="button" size="sm" onClick={() => {
-                              if (customHobby.trim() && !selectedHobbies.includes(customHobby.trim()) && selectedHobbies.length < 10) {
-                                setSelectedHobbies(prev => [...prev, customHobby.trim()]);
-                                setCustomHobby('');
-                                setAddingCustomHobby(false);
-                              }
-                            }}>Add</Button>
-                            <Button type="button" size="sm" variant="ghost" onClick={() => { setCustomHobby(''); setAddingCustomHobby(false); }}>Cancel</Button>
-                          </div>
-                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -705,28 +617,6 @@ const Profile = () => {
                             {tag}
                           </button>
                         ))}
-                        {/* Add custom tag input */}
-                        <button
-                          type="button"
-                          className="px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150 bg-white/80 border-gray-300 text-[#a259c6] hover:bg-[#a259c6]/10 hover:scale-105 flex items-center gap-1"
-                          onClick={() => setAddingCustomTag(true)}
-                          aria-label="Add custom tag"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </button>
-                        {addingCustomTag && (
-                          <div className="flex gap-2 mt-2">
-                            <Input value={customTag} onChange={e => setCustomTag(e.target.value)} placeholder="Custom tag" className="h-8 text-sm" autoFocus />
-                            <Button type="button" size="sm" onClick={() => {
-                              if (customTag.trim() && !selectedTags.includes(customTag.trim()) && selectedTags.length < 10) {
-                                setSelectedTags(prev => [...prev, customTag.trim()]);
-                                setCustomTag('');
-                                setAddingCustomTag(false);
-                              }
-                            }}>Add</Button>
-                            <Button type="button" size="sm" variant="ghost" onClick={() => { setCustomTag(''); setAddingCustomTag(false); }}>Cancel</Button>
-                          </div>
-                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -820,7 +710,7 @@ const Profile = () => {
                     <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Briefcase className="w-5 h-5" />Role</div>
                     <div className="text-gray-800 text-lg font-medium">{ROLE_OPTIONS.find(r => r.value === profile.member_type)?.label || '-'}</div>
                   </div>
-                  {profile.member_type !== 'mentor' && (
+                  {profile.member_type !== 'super_core' && (
                     <div>
                       <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Building2 className="w-5 h-5" />Department</div>
                       <div className="text-gray-800 text-lg font-medium">{profile.department || '-'}</div>
@@ -860,15 +750,14 @@ const Profile = () => {
                         <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#e9d8fd] to-[#f3eafd] text-[#4f1b59] font-semibold shadow-sm">{profile.course}</span>
                       )}
                       {profile.year && (
-                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#f8f5fc] to-[#e9d8fd] text-[#4f1b59] font-semibold shadow-sm">{profile.year}{profile.year === "1" ? 'st' : profile.year === "2" ? 'nd' : profile.year === "3" ? 'rd' : 'th'} year</span>
+                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#f8f5fc] to-[#e9d8fd] text-[#4f1b59] font-semibold shadow-sm">{profile.year}{profile.year === 1 ? 'st' : profile.year === 2 ? 'nd' : profile.year === 3 ? 'rd' : 'th'} year</span>
                       )}
                       {profile.stream && (
-                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#f3e8fd] to-[#e9d8fd] text-[#4f1b59] font-semibold shadow-sm">{profile.stream}</span>
+                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#f3eafd] to-[#e9d8fd] text-[#4f1b59] font-semibold shadow-sm">{profile.stream}</span>
                       )}
                     </div>
                   </div>
                 )}
-                {/* Hobbies */}
                 <div className="border-t border-purple-100 pt-6">
                   <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><span className="w-5 h-5 inline-block"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L6 21m0 0l-3.75-4M6 21V3m12 0l3.75 4M18 3v18m0 0l-3.75-4" /></svg></span>Hobbies</div>
                   <div className="flex flex-wrap gap-2 mt-1">
@@ -887,64 +776,12 @@ const Profile = () => {
                     {(!profile.tags || profile.tags.length === 0) && selectedTags.length === 0 && <span className="text-gray-400">-</span>}
                   </div>
                 </div>
-                {isOwnProfile && (
-                  <div className="flex justify-end mt-6">
-                    <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-10 py-4 rounded-xl shadow-lg font-bold text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => setEditMode(true)}>
-                      Edit Profile
-                    </Button>
-                  </div>
-                )}
-              </div>
-              {/* In the non-edit (view) mode, move the timetable image card to be the last child inside the main white profile card div. */}
-              {!editMode && profile.timetable_image && (
-                <div className="flex flex-col items-center mt-8 mb-8 w-full">
-                  <div className="font-semibold text-[#a259c6] mb-2 text-lg flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-[#a259c6]" /> Timetable
-                    <a
-                      href={profile.timetable_image}
-                      download="timetable.jpg"
-                      className="ml-2 px-2 py-1 text-xs bg-[#a259c6]/10 text-[#a259c6] rounded hover:bg-[#a259c6]/20 transition"
-                      title="Download timetable"
-                    >
-                      Download
-                    </a>
-                  </div>
-                  <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 md:max-w-lg md:max-h-96 border border-[#a259c6]/30 object-contain" />
+                <div className="flex justify-end mt-6">
+                  <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-10 py-4 rounded-xl shadow-lg font-bold text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => setEditMode(true)}>
+                    Edit Profile
+                  </Button>
                 </div>
-              )}
-              {/* In non-edit mode, if isOwnProfile and profile.timetable_image, show a Remove Timetable button next to Download. */}
-              {!editMode && profile.timetable_image && isOwnProfile && (
-                <button
-                  className="ml-2 px-2 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200 transition"
-                  onClick={async () => {
-                    setProfile((p: any) => ({ ...p, timetable_image: null }));
-                    // Save profile with timetable_image removed
-                    setLoading(true);
-                    try {
-                      const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${profile.id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ...profile, timetable_image: null }),
-                      });
-                      if (!res.ok) throw new Error('Failed to remove timetable');
-                      toast({ title: 'Timetable removed', description: 'Your timetable was removed from your profile.' });
-                    } catch (e) {
-                      toast({ title: 'Error', description: 'Failed to remove timetable', variant: 'destructive' });
-                    } finally {
-                      setLoading(false);
-                    }
-                  }}
-                  type="button"
-                >Remove Timetable</button>
-              )}
-              {/* In edit mode, if profile.timetable_image, show a Remove button below the image preview. */}
-              {editMode && profile.timetable_image && (
-                <button
-                  className="mt-2 px-3 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200 transition"
-                  onClick={() => setProfile((p: any) => ({ ...p, timetable_image: null }))}
-                  type="button"
-                >Remove Timetable</button>
-              )}
+              </div>
             </div>
           </motion.div>
         )}
