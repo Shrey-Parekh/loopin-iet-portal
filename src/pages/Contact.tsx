@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useToast } from '@/components/ui/use-toast';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,7 @@ const Contact = () => {
   const [error, setError] = useState('');
   const [sendState, setSendState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [pulse, setPulse] = useState(false);
+  const { toast } = useToast();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -59,7 +61,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email Us',
-      content: 'committee@iet.edu',
+      content: 'iet.mpstme.core@gmail.com',
       description: 'Send us an email anytime'
     },
     {
@@ -285,19 +287,23 @@ const Contact = () => {
             >
               {/* Quick Contact Info */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {contactInfo.map((info, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6 text-center hover:shadow-2xl transition-all"
+                {contactInfo.map((info, idx) => (
+                  <div
+                    key={info.title}
+                    className={`flex items-center gap-4 p-4 rounded-xl shadow bg-white/70 border border-[#a259c6]/10 mb-4 transition-all duration-200 ${info.title === 'Email Us' ? 'cursor-pointer hover:bg-[#a259c6]/10' : ''}`}
+                    onClick={info.title === 'Email Us' ? async () => {
+                      await navigator.clipboard.writeText(info.content);
+                      toast({ title: 'Email copied!', description: 'iet.mpstme.core@gmail.com copied to clipboard.', variant: 'success' });
+                    } : undefined}
+                    title={info.title === 'Email Us' ? 'Click to copy email' : undefined}
                   >
-                    <info.icon className="w-8 h-8 text-[#a259c6] mx-auto mb-3" />
-                    <h3 className="font-semibold text-[#2d1b3d] mb-1">{info.title}</h3>
-                      <p className="text-[#4f1b59] font-medium mb-1">{info.content}</p>
-                      <p className="text-sm text-gray-600">{info.description}</p>
-                  </motion.div>
+                    <info.icon className="w-6 h-6 text-[#a259c6]" />
+                    <div>
+                      <div className="font-semibold text-[#4f1b59]">{info.title}</div>
+                      <div className="text-sm text-[#a259c6] font-mono">{info.content}</div>
+                      <div className="text-xs text-gray-500">{info.description}</div>
+                    </div>
+                  </div>
                 ))}
               </div>
 

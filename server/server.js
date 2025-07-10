@@ -30,21 +30,6 @@ function parseHobbies(str) {
   return str.split(',').map(h => h.trim()).filter(Boolean);
 }
 
-function normalizeDepartment(department) {
-  if (!department) return department;
-  const dep = department.trim().toLowerCase();
-  if (
-    dep === 'social media and content writing' ||
-    dep === 'social media & content writing' ||
-    dep === 'social media/content writing' ||
-    dep === 'smcw' ||
-    dep.replace(/\s|&|\//g, '') === 'socialmediacontentwriting'
-  ) {
-    return 'SMCW';
-  }
-  return department;
-}
-
 // Team API
 app.get('/api/team', async (req, res) => {
   try {
@@ -364,8 +349,6 @@ app.get('/api/profile/:user_id', (req, res) => {
 // Update profile endpoint
 app.put('/api/profile/:id', (req, res) => {
   const { id } = req.params;
-  let profileData = { ...req.body };
-  if (profileData.department) profileData.department = normalizeDepartment(profileData.department);
   let {
     user_id,
     name,
@@ -380,10 +363,11 @@ app.put('/api/profile/:id', (req, res) => {
     hobbies,
     tags,
     email,
-    course,      // new
-    year,        // new
-    stream       // new
-  } = profileData;
+    course,
+    year,
+    stream,
+    timetable_image,
+  } = req.body;
   if (!user_id) return res.status(400).json({ error: 'user_id is required' });
   if (Array.isArray(hobbies)) hobbies = hobbies.join(',');
   if (Array.isArray(tags)) tags = JSON.stringify(tags);
@@ -400,9 +384,10 @@ app.put('/api/profile/:id', (req, res) => {
     hobbies,
     tags,
     email,
-    course,      // new
-    year,        // new
-    stream       // new
+    course,
+    year,
+    stream,
+    timetable_image,
   }).eq('id', id).eq('user_id', user_id).then(result => {
     if (result.error) {
       console.error('Error updating profile:', result.error.message);
@@ -417,8 +402,6 @@ app.put('/api/profile/:id', (req, res) => {
 
 // Create profile endpoint
 app.post('/api/profile', (req, res) => {
-  let profileData = { ...req.body };
-  if (profileData.department) profileData.department = normalizeDepartment(profileData.department);
   let {
     user_id,
     name,
@@ -433,10 +416,11 @@ app.post('/api/profile', (req, res) => {
     hobbies,
     tags,
     email,
-    course,      // new
-    year,        // new
-    stream       // new
-  } = profileData;
+    course,
+    year,
+    stream,
+    timetable_image,
+  } = req.body;
   if (!user_id) return res.status(400).json({ error: 'user_id is required' });
   if (Array.isArray(hobbies)) hobbies = hobbies.join(',');
   if (Array.isArray(tags)) tags = JSON.stringify(tags);
@@ -455,9 +439,10 @@ app.post('/api/profile', (req, res) => {
       hobbies,
       tags,
       email,
-      course,      // new
-      year,        // new
-      stream       // new
+      course,
+      year,
+      stream,
+      timetable_image,
     })
     .select()
     .then(result => {

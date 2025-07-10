@@ -7,7 +7,6 @@ import { X, Filter, Github, Instagram, Linkedin, Users, Award, Building2, Crown,
 import './team-glimmer.css';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/hooks/use-toast';
 
 // Complete list of all departments from database
 const DEPARTMENTS = [
@@ -33,20 +32,13 @@ const POSITIONS = [
   'Member'
 ];
 
-// Member types for additional filtering
+// Update MEMBER_TYPES and all filter labels/options to use 'executive' instead of 'member'.
 const MEMBER_TYPES = [
   'super_core',
   'core',
-  'member'
+  'executive',
+  'mentor',
 ];
-
-function getYearSuffix(year) {
-  const n = Number(year);
-  if (n === 1) return 'st';
-  if (n === 2) return 'nd';
-  if (n === 3) return 'rd';
-  return 'th';
-}
 
 const Team = () => {
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
@@ -55,7 +47,6 @@ const Team = () => {
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const { data: teamMembers = [], loading, error } = useTeam() as { data: any[]; loading: boolean; error?: string };
   const { data: departments = [] } = useDepartments() as { data: string[] };
@@ -449,16 +440,10 @@ const Team = () => {
                       <div
                         key={member.id}
                         className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 flex flex-col items-center transition-all duration-300 cursor-pointer overflow-hidden"
+                        onClick={() => navigate(`/profile/${member.user_id}`)}
                         style={{
                           background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,246,255,0.8) 100%)',
                           boxShadow: '0 20px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.2)'
-                        }}
-                        onClick={() => {
-                          if (member.user_id) {
-                            navigate(`/profile/${member.user_id}`);
-                          } else {
-                            toast({ title: 'Error', description: 'User ID not found for this member.', variant: 'destructive' });
-                          }
                         }}
                       >
                         {/* Glimmer glass effect overlay removed */}
@@ -483,7 +468,7 @@ const Team = () => {
                         {(member.course || member.year || member.stream) && (
                           <div className="mb-2 text-xs text-gray-600 text-center">
                             {member.course && <span className="font-semibold">{member.course}</span>}
-                            {member.year && <span> &middot; {member.year}{getYearSuffix(member.year)} year</span>}
+                            {member.year && <span> &middot; {member.year}{member.year === "1" ? 'st' : member.year === "2" ? 'nd' : member.year === "3" ? 'rd' : 'th'} year</span>}
                             {member.stream && <span> &middot; {member.stream}</span>}
                           </div>
                         )}
