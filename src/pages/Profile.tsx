@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus, Sparkles, CheckCircle, Loader2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Label } from '@/components/ui/label';
 
 const ROLE_OPTIONS = [
@@ -84,42 +84,53 @@ const Profile = () => {
   const navigate = useNavigate();
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [cardPulse, setCardPulse] = useState(false);
+  const { id: user_id } = useParams();
 
   // Simulate fetching userId from localStorage or context
-  const userId = localStorage.getItem('userId') || '';
+  const loggedInUserId = localStorage.getItem('userId') || '';
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const viewingOwnProfile = user_id === loggedInUserId;
 
   useEffect(() => {
     // Debug: log localStorage state
-    if (!isLoggedIn || !userId) {
+    if (!isLoggedIn || !loggedInUserId) {
       setLocalStorageWarning('You are not logged in or your session has expired. Please log in again.');
-      console.warn('Profile page: localStorage missing isLoggedIn or userId', { isLoggedIn, userId });
+      console.warn('Profile page: localStorage missing isLoggedIn or userId', { isLoggedIn, loggedInUserId });
       return;
     } else {
       setLocalStorageWarning(null);
     }
+    if (!user_id) {
+      setProfileWarning('No user selected.');
+      setProfile({});
+      setShowDept(false);
+      setSelectedHobbies([]);
+      setSelectedTags([]);
+      setEditMode(false);
+      return;
+    }
     const fetchProfile = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${userId}`);
+        const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${user_id}`);
         if (!res.ok) {
           throw new Error('Failed to fetch profile.');
         }
         const data = await res.json();
         if (!data) {
-          setProfileWarning('No profile exists for this user. You can fill out your profile below.');
+          setProfileWarning('No profile exists for this user.');
           setProfile({});
           setShowDept(false);
           setSelectedHobbies([]);
           setSelectedTags([]);
-          setEditMode(true);
+          setEditMode(false);
         } else {
           setProfileWarning(null);
           setProfile(data);
           setShowDept(data?.member_type !== 'super_core');
           if (data?.hobbies && Array.isArray(data.hobbies)) setSelectedHobbies(data.hobbies);
           if (data?.tags && Array.isArray(data.tags)) setSelectedTags(data.tags);
-          setEditMode(!data);
+          setEditMode(viewingOwnProfile && !data);
         }
       } catch (e) {
         setProfileWarning('Error loading profile. Please try again or contact support.');
@@ -130,7 +141,7 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [userId, isLoggedIn]);
+  }, [loggedInUserId, isLoggedIn, user_id]);
 
   const handleRoleChange = (value: string) => {
     setProfile((p: any) => ({ ...p, member_type: value }));
@@ -204,7 +215,7 @@ const Profile = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...profile,
-            user_id: userId,
+            user_id: loggedInUserId,
             hobbies: selectedHobbies,
             tags: selectedTags,
             course: profile.course || '',
@@ -219,7 +230,7 @@ const Profile = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...profile,
-            user_id: userId,
+            user_id: loggedInUserId,
             hobbies: selectedHobbies,
             tags: selectedTags,
             course: profile.course || '',
@@ -262,7 +273,7 @@ const Profile = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...profile,
-            user_id: userId,
+            user_id: loggedInUserId,
             hobbies: selectedHobbies,
             tags: selectedTags,
             course: profile.course || '',
@@ -277,7 +288,7 @@ const Profile = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...profile,
-            user_id: userId,
+            user_id: loggedInUserId,
             hobbies: selectedHobbies,
             tags: selectedTags,
             course: profile.course || '',
@@ -777,9 +788,11 @@ const Profile = () => {
                   </div>
                 </div>
                 <div className="flex justify-end mt-6">
-                  <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-10 py-4 rounded-xl shadow-lg font-bold text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => setEditMode(true)}>
-                    Edit Profile
-                  </Button>
+                  {viewingOwnProfile && (
+                    <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-10 py-4 rounded-xl shadow-lg font-bold text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => { if (viewingOwnProfile) setEditMode(true); }}>
+                      Edit Profile
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { X, Filter, Github, Instagram, Linkedin, Users, Award, Building2, Crown,
 import './team-glimmer.css';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 // Complete list of all departments from database
 const DEPARTMENTS = [
@@ -46,6 +47,7 @@ const Team = () => {
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const { data: teamMembers = [], loading, error } = useTeam() as { data: any[]; loading: boolean; error?: string };
   const { data: departments = [] } = useDepartments() as { data: string[] };
@@ -443,7 +445,13 @@ const Team = () => {
                           background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,246,255,0.8) 100%)',
                           boxShadow: '0 20px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.2)'
                         }}
-                        onClick={() => navigate(`/profile/${member.user_id}`)}
+                        onClick={() => {
+                          if (member.user_id) {
+                            navigate(`/profile/${member.user_id}`);
+                          } else {
+                            toast({ title: 'Error', description: 'User ID not found for this member.', variant: 'destructive' });
+                          }
+                        }}
                       >
                         {/* Glimmer glass effect overlay removed */}
                         {/* Animated gradient border effect removed */}
