@@ -26,6 +26,7 @@ const POSITION_OPTIONS = [
   'Subhead',
   'Executive',
   'Mentor',
+  'Research Lead', // Added for completeness
 ];
 const DEPARTMENT_OPTIONS = [
   'Technicals',
@@ -332,7 +333,7 @@ const Profile = () => {
   // Add filteredPositionOptions based on member_type
   const getFilteredPositions = (memberType: string) => {
     if (memberType === 'super_core') {
-      return ['Chairperson', 'Vice-chairperson', 'Secretary', 'Director', 'Treasurer'];
+      return ['Chairperson', 'Vice-chairperson', 'Secretary', 'Director', 'Treasurer', 'Research Lead'];
     } else if (memberType === 'core') {
       return ['Head', 'Subhead'];
     } else if (memberType === 'executive') {
