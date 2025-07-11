@@ -27,9 +27,11 @@ const POSITIONS = [
   'Vice-chairperson',
   'Secretary',
   'Director',
+  'Research Lead',
   'Head',
   'Subhead',
-  'Member'
+  'Executive',
+   // Added
 ];
 
 // Update MEMBER_TYPES and all filter labels/options to use 'executive' instead of 'member'.
@@ -423,13 +425,13 @@ const Team = () => {
               {Object.entries(groupedMembers).map(([department, members], i) => (
                 <motion.div key={department} variants={itemVariants}>
                   <motion.h2 
-                    className="text-3xl font-bold text-[#2d1b3d] mb-12 text-center tracking-tight"
+                    className="text-3xl font-extrabold text-center tracking-tight font-abril bg-gradient-to-r from-[#a259c6] to-[#4f1b59] bg-clip-text text-transparent mb-12"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: i * 0.1 }}
                   >
-                    <span className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] bg-clip-text text-transparent">
-                    {department}
+                    <span>
+                      {department}
                     </span>
                   </motion.h2>
                   <motion.div 
