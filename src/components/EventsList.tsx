@@ -111,24 +111,33 @@ const EventsList = ({ selectedCategory, selectedTimeframe, deleteMode = false, s
   return (
     <>
       {deleteMode && (
-        <div className="flex items-center gap-4 mb-6">
-          <span className="text-sm text-red-700 font-semibold">Select events to delete</span>
-          <Button
-            variant="destructive"
-            className="px-5 py-2 rounded-full font-bold"
-            disabled={selected.length === 0}
-            onClick={() => setShowDialog(true)}
-          >
-            Delete Selected
-          </Button>
-          <Button
-            variant="outline"
-            className="px-4 py-2 rounded-full"
-            onClick={() => { setSelected([]); if (setDeleteMode) setDeleteMode(false); }}
-          >
-            Cancel
-          </Button>
-        </div>
+        <>
+          {/* Floating bar for delete actions */}
+          <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 w-full max-w-2xl px-4">
+            <div className="flex items-center justify-between bg-white/95 border border-red-200 shadow-xl rounded-2xl px-6 py-3 gap-4 animate-fade-in-up">
+              <span className="text-base font-bold text-red-700">
+                {selected.length} event{selected.length !== 1 ? 's' : ''} selected
+              </span>
+              <div className="flex gap-2">
+                <Button
+                  variant="destructive"
+                  className="px-5 py-2 rounded-full font-bold"
+                  disabled={selected.length === 0}
+                  onClick={() => setShowDialog(true)}
+                >
+                  Delete Selected
+                </Button>
+                <Button
+                  variant="outline"
+                  className="px-4 py-2 rounded-full"
+                  onClick={() => { setSelected([]); if (setDeleteMode) setDeleteMode(false); }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </div>
+        </>
       )}
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent>
@@ -149,13 +158,26 @@ const EventsList = ({ selectedCategory, selectedTimeframe, deleteMode = false, s
           const status = getEventStatus(event.date);
           const checked = selected.includes(event.id);
           return (
-            <Card key={event.id} className={`group overflow-hidden bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-purple-100 animate-fade-in-up transition-transform duration-300 hover:scale-[1.04] hover:shadow-purple-300/40 hover:border-purple-400 relative ${deleteMode && checked ? 'ring-2 ring-red-400' : ''}`} style={{ animationDelay: `${i * 60}ms` }}>
+            <Card
+              key={event.id}
+              className={`group overflow-hidden bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border transition-all duration-200 relative
+                ${deleteMode ?
+                  checked ? 'border-4 border-red-500 bg-red-50/70 scale-[1.025]' : 'border-2 border-red-200 hover:border-red-400 hover:bg-red-50/40' :
+                  'border-purple-100 hover:scale-[1.04] hover:shadow-purple-300/40 hover:border-purple-400'}
+                animate-fade-in-up`}
+              style={{ animationDelay: `${i * 60}ms` }}
+              tabIndex={deleteMode ? 0 : -1}
+              aria-selected={checked}
+              onKeyDown={e => {
+                if (deleteMode && (e.key === ' ' || e.key === 'Enter')) handleSelect(event.id);
+              }}
+            >
               {deleteMode && (
-                <div className="absolute top-4 left-4 z-20 bg-white/90 rounded-full p-1 shadow">
-                  <Checkbox checked={checked} onCheckedChange={() => handleSelect(event.id)} />
+                <div className="absolute top-4 left-4 z-20 bg-white/95 rounded-full p-2 shadow-lg animate-fade-in-up transition-all duration-200">
+                  <Checkbox checked={checked} onCheckedChange={() => handleSelect(event.id)} className="h-6 w-6" />
                 </div>
               )}
-              <div className="relative overflow-hidden">
+              <div className={`relative overflow-hidden ${deleteMode ? 'opacity-70 pointer-events-none select-none' : ''}`}>
                 <img
                   src={event.image || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&h=300&fit=crop'}
                   alt={event.title}
@@ -172,7 +194,7 @@ const EventsList = ({ selectedCategory, selectedTimeframe, deleteMode = false, s
                   <h3 className="text-2xl font-bold drop-shadow-lg">{event.title}</h3>
                 </div>
               </div>
-              <CardContent className="p-6">
+              <CardContent className={`p-6 ${deleteMode ? 'opacity-60 pointer-events-none select-none' : ''}`}>
                 <p className="text-gray-600 mb-6 leading-relaxed line-clamp-3">{event.description}</p>
                 <div className="grid grid-cols-2 gap-4 text-sm text-gray-700 mb-6">
                   <div className="flex items-center space-x-2">

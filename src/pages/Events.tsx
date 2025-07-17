@@ -4,6 +4,7 @@ import EventsFilter from '../components/EventsFilter';
 import EventsList from '../components/EventsList';
 import { useNavigate } from 'react-router-dom';
 import AddEvent from './AddEvent';
+import { Trash2 } from 'lucide-react';
 
 const Events = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('upcoming');
@@ -37,34 +38,30 @@ const Events = () => {
               Discover workshops, seminars, and networking opportunities designed to enhance your skills and connect with fellow innovators
             </p>
           </div>
-          {/* Filter Bar with glassy effect and animation */}
-          <div className="flex w-full justify-center animate-fade-in-up delay-200">
-            <div className="w-full max-w-2xl flex items-center justify-between rounded-2xl bg-white/70 backdrop-blur-md shadow-xl border border-gray-100 px-4 py-3 scale-100 opacity-100 transition-all duration-700">
-              <div className="flex-1">
-                <EventsFilter 
-                  selectedTimeframe={selectedTimeframe}
-                  setSelectedTimeframe={setSelectedTimeframe}
-                />
-              </div>
-              {isLoggedIn && (
-                <>
-                  <button
-                    className="ml-4 px-5 py-2 bg-white border border-[#a259c6]/30 text-[#4f1b59] font-semibold rounded-full shadow-sm hover:bg-[#f3e8ff] hover:text-[#a259c6] transition-all text-base"
-                    style={{ minWidth: 0 }}
-                    onClick={() => navigate('/add-event')}
-                  >
-                    + Add Event
-                  </button>
-                  <button
-                    className="ml-2 px-5 py-2 bg-white border border-red-300 text-red-700 font-semibold rounded-full shadow-sm hover:bg-red-50 hover:text-red-900 transition-all text-base"
-                    style={{ minWidth: 0 }}
-                    onClick={() => setDeleteMode(dm => !dm)}
-                  >
-                    Delete Event
-                  </button>
-                </>
-              )}
+          {/* Filter Bar and Action Buttons Side by Side */}
+          <div className="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-4 md:gap-6 mb-2">
+            <div className="flex-1 w-full">
+              <EventsFilter 
+                selectedTimeframe={selectedTimeframe}
+                setSelectedTimeframe={setSelectedTimeframe}
+              />
             </div>
+            {isLoggedIn && (
+              <div className="flex flex-row md:flex-col gap-2 md:gap-3 items-center md:items-end min-w-[140px] w-full md:w-auto">
+                <button
+                  className="w-full px-5 py-2 border border-[#4f1b59] text-[#4f1b59] font-semibold rounded-full shadow bg-white hover:bg-[#4f1b59] hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40"
+                  onClick={() => navigate('/add-event')}
+                >
+                  + Add Event
+                </button>
+                <button
+                  className={`w-full px-5 py-2 border font-semibold rounded-full shadow bg-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 flex items-center justify-center gap-2 ${deleteMode ? 'border-red-600 text-red-600 bg-red-50' : 'border-[#a259c6] text-[#a259c6] hover:bg-red-600 hover:text-white'}`}
+                  onClick={() => setDeleteMode(dm => !dm)}
+                >
+                  <Trash2 className="w-4 h-4 mr-1" /> Delete Event
+                </button>
+              </div>
+            )}
           </div>
           <div className="mt-8">
           <EventsList 
