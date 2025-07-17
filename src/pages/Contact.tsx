@@ -67,14 +67,14 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Call Us',
-      content: '+1 (555) 123-4567',
+      content: '+91 70218 09191',
       description: 'Mon-Fri from 9am to 5pm'
     },
     {
       icon: MapPin,
       title: 'Visit Us',
-      content: 'Room 204, Engineering Building',
-      description: 'IET College Campus'
+      content: 'MPSTME, Vile parle',
+      description: ''
     },
     {
       icon: Clock,
@@ -86,28 +86,22 @@ const Contact = () => {
 
   const teamContacts = [
     {
-      name: 'Alex Johnson',
-      role: 'President',
-      email: 'alex.johnson@iet.edu',
-      department: 'General Inquiries'
+      name: 'Khushi Srivastava',
+      role: '',
+      email: '',
+      department: '+91 93542 83059'
     },
     {
-      name: 'Sarah Chen',
-      role: 'Vice President',
-      email: 'sarah.chen@iet.edu',
-      department: 'Events & Programs'
+      name: 'Sanika Gojare',
+      role: '',
+      email: '',
+      department: '+91 98199 43475'
     },
     {
-      name: 'Marcus Rodriguez',
-      role: 'Technical Lead',
-      email: 'marcus.rodriguez@iet.edu',
-      department: 'Technical Support'
-    },
-    {
-      name: 'Emily Davis',
-      role: 'Events Coordinator',
-      email: 'emily.davis@iet.edu',
-      department: 'Event Planning'
+      name: 'Sharman Ahire',
+      role: '',
+      email: '',
+      department: '+91 98196 83092'
     }
   ];
 
@@ -156,84 +150,89 @@ const Contact = () => {
             </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-6xl mx-auto">
             {/* Contact Form */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              initial={{ opacity: 0, scale: 0.97, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, type: 'spring' }}
               className=""
             >
               <motion.div
-                className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8"
+                className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-10 hover:shadow-[0_8px_40px_0_rgba(162,89,198,0.13)] transition-all duration-300"
+                whileHover={{ scale: 1.01 }}
                 animate={pulse ? { boxShadow: '0 0 0 8px #a259c6, 0 8px 32px 0 rgba(162,89,198,0.25)' } : {}}
                 transition={{ duration: 0.8, type: 'spring' }}
               >
-                <div className="flex items-center mb-6">
-                  <MessageSquare className="w-7 h-7 mr-3 text-[#a259c6]" />
-                  <span className="text-2xl font-bold text-[#2d1b3d]">Send us a Message</span>
+                <div className="flex items-center mb-8">
+                  <MessageSquare className="w-8 h-8 mr-3 text-[#a259c6]" />
+                  <span className="text-3xl font-extrabold text-[#2d1b3d]">Send us a Message</span>
                 </div>
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
-                      <Label htmlFor="name" className="text-[#333333] font-medium">Full Name</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder="Your full name"
-                      className="border-gray-300 focus:ring-2 focus:ring-[#a259c6]/40 transition-all"
-                        required
-                      />
-                    </div>
-                  <div className="space-y-2">
-                      <Label htmlFor="email" className="text-[#333333] font-medium">Email Address</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="your.email@example.com"
-                      className="border-gray-300 focus:ring-2 focus:ring-[#a259c6]/40 transition-all"
-                        required
-                      />
-                    </div>
-                  <div className="space-y-2">
-                      <Label htmlFor="subject" className="text-[#333333] font-medium">Subject</Label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                        placeholder="What is this about?"
-                      className="border-gray-300 focus:ring-2 focus:ring-[#a259c6]/40 transition-all"
-                        required
-                      />
-                    </div>
-                  <div className="space-y-2">
-                      <Label htmlFor="message" className="text-[#333333] font-medium">Message</Label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        placeholder="Tell us more about your inquiry..."
-                      className="border-gray-300 min-h-[120px] focus:ring-2 focus:ring-[#a259c6]/40 transition-all"
-                        required
-                      />
-                    </div>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-7">
+                  {/* Name Field */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="relative">
+                    <input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
+                      placeholder=" "
+                    />
+                    <label htmlFor="name" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Full Name</label>
+                  </motion.div>
+                  {/* Email Field */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="relative">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
+                      placeholder=" "
+                    />
+                    <label htmlFor="email" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Email Address</label>
+                  </motion.div>
+                  {/* Subject Field */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative">
+                    <input
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
+                      placeholder=" "
+                    />
+                    <label htmlFor="subject" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Subject</label>
+                  </motion.div>
+                  {/* Message Field */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="relative">
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      className="peer w-full px-4 pt-6 pb-2 text-base min-h-[120px] bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all resize-none"
+                      placeholder=" "
+                    />
+                    <label htmlFor="message" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Message</label>
+                  </motion.div>
                   <AnimatePresence>
                     {error && <motion.div className="text-red-500 text-sm flex items-center gap-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><span className='text-lg'>❌</span>{error}</motion.div>}
                     {success && <motion.div className="text-green-600 text-sm flex items-center gap-2" initial={{ opacity: 0 }} animate={{ opacity: 1, scale: 1.1 }} exit={{ opacity: 0 }}><span className='text-lg'>✅</span>Thank you! Your message has been sent.</motion.div>}
                   </AnimatePresence>
                   <motion.button
-                      type="submit"
-                    className={`w-full py-3 rounded-full font-extrabold text-lg flex items-center justify-center gap-2 transition-all duration-300
-                      shadow-xl backdrop-blur-md
+                    type="submit"
+                    className={`w-full py-4 rounded-full font-extrabold text-lg flex items-center justify-center gap-2 transition-all duration-300
+                      shadow-xl
                       ${sendState === 'sending' ? 'bg-purple-400 text-white cursor-wait' : ''}
                       ${sendState === 'success' ? 'bg-green-500 text-white' : ''}
-                      ${sendState === 'error' ? 'bg-red-500 text-white animate-shake' : 'bg-gradient-to-r from-[#4f1b59] via-[#a259c6] to-[#b993d6] text-white'}
+                      ${sendState === 'error' ? 'bg-red-500 text-white animate-shake' : 'bg-gradient-to-r from-[#a259c6] via-[#b993d6] to-[#4f1b59] text-white'}
                     `}
                     style={{
                       textShadow: '0 2px 8px rgba(79,27,89,0.12)',
@@ -274,7 +273,7 @@ const Contact = () => {
                       )}
                     </AnimatePresence>
                   </motion.button>
-                  </form>
+                </form>
               </motion.div>
             </motion.div>
 
@@ -286,23 +285,48 @@ const Contact = () => {
               className="space-y-8"
             >
               {/* Quick Contact Info */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-10">
                 {contactInfo.map((info, idx) => (
                   <div
                     key={info.title}
-                    className={`flex items-center gap-4 p-4 rounded-xl shadow bg-white/70 border border-[#a259c6]/10 mb-4 transition-all duration-200 ${info.title === 'Email Us' ? 'cursor-pointer hover:bg-[#a259c6]/10' : ''}`}
-                    onClick={info.title === 'Email Us' ? async () => {
-                      await navigator.clipboard.writeText(info.content);
-                      toast({ title: 'Email copied!', description: 'iet.mpstme.core@gmail.com copied to clipboard.', variant: 'success' });
-                    } : undefined}
-                    title={info.title === 'Email Us' ? 'Click to copy email' : undefined}
+                    className={`group flex flex-col gap-3 p-6 rounded-2xl shadow-xl bg-white border border-[#a259c6]/10 transition-all duration-200 hover:scale-[1.03] hover:shadow-2xl relative`}
                   >
-                    <info.icon className="w-6 h-6 text-[#a259c6]" />
-                    <div>
-                      <div className="font-semibold text-[#4f1b59]">{info.title}</div>
-                      <div className="text-sm text-[#a259c6] font-mono">{info.content}</div>
-                      <div className="text-xs text-gray-500">{info.description}</div>
+                    <div className="flex items-center gap-4 mb-1">
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#a259c6]/10">
+                        <info.icon className="w-7 h-7 text-[#a259c6] group-hover:text-[#4f1b59] transition-colors" />
+                      </div>
+                      <div className="font-extrabold text-lg text-[#2d1b3d]">{info.title}</div>
                     </div>
+                    {info.title === 'Email Us' ? (
+                      <button
+                        className="text-base font-mono text-[#a259c6] underline hover:text-[#4f1b59] text-left transition-colors"
+                        onClick={async () => {
+                          await navigator.clipboard.writeText(info.content);
+                          window.open(`mailto:${info.content}`);
+                          toast({ title: 'Email copied!', description: `${info.content} copied to clipboard.`, variant: 'success' });
+                        }}
+                        title="Click to copy and email"
+                        type="button"
+                      >
+                        {info.content}
+                      </button>
+                    ) : info.title === 'Call Us' ? (
+                      <button
+                        className="text-base font-mono text-[#a259c6] underline hover:text-[#4f1b59] text-left transition-colors"
+                        onClick={async () => {
+                          await navigator.clipboard.writeText(info.content);
+                          window.open(`tel:${info.content.replace(/\s+/g, '')}`);
+                          toast({ title: 'Number copied!', description: `${info.content} copied to clipboard.`, variant: 'success' });
+                        }}
+                        title="Click to copy and call"
+                        type="button"
+                      >
+                        {info.content}
+                      </button>
+                    ) : (
+                      <div className="text-base font-mono text-[#a259c6]">{info.content}</div>
+                    )}
+                    <div className="text-xs text-gray-500 font-medium">{info.description}</div>
                   </div>
                 ))}
               </div>
@@ -312,38 +336,39 @@ const Contact = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
-                className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6"
+                className="bg-white/90 backdrop-blur-2xl rounded-3xl shadow-2xl border border-[#a259c6]/10 p-8 mb-8 flex flex-col gap-6"
               >
-                <div className="flex items-center mb-4">
-                  <User className="w-5 h-5 mr-2 text-[#a259c6]" />
-                  <span className="text-xl font-bold text-[#2d1b3d]">Direct Team Contacts</span>
+                <div className="flex items-center mb-6 gap-2">
+                  <User className="w-6 h-6 mr-2 text-[#a259c6]" />
+                  <span className="text-2xl font-extrabold text-[#2d1b3d] tracking-tight">Direct Team Contacts</span>
                 </div>
-                  <div className="space-y-4">
-                    {teamContacts.map((contact, index) => (
+                <div className="flex flex-col gap-5">
+                  {teamContacts.map((contact, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, delay: index * 0.08 }}
-                      className="flex items-center justify-between p-4 border border-white/20 rounded-lg hover:border-[#a259c6] transition-colors"
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 bg-[#f8f6ff] border border-[#a259c6]/10 rounded-2xl shadow hover:shadow-lg transition-all duration-200"
                     >
-                        <div>
-                        <h4 className="font-semibold text-[#2d1b3d]">{contact.name}</h4>
-                          <p className="text-sm text-gray-600">{contact.role}</p>
-                          <p className="text-xs text-gray-500">{contact.department}</p>
+                      <div className="flex flex-col gap-1">
+                        <h4 className="font-bold text-lg text-[#2d1b3d]">{contact.name}</h4>
                       </div>
-                      <a href={`mailto:${contact.email}`} target="_blank" rel="noopener noreferrer">
-                        <motion.button
-                          className="text-[#a259c6] hover:bg-[#a259c6] hover:text-white px-4 py-2 rounded-lg font-semibold transition-all"
-                          whileHover={{ scale: 1.08 }}
-                          whileTap={{ scale: 0.96 }}
-                        >
-                          <Mail className="w-4 h-4 mr-1 inline-block" /> Email
-                        </motion.button>
-                      </a>
+                      <button
+                        className="flex items-center gap-2 px-4 py-2 bg-[#a259c6]/10 text-[#4f1b59] font-semibold rounded-full border border-[#a259c6]/30 hover:bg-[#a259c6]/20 transition-colors shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40"
+                        onClick={async () => {
+                          await navigator.clipboard.writeText(contact.department);
+                          toast({ title: 'Number copied!', description: `${contact.department} copied to clipboard.`, variant: 'success' });
+                        }}
+                        title="Click to copy number"
+                        type="button"
+                      >
+                        <Phone className="w-4 h-4 text-[#a259c6]" />
+                        {contact.department}
+                      </button>
                     </motion.div>
-                    ))}
-                  </div>
+                  ))}
+                </div>
               </motion.div>
 
               {/* Additional Info */}
@@ -351,19 +376,25 @@ const Contact = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1 }}
-                className="bg-gradient-to-br from-[#a259c6] to-[#4f1b59] text-white shadow-2xl rounded-2xl p-6 text-center"
+                className="bg-gradient-to-br from-[#a259c6] to-[#4f1b59] text-white shadow-2xl rounded-2xl p-8 text-center mt-10"
               >
-                  <h3 className="text-xl font-bold mb-2">Join Our Community</h3>
-                  <p className="mb-4 opacity-90">
-                    Interested in becoming a member? We're always looking for passionate individuals to join our team.
-                  </p>
-                <motion.button
-                  className="bg-white/20 hover:bg-white/40 text-white font-semibold px-6 py-2 rounded-lg transition-transform duration-200 hover:scale-105"
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.96 }}
+                <h3 className="text-2xl font-extrabold mb-3">Join Our Community</h3>
+                <p className="mb-6 opacity-90 text-lg">
+                  Interested in becoming a member? We're always looking for passionate individuals to join our team.
+                </p>
+                <a
+                  href="https://www.theiet.org/membership/become-a-member"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                    Learn More
-                </motion.button>
+                  <motion.button
+                    className="bg-white/20 hover:bg-white/40 text-white font-bold px-8 py-3 rounded-full text-lg transition-transform duration-200 hover:scale-105 shadow-lg"
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                  >
+                    Join Now
+                  </motion.button>
+                </a>
               </motion.div>
             </motion.div>
           </div>
