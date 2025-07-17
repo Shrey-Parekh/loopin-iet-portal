@@ -104,8 +104,8 @@ const Profile = () => {
   const isOwnProfile = !routeId || routeId === userId;
 
   useEffect(() => {
-    // Debug: log localStorage state
-    if (!isLoggedIn || !userId) {
+    // Only show localStorage warning if viewing own profile and not logged in
+    if (isOwnProfile && (!isLoggedIn || !userId)) {
       setLocalStorageWarning('You are not logged in or your session has expired. Please log in again.');
       console.warn('Profile page: localStorage missing isLoggedIn or userId', { isLoggedIn, userId });
       return;
@@ -145,7 +145,7 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [userId, isLoggedIn, routeId]);
+  }, [userId, isLoggedIn, routeId, isOwnProfile]);
 
   // In handleRoleChange, if value is 'super_core' or 'mentor', set department to null
   const handleRoleChange = (value: string) => {

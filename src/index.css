@@ -338,3 +338,11 @@ input:focus, select:focus, textarea:focus {
 .gradient-border {
   border-image: linear-gradient(135deg, var(--secondary-color), #8b5cf6) 1;
 }
+
+/* Force white background for toast notifications */
+.toaster .toast, .sonner-toast, .sonner .toast, .toaster .sonner-toast {
+  background: #fff !important;
+  backdrop-filter: none !important;
+  box-shadow: 0 4px 24px 0 rgba(162,89,198,0.13), 0 1.5px 6px 0 rgba(0,0,0,0.04);
+  border: 1px solid #ece6f6;
+}
