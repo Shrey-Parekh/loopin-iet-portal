@@ -172,11 +172,11 @@ const Contact = () => {
                   {/* Name Field */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="relative">
                     <input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
                       className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
                       placeholder=" "
                     />
@@ -185,12 +185,12 @@ const Contact = () => {
                   {/* Email Field */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="relative">
                     <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
                       className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
                       placeholder=" "
                     />
@@ -199,11 +199,11 @@ const Contact = () => {
                   {/* Subject Field */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative">
                     <input
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      required
+                        id="subject"
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleInputChange}
+                        required
                       className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
                       placeholder=" "
                     />
@@ -212,14 +212,14 @@ const Contact = () => {
                   {/* Message Field */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="relative">
                     <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      required
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        required
                       className="peer w-full px-4 pt-6 pb-2 text-base min-h-[120px] bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all resize-none"
                       placeholder=" "
-                    />
+                      />
                     <label htmlFor="message" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Message</label>
                   </motion.div>
                   <AnimatePresence>
@@ -227,7 +227,7 @@ const Contact = () => {
                     {success && <motion.div className="text-green-600 text-sm flex items-center gap-2" initial={{ opacity: 0 }} animate={{ opacity: 1, scale: 1.1 }} exit={{ opacity: 0 }}><span className='text-lg'>✅</span>Thank you! Your message has been sent.</motion.div>}
                   </AnimatePresence>
                   <motion.button
-                    type="submit"
+                      type="submit"
                     className={`w-full py-4 rounded-full font-extrabold text-lg flex items-center justify-center gap-2 transition-all duration-300
                       shadow-xl
                       ${sendState === 'sending' ? 'bg-purple-400 text-white cursor-wait' : ''}
@@ -273,7 +273,7 @@ const Contact = () => {
                       )}
                     </AnimatePresence>
                   </motion.button>
-                </form>
+                  </form>
               </motion.div>
             </motion.div>
 
@@ -343,7 +343,7 @@ const Contact = () => {
                   <span className="text-2xl font-extrabold text-[#2d1b3d] tracking-tight">Direct Team Contacts</span>
                 </div>
                 <div className="flex flex-col gap-5">
-                  {teamContacts.map((contact, index) => (
+                    {teamContacts.map((contact, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 10 }}
@@ -362,13 +362,13 @@ const Contact = () => {
                         }}
                         title="Click to copy number"
                         type="button"
-                      >
+                        >
                         <Phone className="w-4 h-4 text-[#a259c6]" />
                         {contact.department}
                       </button>
                     </motion.div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
               </motion.div>
 
               {/* Additional Info */}
@@ -380,20 +380,20 @@ const Contact = () => {
               >
                 <h3 className="text-2xl font-extrabold mb-3">Join Our Community</h3>
                 <p className="mb-6 opacity-90 text-lg">
-                  Interested in becoming a member? We're always looking for passionate individuals to join our team.
-                </p>
+                    Interested in becoming a member? We're always looking for passionate individuals to join our team.
+                  </p>
                 <a
                   href="https://www.theiet.org/membership/become-a-member"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <motion.button
+                <motion.button
                     className="bg-white/20 hover:bg-white/40 text-white font-bold px-8 py-3 rounded-full text-lg transition-transform duration-200 hover:scale-105 shadow-lg"
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.96 }}
-                  >
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.96 }}
+                >
                     Join Now
-                  </motion.button>
+                </motion.button>
                 </a>
               </motion.div>
             </motion.div>

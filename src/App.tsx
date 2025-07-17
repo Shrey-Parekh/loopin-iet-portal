@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
 import ChangePassword from './pages/ChangePassword';
 import Profile from './pages/Profile';
+import AddEvent from './pages/AddEvent';
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/team" element={<Team />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/add-event" element={<AddEvent />} />
             <Route path="/newsletter" element={<Newsletter />} />
             <Route path="/announcements" element={<Announcements />} />
             <Route path="/contact" element={<Contact />} />

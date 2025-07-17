@@ -165,6 +165,39 @@ app.get('/api/events', (req, res) => {
   });
 });
 
+// Add event creation endpoint
+app.post('/api/events', async (req, res) => {
+  const { title, description, date, time, location, image, category } = req.body;
+  if (!title || !description || !date || !time || !location || !image || !category) {
+    return res.status(400).json({ error: 'All fields are required.' });
+  }
+  try {
+    const { data, error } = await supabase.from('events').insert([
+      { title, description, date, time, location, image, category }
+    ]);
+    if (error) {
+      console.error('Error adding event:', error.message);
+      return res.status(500).json({ error: 'Failed to add event.' });
+    }
+    res.json({ success: true, event: data && data[0] });
+  } catch (err) {
+    console.error('Error adding event:', err.message);
+    res.status(500).json({ error: 'Failed to add event.' });
+  }
+});
+
+// Hard delete event endpoint
+app.delete('/api/events/:id', async (req, res) => {
+  const { id } = req.params;
+  const eventId = Number(id); // Ensure it's a number
+  const { error } = await supabase.from('events').delete().eq('id', eventId);
+  if (error) {
+    console.error('Error deleting event:', error.message);
+    return res.status(500).json({ error: 'Failed to delete event.' });
+  }
+  res.json({ success: true });
+});
+
 // Get upcoming events
 app.get('/api/events/upcoming', (req, res) => {
   supabase.from('events').select('*').gte('date', new Date().toISOString().slice(0, 10)).then(data => {
