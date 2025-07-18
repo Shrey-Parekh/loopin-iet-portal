@@ -21,6 +21,7 @@ const AddEvent = () => {
     location: '',
     image: '',
     category: '',
+    link: '', // <-- Add link field
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -138,6 +139,20 @@ const AddEvent = () => {
                   autoComplete="off"
                 />
                 <label htmlFor="description" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Description of the Event</label>
+              </div>
+              {/* Registration Link Field */}
+              <div className="relative">
+                <input
+                  name="link"
+                  id="link"
+                  type="url"
+                  value={form.link}
+                  onChange={handleChange}
+                  className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all placeholder-transparent"
+                  placeholder=" "
+                  autoComplete="off"
+                />
+                <label htmlFor="link" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Registration Link (optional)</label>
               </div>
             </div>
           </div>

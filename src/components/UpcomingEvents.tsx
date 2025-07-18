@@ -121,10 +121,17 @@ const UpcomingEvents = () => {
                 </div>
                 
                 <Button asChild className="w-full font-bold bg-purple-600 hover:bg-purple-700 text-white transition-all duration-300 transform group-hover:scale-105">
-                  <Link to="/events">
-                    Register Now
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
+                  {event.link ? (
+                    <a href={event.link} target="_blank" rel="noopener noreferrer">
+                      Register Now
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </a>
+                  ) : (
+                    <button disabled style={{ width: '100%', background: 'rgba(128,128,128,0.2)', color: '#fff', cursor: 'not-allowed' }}>
+                      Register Now
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </button>
+                  )}
                 </Button>
               </CardContent>
             </Card>

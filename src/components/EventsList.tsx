@@ -211,11 +211,21 @@ const EventsList = ({ selectedCategory, selectedTimeframe, deleteMode = false, s
                   </div>
                 </div>
                 {!deleteMode && (
-                  <Button className="w-full font-bold bg-gradient-to-r from-purple-600 to-[#4f1b59] hover:from-[#4f1b59] hover:to-purple-600 text-white transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-lg" asChild>
-                    <a href="#" tabIndex={-1} aria-disabled>
-                      {status === 'Completed' ? 'Event Ended' : 'Register Now'}
-                    </a>
-                  </Button>
+                  {status === 'Completed' ? (
+                    <Button className="w-full font-bold bg-gradient-to-r from-purple-600 to-[#4f1b59] text-white" disabled>
+                      Event Ended
+                    </Button>
+                  ) : event.link ? (
+                    <Button className="w-full font-bold bg-gradient-to-r from-purple-600 to-[#4f1b59] hover:from-[#4f1b59] hover:to-purple-600 text-white transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-lg" asChild>
+                      <a href={event.link} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
+                        Register Now
+                      </a>
+                    </Button>
+                  ) : (
+                    <Button className="w-full font-bold bg-gradient-to-r from-purple-600 to-[#4f1b59] text-white" disabled>
+                      Register Now
+                    </Button>
+                  )}
                 )}
               </CardContent>
             </Card>
