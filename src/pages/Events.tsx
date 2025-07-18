@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 
 const Events = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('upcoming');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [deleteMode, setDeleteMode] = useState(false);
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -70,6 +71,8 @@ const Events = () => {
           >
             <motion.div className="flex-1 w-full" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}>
               <EventsFilter 
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
                 selectedTimeframe={selectedTimeframe}
                 setSelectedTimeframe={setSelectedTimeframe}
               />
@@ -95,7 +98,7 @@ const Events = () => {
           <div className="mt-8">
             <EventsList 
               selectedTimeframe={selectedTimeframe}
-              selectedCategory={"all"}
+              selectedCategory={selectedCategory}
               deleteMode={deleteMode}
               setDeleteMode={setDeleteMode}
             />

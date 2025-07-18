@@ -26,29 +26,34 @@ interface EventsListProps {
   setDeleteMode?: (v: boolean) => void;
 }
 
+const getEventStatus = (dateStr: string) => {
+  const eventDate = new Date(dateStr);
+  const now = new Date();
+  // Remove time for comparison (set to midnight)
+  eventDate.setHours(0,0,0,0);
+  now.setHours(0,0,0,0);
+  if (eventDate > now) return 'Upcoming';
+  if (eventDate.getTime() === now.getTime()) return 'Ongoing';
+  return 'Completed';
+};
+
 const EventsList = ({ selectedCategory, selectedTimeframe, deleteMode = false, setDeleteMode }: EventsListProps) => {
   const { data: events, loading, error, mutate } = useEvents();
   const [selected, setSelected] = React.useState<string[]>([]);
   const [showDialog, setShowDialog] = React.useState(false);
 
-  // Filter events by status and category
+  // Filter events by status (timeframe) and category
   const filteredEvents = Array.isArray(events) ? events.filter((event: any) => {
     const categoryMatch = selectedCategory === 'all' || event.category === selectedCategory;
-    // We'll filter by computed status below
-    return categoryMatch;
+    const status = getEventStatus(event.date);
+    let timeframeMatch = true;
+    if (selectedTimeframe === 'upcoming') {
+      timeframeMatch = status === 'Upcoming' || status === 'Ongoing';
+    } else if (selectedTimeframe === 'past') {
+      timeframeMatch = status === 'Completed';
+    }
+    return categoryMatch && timeframeMatch;
   }) : [];
-
-  // Helper to compute event status from date
-  const getEventStatus = (dateStr: string) => {
-    const eventDate = new Date(dateStr);
-    const now = new Date();
-    // Remove time for comparison (set to midnight)
-    eventDate.setHours(0,0,0,0);
-    now.setHours(0,0,0,0);
-    if (eventDate > now) return 'Upcoming';
-    if (eventDate.getTime() === now.getTime()) return 'Ongoing';
-    return 'Completed';
-  };
 
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
