@@ -68,11 +68,22 @@ const AddAchievement = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error('Failed to add achievement');
+      let errorMsg = 'Failed to add achievement';
+      if (!res.ok) {
+        let errText = '';
+        try {
+          const errJson = await res.json();
+          errorMsg = errJson.error || errorMsg;
+        } catch (e) {
+          errText = await res.text();
+          if (errText) errorMsg = errText;
+        }
+        throw new Error(errorMsg);
+      }
       toast({ title: 'Achievement Added', description: 'Your achievement was added successfully.' });
       navigate('/achievements');
-    } catch (err) {
-      toast({ title: 'Error', description: 'Failed to add achievement', variant: 'destructive' });
+    } catch (err: any) {
+      toast({ title: 'Error', description: err.message || 'Failed to add achievement', variant: 'destructive' });
     } finally {
       setLoading(false);
     }
