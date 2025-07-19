@@ -22,7 +22,7 @@ const YEAR_OPTIONS = ["1", "2", "3", "4", "5", "6"];
 const AddAchievement = () => {
   const [form, setForm] = useState({
     name: '',
-    achievement_type: '',
+    achievement_title: '',
     date: '',
     image: '',
     discription: '',
@@ -155,16 +155,16 @@ const AddAchievement = () => {
                     {/* Achievement Title Field */}
                     <div className="relative">
                       <input
-                        name="achievement_type"
-                        id="achievement_type"
-                        value={form.achievement_type}
+                        name="achievement_title"
+                        id="achievement_title"
+                        value={form.achievement_title}
                         onChange={handleChange}
                         required
                         className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all placeholder-transparent"
                         placeholder=" "
                         autoComplete="off"
                       />
-                      <label htmlFor="achievement_type" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Achievement Title</label>
+                      <label htmlFor="achievement_title" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Achievement Title</label>
                     </div>
                     {/* Date Field */}
                     <div className="relative col-span-1 md:col-span-2">
