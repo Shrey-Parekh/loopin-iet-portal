@@ -517,13 +517,13 @@ app.get('/api/achievements', async (req, res) => {
 
 // Add achievement
 app.post('/api/achievements', async (req, res) => {
-  const { image, name, discription, achievement_type, date, department, Position, Year, Course } = req.body;
-  if (!name || !achievement_type || !date) {
-    return res.status(400).json({ error: 'Name, achievement type, and date are required.' });
+  const { image, name, discription, achievement_title, date, department, Position, Year, Course } = req.body;
+  if (!name || !achievement_title || !date) {
+    return res.status(400).json({ error: 'Name, achievement title, and date are required.' });
   }
   try {
     const { data, error } = await supabase.from('achievements').insert([
-      { image, name, discription, achievement_type, date, department, Position, Year, Course }
+      { image, name, discription, achievement_title, date, department, Position, Year, Course }
     ]);
     if (error) {
       console.error('Error adding achievement:', error.message);
