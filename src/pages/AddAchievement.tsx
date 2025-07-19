@@ -265,9 +265,9 @@ const AddAchievement = () => {
                       <label htmlFor="department" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
                         <Building2 className="w-5 h-5 text-[#a259c6]" /> Department
                       </label>
-                      <Select value={form.department} onValueChange={val => setForm(f => ({ ...f, department: val }))} required>
-                        <SelectTrigger id="department" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm" required>
-                          <SelectValue placeholder="Select Department" />
+                      <Select value={form.department} onValueChange={val => setForm(f => ({ ...f, department: val }))}>
+                        <SelectTrigger id="department" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
+                          <SelectValue placeholder="Select Department (optional)" />
                         </SelectTrigger>
                         <SelectContent>
                           {DEPARTMENT_OPTIONS.map(option => (
