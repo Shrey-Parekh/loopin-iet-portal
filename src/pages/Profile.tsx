@@ -64,7 +64,7 @@ const TAG_OPTIONS = [
 // 1. Add COURSE_OPTIONS, YEAR_OPTIONS, STREAM_OPTIONS at the top
 const COURSE_OPTIONS = ["B. Tech.", "BTI", "MCA", "M. Tech", "MBA Tech"];
 const YEAR_OPTIONS = ["1", "2", "3", "4", "5", "6"];
-const STREAM_OPTIONS = ["AI", "CS", "CE", "DS", "EXTC", "Cyber", "IT", "CSDS", "CSBS", "Mech", "MXTC", "MCA"];
+const STREAM_OPTIONS = ["AI", "CS", "CE", "DS", "EXTC", "Cyber Security", "IT", "CSDS", "CSBS", "Mech", "MXTC", "MCA"];
 
 const fieldAnim = {
   hidden: { opacity: 0, y: 32 },

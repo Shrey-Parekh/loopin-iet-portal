@@ -19,6 +19,27 @@ const POSITION_OPTIONS = [
 const COURSE_OPTIONS = ["B. Tech.", "BTI", "MCA", "M. Tech", "MBA Tech"];
 const YEAR_OPTIONS = ["1", "2", "3", "4", "5", "6"];
 
+const MEMBER_OPTIONS = [
+  { label: 'Super Core', value: 'super_core' },
+  { label: 'Core', value: 'core' },
+  { label: 'Executive', value: 'executive' },
+  { label: 'Mentor', value: 'mentor' },
+];
+const getFilteredPositions = (member: string) => {
+  if (member === 'super_core') {
+    return [
+      'Chairperson', 'Vice-chairperson', 'Secretary', 'Director', 'Treasurer', 'Research Lead'
+    ];
+  } else if (member === 'core') {
+    return ['Head', 'Subhead'];
+  } else if (member === 'executive') {
+    return ['Executive'];
+  } else if (member === 'mentor') {
+    return ['Mentor'];
+  }
+  return POSITION_OPTIONS;
+};
+
 const AddAchievement = () => {
   const [form, setForm] = useState({
     name: '',
@@ -30,6 +51,7 @@ const AddAchievement = () => {
     Year: '',
     department: '',
     Position: '',
+    member: '',
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -63,10 +85,14 @@ const AddAchievement = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      let submitForm = { ...form };
+      if (submitForm.member === 'super_core' || submitForm.member === 'mentor') {
+        submitForm.department = null;
+      }
       const res = await fetch(API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(submitForm),
       });
       let errorMsg = 'Failed to add achievement';
       if (!res.ok) {
@@ -239,13 +265,29 @@ const AddAchievement = () => {
                 <div>
                   <div className="font-['Dosis',sans-serif] text-lg sm:text-xl font-bold text-[#4f1b59] mb-4 sm:mb-6 mt-2">Profile Details</div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
+                    {/* Member Field */}
+                    <div className="flex-1">
+                      <label htmlFor="member" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                        <Briefcase className="w-5 h-5 text-[#a259c6]" /> Member Type
+                      </label>
+                      <Select value={form.member} onValueChange={val => setForm(f => ({ ...f, member: val, department: '', Position: '' }))}>
+                        <SelectTrigger id="member" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
+                          <SelectValue placeholder="Select Member Type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {MEMBER_OPTIONS.map(option => (
+                            <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                     {/* Course Field */}
                     <div className="flex-1">
                       <label htmlFor="Course" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
                         <Briefcase className="w-5 h-5 text-[#a259c6]" /> Course
                       </label>
-                      <Select value={form.Course} onValueChange={val => setForm(f => ({ ...f, Course: val }))} required>
-                        <SelectTrigger id="Course" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm" required>
+                      <Select value={form.Course} onValueChange={val => setForm(f => ({ ...f, Course: val }))}>
+                        <SelectTrigger id="Course" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
                           <SelectValue placeholder="Select Course" />
                         </SelectTrigger>
                         <SelectContent>
@@ -260,8 +302,8 @@ const AddAchievement = () => {
                       <label htmlFor="Year" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
                         <Sparkles className="w-5 h-5 text-[#a259c6]" /> Year
                       </label>
-                      <Select value={form.Year} onValueChange={val => setForm(f => ({ ...f, Year: val }))} required>
-                        <SelectTrigger id="Year" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm" required>
+                      <Select value={form.Year} onValueChange={val => setForm(f => ({ ...f, Year: val }))}>
+                        <SelectTrigger id="Year" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
                           <SelectValue placeholder="Select Year" />
                         </SelectTrigger>
                         <SelectContent>
@@ -271,33 +313,35 @@ const AddAchievement = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    {/* Department Field */}
-                    <div className="flex-1">
-                      <label htmlFor="department" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
-                        <Building2 className="w-5 h-5 text-[#a259c6]" /> Department
-                      </label>
-                      <Select value={form.department} onValueChange={val => setForm(f => ({ ...f, department: val }))}>
-                        <SelectTrigger id="department" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
-                          <SelectValue placeholder="Select Department (optional)" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {DEPARTMENT_OPTIONS.map(option => (
-                            <SelectItem key={option} value={option}>{option}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    {/* Position Field */}
+                    {/* Department Field (hide if super_core or mentor) */}
+                    {form.member !== 'super_core' && form.member !== 'mentor' && (
+                      <div className="flex-1">
+                        <label htmlFor="department" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                          <Building2 className="w-5 h-5 text-[#a259c6]" /> Department
+                        </label>
+                        <Select value={form.department} onValueChange={val => setForm(f => ({ ...f, department: val }))}>
+                          <SelectTrigger id="department" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
+                            <SelectValue placeholder="Select Department (optional)" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {DEPARTMENT_OPTIONS.map(option => (
+                              <SelectItem key={option} value={option}>{option}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                    {/* Position Field (filtered by member type) */}
                     <div className="flex-1">
                       <label htmlFor="Position" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
                         <Briefcase className="w-5 h-5 text-[#a259c6]" /> Position
                       </label>
-                      <Select value={form.Position} onValueChange={val => setForm(f => ({ ...f, Position: val }))} required>
-                        <SelectTrigger id="Position" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm" required>
+                      <Select value={form.Position} onValueChange={val => setForm(f => ({ ...f, Position: val }))}>
+                        <SelectTrigger id="Position" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm">
                           <SelectValue placeholder="Select Position" />
                         </SelectTrigger>
                         <SelectContent>
-                          {POSITION_OPTIONS.map(option => (
+                          {getFilteredPositions(form.member).map(option => (
                             <SelectItem key={option} value={option}>{option}</SelectItem>
                           ))}
                         </SelectContent>
