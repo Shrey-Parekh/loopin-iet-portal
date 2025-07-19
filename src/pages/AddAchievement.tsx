@@ -58,11 +58,12 @@ const AddAchievement = () => {
       reader.readAsDataURL(file);
     }
   };
+  const API_BASE = 'https://loopin-iet-portal-1.onrender.com/api/achievements';
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3001/api/achievements', {
+      const res = await fetch(API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
