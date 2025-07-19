@@ -50,9 +50,11 @@ const Achievements = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [selectedToDelete, setSelectedToDelete] = useState(null);
 
+  const API_BASE = 'https://loopin-iet-portal-1.onrender.com/api/achievements';
+
   const fetchAchievements = () => {
     setLoading(true);
-    fetch('http://localhost:3001/api/achievements')
+    fetch(API_BASE)
       .then(res => res.json())
       .then(data => {
         setAchievements(data);
@@ -72,7 +74,7 @@ const Achievements = () => {
     e.preventDefault();
     setAdding(true);
     try {
-      const res = await fetch('http://localhost:3001/api/achievements', {
+      const res = await fetch(API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -97,7 +99,7 @@ const Achievements = () => {
     if (!selectedToDelete) return;
     setDeletingId(selectedToDelete);
     try {
-      const res = await fetch(`http://localhost:3001/api/achievements/${selectedToDelete}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE}/${selectedToDelete}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete achievement');
       fetchAchievements();
       toast && toast({ title: 'Achievement Deleted', description: 'Achievement was deleted.' });

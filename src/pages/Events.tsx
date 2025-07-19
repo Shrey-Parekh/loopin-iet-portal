@@ -12,6 +12,7 @@ const Events = () => {
   const [deleteMode, setDeleteMode] = useState(false);
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const userRole = localStorage.getItem('role');
 
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
@@ -77,7 +78,7 @@ const Events = () => {
                 setSelectedTimeframe={setSelectedTimeframe}
               />
             </motion.div>
-            {isLoggedIn && (
+            {isLoggedIn && userRole !== 'executive' && (
               <motion.div className="flex flex-row md:flex-col gap-2 md:gap-3 items-center md:items-end min-w-[140px] w-full md:w-auto" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}>
                 <button
                   className="w-full px-5 py-2 border border-[#4f1b59] text-[#4f1b59] font-semibold rounded-full shadow bg-white hover:bg-[#4f1b59] hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40"
