@@ -136,7 +136,10 @@ const Header = () => {
               <Link 
                 key={item.name}
                 to={item.href} 
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                }}
                 className={cn(
                   "px-4 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center relative group overflow-hidden",
                   location.pathname === item.href
