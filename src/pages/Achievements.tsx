@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import { Trophy, Trash2, Plus } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -46,6 +47,8 @@ const Achievements = () => {
     Year: '',
     Course: '',
   });
+  const [showDialog, setShowDialog] = useState(false);
+  const [selectedToDelete, setSelectedToDelete] = useState(null);
 
   const fetchAchievements = () => {
     setLoading(true);
@@ -86,10 +89,15 @@ const Achievements = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    setDeletingId(id);
+  const handleDeleteClick = (id) => {
+    setSelectedToDelete(id);
+    setShowDialog(true);
+  };
+  const handleDeleteConfirm = async () => {
+    if (!selectedToDelete) return;
+    setDeletingId(selectedToDelete);
     try {
-      const res = await fetch(`http://localhost:3001/api/achievements/${id}`, { method: 'DELETE' });
+      const res = await fetch(`http://localhost:3001/api/achievements/${selectedToDelete}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete achievement');
       fetchAchievements();
       toast && toast({ title: 'Achievement Deleted', description: 'Achievement was deleted.' });
@@ -97,6 +105,8 @@ const Achievements = () => {
       toast && toast({ title: 'Error', description: 'Failed to delete achievement', variant: 'destructive' });
     } finally {
       setDeletingId(null);
+      setShowDialog(false);
+      setSelectedToDelete(null);
     }
   };
 
@@ -190,7 +200,7 @@ const Achievements = () => {
                   {deleteMode && isLoggedIn && (
                     <button
                       className="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white rounded-full p-2 shadow-lg z-20"
-                      onClick={() => handleDelete(ach.id)}
+                      onClick={() => handleDeleteClick(ach.id)}
                       disabled={deletingId === ach.id}
                       title="Delete Achievement"
                     >
@@ -223,6 +233,21 @@ const Achievements = () => {
           </div>
         </div>
       )}
+      {/* Confirmation Dialog for Delete */}
+      <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Achievement?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this achievement? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowDialog(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConfirm}>Yes, Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

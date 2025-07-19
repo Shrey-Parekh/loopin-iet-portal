@@ -7,6 +7,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Image as ImageIcon, ArrowLeft } from 'lucide-react';
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
+import { Briefcase, Sparkles, Building2 } from 'lucide-react';
 
 const DEPARTMENT_OPTIONS = [
   'Technicals', 'Research', 'Digital Creatives', 'Inhouse Creatives', 'SMCW', 'Photography', 'Logistics', 'Marketing',
@@ -123,22 +125,18 @@ const AddAchievement = () => {
             initial={{ opacity: 0, scale: 0.97, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, type: 'spring' }}
-            className="mx-auto max-w-2xl"
+            className="mx-auto w-full max-w-2xl px-2 sm:px-4"
           >
-            <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-10 hover:shadow-[0_8px_40px_0_rgba(162,89,198,0.13)] transition-all duration-300">
-              <button
-                type="button"
-                onClick={() => navigate('/achievements')}
-                className="mb-6 flex items-center gap-2 text-[#4f1b59] border border-[#a259c6] bg-white/80 hover:bg-[#f3e8ff] font-medium rounded-full px-4 py-2 text-sm shadow-sm w-fit focus:outline-none focus:ring-2 focus:ring-[#a259c6]/30 transition-all"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Achievements
-              </button>
-              <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+            <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/30 p-0 md:p-0 overflow-hidden hover:shadow-[0_8px_40px_0_rgba(162,89,198,0.13)] transition-all duration-300">
+              <div className="bg-gradient-to-r from-[#a259c6]/80 to-[#4f1b59]/80 px-4 sm:px-8 py-6 sm:py-8 text-white text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-['Abril Fatface','Doto',cursive,serif] mb-2 tracking-wider">Achievement Details Form</h2>
+                <p className="text-sm sm:text-base md:text-lg opacity-90">Share a proud moment with the community!</p>
+              </div>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-8 sm:gap-10 px-3 sm:px-6 md:px-10 py-6 sm:py-10 bg-white/90">
                 {/* Achievement Details Section */}
                 <div>
-                  <div className="font-['Dosis',sans-serif] text-xl font-bold text-[#4f1b59] mb-6 mt-2">Achievement Details</div>
-                  <div className="flex flex-col gap-7">
+                  <div className="font-['Dosis',sans-serif] text-lg sm:text-xl font-bold text-[#4f1b59] mb-4 sm:mb-6 mt-2">Achievement Details</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7">
                     {/* Name Field */}
                     <div className="relative">
                       <input
@@ -168,7 +166,7 @@ const AddAchievement = () => {
                       <label htmlFor="achievement_type" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-[#a259c6]">Achievement Title</label>
                     </div>
                     {/* Date Field */}
-                    <div className="relative">
+                    <div className="relative col-span-1 md:col-span-2">
                       <input
                         name="date"
                         id="date"
@@ -186,9 +184,9 @@ const AddAchievement = () => {
                 </div>
                 {/* Image Section */}
                 <div>
-                  <div className="font-['Dosis',sans-serif] text-xl font-bold text-[#4f1b59] mb-6 mt-2">Achievement Image</div>
+                  <div className="font-['Dosis',sans-serif] text-lg sm:text-xl font-bold text-[#4f1b59] mb-4 sm:mb-6 mt-2">Achievement Image</div>
                   <label htmlFor="image" className="font-['Dosis',sans-serif] font-medium text-[#4f1b59] mb-1 text-base">Upload Image</label>
-                  <div className="flex items-center gap-4 relative border-2 border-dashed border-[#a259c6] rounded-xl bg-white/80 min-h-[3.2rem] px-6 py-4 cursor-pointer transition-all duration-200 hover:border-[#4f1b59]"
+                  <div className="flex flex-col sm:flex-row items-center gap-4 relative border-2 border-dashed border-[#a259c6] rounded-xl bg-white/80 min-h-[3.2rem] px-4 sm:px-6 py-4 cursor-pointer transition-all duration-200 hover:border-[#4f1b59]"
                     onDragOver={e => { e.preventDefault(); e.currentTarget.classList.add('dragover'); }}
                     onDragLeave={e => { e.preventDefault(); e.currentTarget.classList.remove('dragover'); }}
                     onDrop={e => { e.currentTarget.classList.remove('dragover'); handleImageDrop(e); }}
@@ -204,13 +202,13 @@ const AddAchievement = () => {
                       onChange={handleImage}
                       className="hidden"
                     />
-                    {form.image && <img src={form.image} alt="Preview" className="max-h-12 rounded-lg ml-6 border border-[#e0c3fc] shadow" />}
-                    {form.image && <button type="button" className="ml-4 text-red-600 text-sm font-semibold hover:underline" onClick={e => { e.stopPropagation(); setForm(f => ({ ...f, image: '' })); setImageFile(null); }}>Remove</button>}
+                    {form.image && <img src={form.image} alt="Preview" className="max-h-12 rounded-lg ml-0 sm:ml-6 border border-[#e0c3fc] shadow mt-4 sm:mt-0" />}
+                    {form.image && <button type="button" className="ml-0 sm:ml-4 text-red-600 text-sm font-semibold hover:underline mt-2 sm:mt-0" onClick={e => { e.stopPropagation(); setForm(f => ({ ...f, image: '' })); setImageFile(null); }}>Remove</button>}
                   </div>
                 </div>
                 {/* Description Section */}
                 <div>
-                  <div className="font-['Dosis',sans-serif] text-xl font-bold text-[#4f1b59] mb-6 mt-2">Description</div>
+                  <div className="font-['Dosis',sans-serif] text-lg sm:text-xl font-bold text-[#4f1b59] mb-4 sm:mb-6 mt-2">Description</div>
                   <div className="relative">
                     <Textarea
                       name="discription"
@@ -227,71 +225,75 @@ const AddAchievement = () => {
                 </div>
                 {/* Profile Fields Section */}
                 <div>
-                  <div className="font-['Dosis',sans-serif] text-xl font-bold text-[#4f1b59] mb-6 mt-2">Profile Details</div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
+                  <div className="font-['Dosis',sans-serif] text-lg sm:text-xl font-bold text-[#4f1b59] mb-4 sm:mb-6 mt-2">Profile Details</div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
                     {/* Course Field */}
-                    <div className="relative">
-                      <select
-                        name="Course"
-                        id="Course"
-                        value={form.Course}
-                        onChange={handleChange}
-                        required
-                        className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
-                      >
-                        <option value="" disabled>Select Course</option>
-                        {COURSE_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                      </select>
-                      <label htmlFor="Course" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all">Course</label>
+                    <div className="flex-1">
+                      <label htmlFor="Course" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                        <Briefcase className="w-5 h-5 text-[#a259c6]" /> Course
+                      </label>
+                      <Select value={form.Course} onValueChange={val => setForm(f => ({ ...f, Course: val }))} required>
+                        <SelectTrigger id="Course" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm" required>
+                          <SelectValue placeholder="Select Course" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {COURSE_OPTIONS.map(option => (
+                            <SelectItem key={option} value={option}>{option}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     {/* Year Field */}
-                    <div className="relative">
-                      <select
-                        name="Year"
-                        id="Year"
-                        value={form.Year}
-                        onChange={handleChange}
-                        required
-                        className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
-                      >
-                        <option value="" disabled>Select Year</option>
-                        {YEAR_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                      </select>
-                      <label htmlFor="Year" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all">Year</label>
+                    <div className="flex-1">
+                      <label htmlFor="Year" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                        <Sparkles className="w-5 h-5 text-[#a259c6]" /> Year
+                      </label>
+                      <Select value={form.Year} onValueChange={val => setForm(f => ({ ...f, Year: val }))} required>
+                        <SelectTrigger id="Year" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm" required>
+                          <SelectValue placeholder="Select Year" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {YEAR_OPTIONS.map(option => (
+                            <SelectItem key={option} value={option}>{option} {option === "1" ? 'st' : option === "2" ? 'nd' : option === "3" ? 'rd' : 'th'} year</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     {/* Department Field */}
-                    <div className="relative">
-                      <select
-                        name="department"
-                        id="department"
-                        value={form.department}
-                        onChange={handleChange}
-                        required
-                        className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
-                      >
-                        <option value="" disabled>Select Department</option>
-                        {DEPARTMENT_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                      </select>
-                      <label htmlFor="department" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all">Department</label>
+                    <div className="flex-1">
+                      <label htmlFor="department" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                        <Building2 className="w-5 h-5 text-[#a259c6]" /> Department
+                      </label>
+                      <Select value={form.department} onValueChange={val => setForm(f => ({ ...f, department: val }))} required>
+                        <SelectTrigger id="department" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm" required>
+                          <SelectValue placeholder="Select Department" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {DEPARTMENT_OPTIONS.map(option => (
+                            <SelectItem key={option} value={option}>{option}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     {/* Position Field */}
-                    <div className="relative">
-                      <select
-                        name="Position"
-                        id="Position"
-                        value={form.Position}
-                        onChange={handleChange}
-                        required
-                        className="peer w-full px-4 pt-6 pb-2 text-base bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 focus:border-[#a259c6] shadow-sm transition-all"
-                      >
-                        <option value="" disabled>Select Position</option>
-                        {POSITION_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                      </select>
-                      <label htmlFor="Position" className="absolute left-4 top-2 text-gray-500 text-sm font-medium pointer-events-none transition-all">Position</label>
+                    <div className="flex-1">
+                      <label htmlFor="Position" className="flex items-center gap-2 text-[#4f1b59] font-semibold text-base mb-1">
+                        <Briefcase className="w-5 h-5 text-[#a259c6]" /> Position
+                      </label>
+                      <Select value={form.Position} onValueChange={val => setForm(f => ({ ...f, Position: val }))} required>
+                        <SelectTrigger id="Position" className="h-12 text-base bg-white/80 border border-[#a259c6]/30 rounded-lg shadow-sm" required>
+                          <SelectValue placeholder="Select Position" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {POSITION_OPTIONS.map(option => (
+                            <SelectItem key={option} value={option}>{option}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
                 </div>
-                <Button type="submit" className="w-full mt-4 font-semibold bg-gradient-to-r from-[#a259c6] to-[#4f1b59] hover:from-[#4f1b59] hover:to-[#a259c6] text-white px-10 py-5 rounded-xl shadow-xl text-xl transition-all duration-200 hover:scale-[1.03] active:scale-95 focus:ring-4 focus:ring-[#a259c6]/30" disabled={loading}>
+                <Button type="submit" className="w-full mt-4 font-semibold bg-gradient-to-r from-[#a259c6] to-[#4f1b59] hover:from-[#4f1b59] hover:to-[#a259c6] text-white px-8 sm:px-10 py-4 sm:py-5 rounded-xl shadow-xl text-lg sm:text-xl transition-all duration-200 hover:scale-[1.03] active:scale-95 focus:ring-4 focus:ring-[#a259c6]/30" disabled={loading}>
                   {loading ? 'Adding...' : 'Add Achievement'}
                 </Button>
               </form>
