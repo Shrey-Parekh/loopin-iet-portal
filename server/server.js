@@ -497,6 +497,57 @@ app.post('/api/contact', (req, res) => {
   res.json({ success: true, message: 'Contact form submitted!' });
 });
 
+// Achievements API
+app.get('/api/achievements', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('achievements')
+      .select('*')
+      .order('date', { ascending: false });
+    if (error) {
+      console.error('Error fetching achievements:', error.message);
+      return res.status(500).json({ error: 'Error fetching achievements' });
+    }
+    res.json(data);
+  } catch (err) {
+    console.error('Error fetching achievements:', err.message);
+    res.status(500).json({ error: 'Error fetching achievements' });
+  }
+});
+
+// Add achievement
+app.post('/api/achievements', async (req, res) => {
+  const { image, name, discription, achievement_type, date, department, Position, Year, Course } = req.body;
+  if (!name || !achievement_type || !date) {
+    return res.status(400).json({ error: 'Name, achievement type, and date are required.' });
+  }
+  try {
+    const { data, error } = await supabase.from('achievements').insert([
+      { image, name, discription, achievement_type, date, department, Position, Year, Course }
+    ]);
+    if (error) {
+      console.error('Error adding achievement:', error.message);
+      return res.status(500).json({ error: 'Failed to add achievement.' });
+    }
+    res.json({ success: true, achievement: data && data[0] });
+  } catch (err) {
+    console.error('Error adding achievement:', err.message);
+    res.status(500).json({ error: 'Failed to add achievement.' });
+  }
+});
+
+// Delete achievement
+app.delete('/api/achievements/:id', async (req, res) => {
+  const { id } = req.params;
+  const achievementId = Number(id);
+  const { error } = await supabase.from('achievements').delete().eq('id', achievementId);
+  if (error) {
+    console.error('Error deleting achievement:', error.message);
+    return res.status(500).json({ error: 'Failed to delete achievement.' });
+  }
+  res.json({ success: true });
+});
+
 app.listen(port, () => {
   console.log(`🚀 Server is running on port ${port}`);
 });

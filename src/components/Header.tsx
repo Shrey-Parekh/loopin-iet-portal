@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Menu, X, User, LogIn, FileText, Users, Calendar, Settings, MessageSquare, Phone, Home } from 'lucide-react';
+import { Menu, X, User, LogIn, FileText, Users, Calendar, Settings, MessageSquare, Phone, Home, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -38,6 +38,7 @@ const Header = () => {
     { name: 'Events', href: '/events', icon: Calendar },
     { name: 'Newsletter', href: '/newsletter', icon: FileText },
     { name: 'Announcements', href: '/announcements', icon: MessageSquare },
+    { name: 'Achievements', href: '/achievements', icon: Trophy },
     { name: 'Contact', href: '/contact', icon: Phone }
   ];
 

@@ -33,6 +33,13 @@ const QuickActions = () => {
       color: 'bg-gradient-to-br from-orange-500 to-amber-500'
     },
     {
+      icon: Trophy,
+      title: 'Achievements',
+      description: 'Celebrate the accomplishments of our members and teams.',
+      href: '/achievements',
+      color: 'bg-gradient-to-br from-yellow-500 to-orange-400'
+    },
+    {
       icon: Settings,
       title: 'Contact Us',
       description: 'Get in touch with our team for any inquiries.',
