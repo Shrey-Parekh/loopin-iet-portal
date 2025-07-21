@@ -322,7 +322,7 @@ const Profile = () => {
       setCardPulse(true);
       setTimeout(() => setCardPulse(false), 1200);
       setTimeout(() => setSaveState('idle'), 1500);
-      toast({ title: 'Profile Saved', description: 'Your profile was updated successfully!', variant: 'success' });
+      toast({ title: 'Profile Saved', description: 'Your profile was updated successfully!', variant: 'default' });
     } catch (err) {
       setSaveState('error');
       setTimeout(() => setSaveState('idle'), 1500);
@@ -624,20 +624,25 @@ const Profile = () => {
                         className="flex flex-wrap gap-2 mt-2"
                       >
                         {HOBBY_OPTIONS.map(hobby => (
-                          <button
-                            type="button"
+                          <motion.span
                             key={hobby}
-                          className={`px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150
-                              ${selectedHobbies.includes(hobby)
-                              ? 'bg-gradient-to-r from-[#a259c6]/30 to-[#f3e8ff]/60 border-[#a259c6] text-[#4f1b59] shadow-md scale-105'
-                              : 'bg-white/80 border-gray-300 text-gray-500 hover:bg-[#a259c6]/10 hover:scale-105'}
-                            `}
+                            className={`px-3 py-1 rounded-[11px] text-[14px] sm:text-[15px] font-semibold mb-1 ${[
+                              'bg-[#fff3da] text-[#d4a638]',
+                              'bg-[#e6f6de] text-[#73ab4b]',
+                              'bg-[#e6eaff] text-[#5863bb]',
+                              'bg-[#eaf4fe] text-[#9062ad]',
+                              'bg-[#f3e6ff] text-[#905fdc]',
+                              'bg-[#defcf9] text-[#19adb7]',
+                              'bg-[#ffe6fa] text-[#da3ea6]'
+                            ][HOBBY_OPTIONS.indexOf(hobby) % 7]}`}
+                            whileHover={{ scale: 1.12, boxShadow: '0 2px 12px 0 rgba(162,89,198,0.10)' }}
+                            transition={{ type: 'spring', stiffness: 300 }}
                             onClick={() => handleHobbyClick(hobby)}
                             aria-pressed={selectedHobbies.includes(hobby)}
                             tabIndex={0}
                           >
                             {hobby}
-                          </button>
+                          </motion.span>
                         ))}
                         {/* Add custom hobby input */}
                         <button
@@ -691,20 +696,28 @@ const Profile = () => {
                         className="flex flex-wrap gap-2 mt-2"
                       >
                         {TAG_OPTIONS.map(tag => (
-                          <button
-                            type="button"
+                          <motion.span
                             key={tag}
-                          className={`px-3 py-1 rounded-full border text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40 transition-all duration-150
-                              ${selectedTags.includes(tag)
-                              ? 'bg-gradient-to-r from-[#f3e8ff]/60 to-[#a259c6]/30 border-[#a259c6] text-[#4f1b59] shadow-md scale-105'
-                              : 'bg-white/80 border-gray-300 text-gray-500 hover:bg-[#a259c6]/10 hover:scale-105'}
-                            `}
+                            className={`px-3 py-1 rounded-[11px] text-[14px] sm:text-[15px] font-semibold mb-1 ${[
+                              'bg-[#eaf6ff] text-[#36a3f7]',
+                              'bg-[#fff4ea] text-[#f09d51]',
+                              'bg-[#ffdfe6] text-[#e65774]',
+                              'bg-[#f5f7fa] text-[#8492a6]',
+                              'bg-[#def6fc] text-[#028090]',
+                              'bg-[#ffe6fa] text-[#da3ea6]',
+                              'bg-[#e6f6de] text-[#73ab4b]',
+                              'bg-[#f3e6ff] text-[#905fdc]',
+                              'bg-[#fff3da] text-[#d4a638]',
+                              'bg-[#defcf9] text-[#19adb7]'
+                            ][TAG_OPTIONS.indexOf(tag) % 10]}`}
+                            whileHover={{ scale: 1.12, boxShadow: '0 2px 12px 0 rgba(162,89,198,0.10)' }}
+                            transition={{ type: 'spring', stiffness: 300 }}
                             onClick={() => handleTagClick(tag)}
                             aria-pressed={selectedTags.includes(tag)}
                             tabIndex={0}
                           >
                             {tag}
-                          </button>
+                          </motion.span>
                         ))}
                         {/* Add custom tag input */}
                         <button
@@ -774,179 +787,282 @@ const Profile = () => {
           </form>
         ) : (
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="relative min-h-[90vh] flex flex-col items-center justify-start w-full"
+            className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#f3e8ff] via-[#e9d8fd] to-[#fde0ff] py-4 px-1 sm:py-8 sm:px-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7 }}
           >
-            {/* Animated Gradient Hero */}
-            <div className="absolute top-0 left-0 w-full h-72 md:h-80 bg-gradient-to-br from-[#a259c6] via-[#7f3fa7] to-[#4f1b59] animate-gradient-x z-0" style={{ filter: 'blur(0px)' }} />
-            {/* Avatar with glow and effects */}
-            <div className="relative z-20 flex flex-col items-center w-full" style={{ marginTop: '4.5rem' }}>
-              <div className="group relative flex items-center justify-center">
-                {/* Animated gradient border */}
-                <span className="absolute w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-tr from-blue-400 via-purple-400 to-pink-400 animate-spin-slow blur-xl opacity-60 scale-110" style={{ zIndex: 1 }} />
-                {/* Avatar circle with thick border and shadow */}
+            <motion.div
+              className="w-full max-w-[1100px] min-w-0 sm:min-w-[900px] bg-white rounded-[28px] shadow-[0_4px_28px_rgba(60,90,120,0.12)] px-2 sm:px-4 md:px-8 lg:px-[58px] py-4 sm:py-8 md:py-[44px] flex flex-col gap-8 sm:gap-10"
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+            >
+              {/* Hero Section */}
+              <motion.div
+                className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-8 mb-2"
+                initial={{ opacity: 0, y: 32 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
+              >
                 <motion.div
-                  className="relative w-40 h-40 md:w-48 md:h-48 rounded-full border-8 border-white bg-white shadow-2xl flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:rotate-3 group-hover:scale-105"
-                  style={{ boxShadow: '0 0 0 8px #a259c6, 0 8px 32px 0 rgba(162,89,198,0.25)', zIndex: 3 }}
-                  animate={cardPulse ? { boxShadow: '0 0 0 8px #a259c6, 0 8px 32px 0 rgba(162,89,198,0.25)' } : {}}
-                  transition={{ duration: 0.8, type: 'spring' }}
-                >
-                  {profile.image ? (
-                    <img
-                      src={profile.image}
-                      alt="Profile"
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center rounded-full bg-gradient-to-br from-[#a259c6] to-[#4f1b59]">
-                      <User className="w-20 h-20 text-white opacity-80" />
-                    </div>
-                  )}
-                  {/* Glass shine overlay */}
-                  <span className="absolute left-0 top-0 w-full h-full rounded-full pointer-events-none" style={{ background: 'linear-gradient(120deg,rgba(255,255,255,0.45) 0%,rgba(255,255,255,0.15) 60%,rgba(255,255,255,0) 100%)', zIndex: 4 }} />
-                </motion.div>
-              </div>
-              {/* Floating Glass Card */}
-              <div className="w-full max-w-3xl bg-white/70 backdrop-blur-lg rounded-3xl shadow-2xl p-10 pt-32 mt-[-3rem] flex flex-col gap-10 border border-purple-100 relative z-20" style={{ boxShadow: '0 8px 40px 0 rgba(162,89,198,0.15)' }}>
-                {/* Name and email at the top of the card */}
-                <div className="flex flex-col items-center gap-1 -mt-28 mb-4">
-                  <h1 className="text-4xl md:text-5xl font-extrabold text-[#2d174d] tracking-tight leading-tight mb-1">{profile.name || 'Your Name'}</h1>
-                  <div className="text-base md:text-lg text-gray-500 font-normal">{profile.email || 'Email'}</div>
-                </div>
-                {/* Role, Department, Position */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div>
-                    <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Briefcase className="w-5 h-5" />Role</div>
-                    <div className="text-gray-800 text-lg font-medium">{ROLE_OPTIONS.find(r => r.value === profile.member_type)?.label || '-'}</div>
-                  </div>
-                  {profile.member_type !== 'mentor' && (
-                    <div>
-                      <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Building2 className="w-5 h-5" />Department</div>
-                      <div className="text-gray-800 text-lg font-medium">{profile.department || '-'}</div>
-                    </div>
-                  )}
-                  <div>
-                    <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Briefcase className="w-5 h-5" />Position</div>
-                    <div className="text-gray-800 text-lg font-medium">{profile.position_hierarchy || '-'}</div>
-                  </div>
-                </div>
-                <div className="border-t border-purple-100 pt-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <div>
-                    <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Linkedin className="w-5 h-5" />LinkedIn</div>
-                    <div className="text-blue-700 break-all text-lg font-medium">{profile.linkedin ? <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-900 transition-colors">{profile.linkedin}</a> : '-'}</div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Instagram className="w-5 h-5" />Instagram</div>
-                    <div className="text-blue-700 break-all text-lg font-medium">{profile.Instagram ? <a href={profile.Instagram} target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-900 transition-colors">{profile.Instagram}</a> : '-'}</div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><Github className="w-5 h-5" />GitHub</div>
-                    <div className="text-blue-700 break-all text-lg font-medium">{profile.github ? <a href={profile.github} target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-900 transition-colors">{profile.github}</a> : '-'}</div>
-                  </div>
-                </div>
-                <div className="border-t border-purple-100 pt-6">
-                  <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><User className="w-5 h-5" />Bio</div>
-                  <div className="text-gray-700 whitespace-pre-line text-lg mt-1">{profile.bio || '-'}</div>
-                </div>
-                {/* Academic Details in view mode */}
-                {(profile.course || profile.year || profile.stream) && (
-                  <div className="border-t border-purple-100 pt-6">
-                    <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1">
-                      <Briefcase className="w-5 h-5" /> Academic Details
-                    </div>
-                    <div className="flex flex-wrap gap-4 mt-1 text-base text-gray-800">
-                      {profile.course && (
-                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#e9d8fd] to-[#f3eafd] text-[#4f1b59] font-semibold shadow-sm">{profile.course}</span>
-                      )}
-                      {profile.year && (
-                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#f8f5fc] to-[#e9d8fd] text-[#4f1b59] font-semibold shadow-sm">{profile.year}{profile.year === "1" ? 'st' : profile.year === "2" ? 'nd' : profile.year === "3" ? 'rd' : 'th'} year</span>
-                      )}
-                      {profile.stream && (
-                        <span className="px-4 py-1 rounded-full bg-gradient-to-r from-[#f3e8fd] to-[#e9d8fd] text-[#4f1b59] font-semibold shadow-sm">{profile.stream}</span>
-                      )}
-                    </div>
-                  </div>
-                )}
-                {/* Hobbies */}
-                <div className="border-t border-purple-100 pt-6">
-                  <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><span className="w-5 h-5 inline-block"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L6 21m0 0l-3.75-4M6 21V3m12 0l3.75 4M18 3v18m0 0l-3.75-4" /></svg></span>Hobbies</div>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {(profile.hobbies && profile.hobbies.length > 0 ? profile.hobbies : selectedHobbies).map((hobby: string) => (
-                      <span key={hobby} className="px-4 py-1 rounded-full bg-gradient-to-r from-blue-200 to-green-200 text-blue-900 text-base font-semibold shadow-sm hover:scale-105 transition-transform duration-150">{hobby}</span>
-                    ))}
-                    {(!profile.hobbies || profile.hobbies.length === 0) && selectedHobbies.length === 0 && <span className="text-gray-400">-</span>}
-                  </div>
-                </div>
-                <div className="border-t border-purple-100 pt-6">
-                  <div className="flex items-center gap-2 font-semibold text-[#a259c6] mb-1"><span className="w-5 h-5 inline-block"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8a9 9 0 100-18 9 9 0 000 18z" /></svg></span>Tags</div>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {(profile.tags && profile.tags.length > 0 ? profile.tags : selectedTags).map((tag: string) => (
-                      <span key={tag} className="px-4 py-1 rounded-full bg-gradient-to-r from-yellow-200 to-orange-200 text-yellow-900 text-base font-semibold shadow-sm hover:scale-105 transition-transform duration-150">{tag}</span>
-                    ))}
-                    {(!profile.tags || profile.tags.length === 0) && selectedTags.length === 0 && <span className="text-gray-400">-</span>}
-                  </div>
-                </div>
-                {isOwnProfile && (
-                  <div className="flex justify-end mt-6">
-                    <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-10 py-4 rounded-xl shadow-lg font-bold text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => setEditMode(true)}>
-                      Edit Profile
-                    </Button>
-                  </div>
-                )}
-              </div>
-              {/* In the non-edit (view) mode, move the timetable image card to be the last child inside the main white profile card div. */}
-              {!editMode && profile.timetable_image && (
-                <div className="flex flex-col items-center mt-8 mb-8 w-full">
-                  <div className="font-semibold text-[#a259c6] mb-2 text-lg flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-[#a259c6]" /> Timetable
-                    <a
-                      href={profile.timetable_image}
-                      download="timetable.jpg"
-                      className="ml-2 px-2 py-1 text-xs bg-[#a259c6]/10 text-[#a259c6] rounded hover:bg-[#a259c6]/20 transition"
-                      title="Download timetable"
-                    >
-                      Download
-                    </a>
-                  </div>
-                  <img src={profile.timetable_image} alt="Timetable" className="rounded-lg shadow max-w-xs max-h-60 md:max-w-lg md:max-h-96 border border-[#a259c6]/30 object-contain" />
-                </div>
-              )}
-              {/* In non-edit mode, if isOwnProfile and profile.timetable_image, show a Remove Timetable button next to Download. */}
-              {!editMode && profile.timetable_image && isOwnProfile && (
-                <button
-                  className="ml-2 px-2 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200 transition"
-                  onClick={async () => {
-                    setProfile((p: any) => ({ ...p, timetable_image: null }));
-                    // Save profile with timetable_image removed
-                    setLoading(true);
-                    try {
-                      const res = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${profile.id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ...profile, timetable_image: null }),
-                      });
-                      if (!res.ok) throw new Error('Failed to remove timetable');
-                      toast({ title: 'Timetable removed', description: 'Your timetable was removed from your profile.' });
-                    } catch (e) {
-                      toast({ title: 'Error', description: 'Failed to remove timetable', variant: 'destructive' });
-                    } finally {
-                      setLoading(false);
-                    }
+                  className="relative flex flex-col items-center"
+                  initial={{ opacity: 0, scale: 0.6, rotate: -15 }}
+                  animate={{ opacity: 1, scale: 1, rotate: -3, transition: { type: 'spring', bounce: 0.45, duration: 1.1 } }}
+                  whileHover={{
+                    scale: 1.11,
+                    y: -16,
+                    rotate: Math.random() > 0.5 ? 3 : -4,
+                    boxShadow: '0 0 0 8px #ede2fa, 0 20px 60px 0 rgba(162,89,198,0.25)',
+                    transition: { duration: 0.45, type: 'spring', bounce: 0.4 }
                   }}
-                  type="button"
-                >Remove Timetable</button>
+                  tabIndex={0}
+                  role="img"
+                  aria-label={profile.name ? `Polaroid photo of ${profile.name}` : 'Polaroid profile photo'}
+                >
+                  <div
+                    className="bg-[#f3e8ff] rounded-[14px] shadow-xl border border-[#d1d5db] flex flex-col items-center w-[110px] h-[150px] sm:w-[150px] sm:h-[200px] mb-2 relative"
+                    style={{
+                      boxShadow: '0 12px 32px 0 rgba(60,90,120,0.16)',
+                      background: 'repeating-linear-gradient(135deg, #f3e8ff 0px, #f3e8ff 8px, #ede2fa 12px, #f3e8ff 20px)',
+                      filter: 'brightness(1.03)'
+                    }}
+                  >
+                    <img
+                      src={profile.image || 'https://randomuser.me/api/portraits/men/32.jpg'}
+                      alt={profile.name || 'Profile'}
+                      className="w-[90px] h-[90px] sm:w-[120px] sm:h-[120px] object-cover rounded-[8px] mt-3 shadow-md"
+                      style={{ boxShadow: '0 2px 8px 0 rgba(60,90,120,0.10)' }}
+                    />
+                    <div className="flex-1" />
+                    <div className="w-full h-10 sm:h-14 bg-white rounded-b-[14px] flex items-end justify-center pb-1">
+                      {profile.name && (
+                        <span className="text-sm sm:text-base text-[#7c5fa6]" style={{ fontFamily: 'Pacifico, cursive', letterSpacing: '0.04em', opacity: 0.92, textShadow: '0 1px 4px #ede2fa' }}>
+                          {profile.name}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+                <motion.div
+                  className="flex-1 flex flex-col items-center sm:items-start"
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
+                >
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#222] mb-1 text-left w-full">{profile.name || 'Your Name'}</h1>
+                  <div className="text-[#4b6aa7] text-sm sm:text-base md:text-lg font-medium break-all mb-2 text-left w-full">{profile.email || 'Email'}</div>
+                  <div className="flex flex-wrap gap-2 mt-1 w-full">
+                    <span className="bg-[#ede2fa] text-[#8142b9] rounded-[13px] px-3 py-1 sm:px-4 sm:py-1 text-sm sm:text-base font-semibold min-w-[90px] sm:min-w-[110px] flex items-center justify-center">Role: {ROLE_OPTIONS.find(r => r.value === profile.member_type)?.label || '-'}</span>
+                    {profile.member_type !== 'mentor' && (
+                      <span className="bg-[#ede2fa] text-[#8142b9] rounded-[13px] px-3 py-1 sm:px-4 sm:py-1 text-sm sm:text-base font-semibold min-w-[90px] sm:min-w-[110px] flex items-center justify-center">Department: {profile.department || '-'}</span>
+                    )}
+                    <span className="bg-[#ede2fa] text-[#8142b9] rounded-[13px] px-3 py-1 sm:px-4 sm:py-1 text-sm sm:text-base font-semibold min-w-[90px] sm:min-w-[110px] flex items-center justify-center">Position: {profile.position_hierarchy || '-'}</span>
+                  </div>
+                </motion.div>
+              </motion.div>
+              {/* Main Grid */}
+              <motion.div
+                className="grid grid-cols-1 md:grid-cols-2 gap-x-0 md:gap-x-10 gap-y-6 md:gap-y-8"
+                initial="hidden"
+                animate="visible"
+                variants={{}}
+              >
+                {/* Left Column */}
+                <div className="flex flex-col gap-6 md:gap-8">
+                  {/* About Me */}
+                  <motion.div
+                    className="bg-[#f7f2fb] rounded-2xl shadow-sm p-4 sm:p-6 min-h-[90px] sm:min-h-[120px]"
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.25, ease: 'easeOut' }}
+                    whileHover={{ scale: 1.03, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.13)' }}
+                  >
+                    <div className="font-bold text-base sm:text-lg text-[#2e4667] mb-2">About Me</div>
+                    <p className="text-sm sm:text-base text-[#111]">{profile.bio || 'No bio provided.'}</p>
+                  </motion.div>
+                  {/* Academic Info */}
+                  <motion.div
+                    className="bg-[#f7f2fb] rounded-2xl shadow-sm p-4 sm:p-6 min-h-[90px] sm:min-h-[120px]"
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.35, ease: 'easeOut' }}
+                    whileHover={{ scale: 1.03, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.13)' }}
+                  >
+                    <div className="font-bold text-base sm:text-lg text-[#33476a] mb-2">Academic Info</div>
+                    <table className="w-full text-[0.97rem] sm:text-[1.07rem] text-[#111] mt-2">
+                      <tbody>
+                        <tr>
+                          <td className="pr-3 whitespace-nowrap font-semibold">Course:</td>
+                          <td>{profile.course || '-'}</td>
+                        </tr>
+                        <tr>
+                          <td className="pr-3 whitespace-nowrap font-semibold">Year:</td>
+                          <td>{profile.year ? (profile.year === '1' ? '1st' : profile.year === '2' ? '2nd' : profile.year === '3' ? '3rd' : profile.year + 'th') + ' Year' : '-'}</td>
+                        </tr>
+                        <tr>
+                          <td className="pr-3 whitespace-nowrap font-semibold">Stream:</td>
+                          <td>{profile.stream || '-'}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </motion.div>
+                  {/* Timetable Snapshot */}
+                  <motion.div
+                    className="bg-[#f7f2fb] rounded-2xl shadow-sm p-4 sm:p-6 min-h-[90px] sm:min-h-[120px] flex flex-col items-center justify-center"
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.45, ease: 'easeOut' }}
+                    whileHover={{ scale: 1.03, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.13)' }}
+                  >
+                    <div className="font-bold text-base sm:text-lg text-[#567fc2] mb-2">Timetable Snapshot</div>
+                    {profile.timetable_image ? (
+                      <img src={profile.timetable_image} alt="Timetable Snapshot" className="block mx-auto w-[140px] h-[90px] sm:w-[204px] sm:h-[124px] object-cover rounded-[10px] border-2 border-[#e3eaff]" />
+                    ) : (
+                      <div className="w-[140px] h-[90px] sm:w-[204px] sm:h-[124px] flex items-center justify-center rounded-[10px] border-2 border-dashed border-[#e3eaff] bg-white/60 text-[#b0b0b0] text-sm sm:text-base font-medium">
+                        No timetable uploaded yet
+                      </div>
+                    )}
+                  </motion.div>
+                </div>
+                {/* Right Column */}
+                <div className="flex flex-col gap-6 md:gap-8">
+                  {/* Contact */}
+                  <motion.div
+                    className="bg-[#f7f2fb] rounded-2xl shadow-sm p-4 sm:p-6 min-h-[90px] sm:min-h-[120px]"
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+                    whileHover={{ scale: 1.03, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.13)' }}
+                  >
+                    <div className="font-bold text-base sm:text-lg text-[#336699] mb-3">Contact</div>
+                    <div className="flex flex-wrap gap-2">
+                      {profile.linkedin && (
+                        <motion.a
+                          href={profile.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1 rounded-[11px] text-[15px] sm:text-[16px] font-semibold bg-[#e3f2fd] text-[#1363c4] hover:bg-[#d0e6fa] transition"
+                          whileHover={{ scale: 1.08, filter: 'brightness(1.12)' }}
+                          transition={{ type: 'spring', stiffness: 300 }}
+                        >
+                          <Linkedin className="w-5 h-5" /> LinkedIn
+                        </motion.a>
+                      )}
+                      {profile.github && (
+                        <motion.a
+                          href={profile.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1 rounded-[11px] text-[15px] sm:text-[16px] font-semibold bg-[#f5f7fa] text-[#222] hover:bg-[#e9ecef] transition"
+                          whileHover={{ scale: 1.08, filter: 'brightness(1.12)' }}
+                          transition={{ type: 'spring', stiffness: 300 }}
+                        >
+                          <Github className="w-5 h-5" /> GitHub
+                        </motion.a>
+                      )}
+                      {profile.Instagram && (
+                        <motion.a
+                          href={profile.Instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1 rounded-[11px] text-[15px] sm:text-[16px] font-semibold bg-[#cdf0ea] text-[#178f78] hover:bg-[#b6e2d3] transition"
+                          whileHover={{ scale: 1.08, filter: 'brightness(1.12)' }}
+                          transition={{ type: 'spring', stiffness: 300 }}
+                        >
+                          <Instagram className="w-5 h-5" /> Instagram
+                        </motion.a>
+                      )}
+                    </div>
+                  </motion.div>
+                  {/* Hobbies */}
+                  <motion.div
+                    className="bg-[#f7f2fb] rounded-2xl shadow-sm p-4 sm:p-6 min-h-[90px] sm:min-h-[120px]"
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
+                    whileHover={{ scale: 1.03, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.13)' }}
+                  >
+                    <div className="font-bold text-base sm:text-lg text-[#336699] mb-3">Hobbies</div>
+                    <div className="flex flex-wrap gap-2">
+                      {(profile.hobbies && profile.hobbies.length > 0 ? profile.hobbies : selectedHobbies).length > 0 ? (
+                        (profile.hobbies && profile.hobbies.length > 0 ? profile.hobbies : selectedHobbies).map((hobby: string, i: number) => (
+                          <motion.span
+                            key={hobby}
+                            className={`px-3 py-1 rounded-[11px] text-[14px] sm:text-[15px] font-semibold mb-1 ${[
+                              'bg-[#fff3da] text-[#d4a638]',
+                              'bg-[#e6f6de] text-[#73ab4b]',
+                              'bg-[#e6eaff] text-[#5863bb]',
+                              'bg-[#eaf4fe] text-[#9062ad]',
+                              'bg-[#f3e6ff] text-[#905fdc]',
+                              'bg-[#defcf9] text-[#19adb7]',
+                              'bg-[#ffe6fa] text-[#da3ea6]'
+                            ][i % 7]}`}
+                            whileHover={{ scale: 1.12, boxShadow: '0 2px 12px 0 rgba(162,89,198,0.10)' }}
+                            transition={{ type: 'spring', stiffness: 300 }}
+                          >
+                            {hobby}
+                          </motion.span>
+                        ))
+                      ) : (
+                        <span className="text-gray-400">-</span>
+                      )}
+                    </div>
+                  </motion.div>
+                  {/* Tags */}
+                  <motion.div
+                    className="bg-[#f7f2fb] rounded-2xl shadow-sm p-4 sm:p-6 min-h-[90px] sm:min-h-[120px]"
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5, ease: 'easeOut' }}
+                    whileHover={{ scale: 1.03, boxShadow: '0 8px 32px 0 rgba(162,89,198,0.13)' }}
+                  >
+                    <div className="font-bold text-base sm:text-lg text-[#336699] mb-3">Tags</div>
+                    <div className="flex flex-wrap gap-2">
+                      {(profile.tags && profile.tags.length > 0 ? profile.tags : selectedTags).length > 0 ? (
+                        (profile.tags && profile.tags.length > 0 ? profile.tags : selectedTags).map((tag: string, i: number) => (
+                          <motion.span
+                            key={tag}
+                            className={`px-3 py-1 rounded-[11px] text-[14px] sm:text-[15px] font-semibold mb-1 ${[
+                              'bg-[#eaf6ff] text-[#36a3f7]',
+                              'bg-[#fff4ea] text-[#f09d51]',
+                              'bg-[#ffdfe6] text-[#e65774]',
+                              'bg-[#f5f7fa] text-[#8492a6]',
+                              'bg-[#def6fc] text-[#028090]',
+                              'bg-[#ffe6fa] text-[#da3ea6]',
+                              'bg-[#e6f6de] text-[#73ab4b]',
+                              'bg-[#f3e6ff] text-[#905fdc]',
+                              'bg-[#fff3da] text-[#d4a638]',
+                              'bg-[#defcf9] text-[#19adb7]'
+                            ][i % 10]}`}
+                            whileHover={{ scale: 1.12, boxShadow: '0 2px 12px 0 rgba(162,89,198,0.10)' }}
+                            transition={{ type: 'spring', stiffness: 300 }}
+                          >
+                            {tag}
+                          </motion.span>
+                        ))
+                      ) : (
+                        <span className="text-gray-400">-</span>
+                      )}
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+              {/* Edit button for own profile */}
+              {isOwnProfile && (
+                <motion.div
+                  className="flex justify-center mt-6 sm:mt-8 w-full"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.6, ease: 'easeOut' }}
+                  whileHover={{ scale: 1.04, boxShadow: '0 0 0 4px #a259c6, 0 8px 32px 0 rgba(162,89,198,0.13)' }}
+                >
+                  <Button type="button" className="bg-gradient-to-r from-[#a259c6] to-[#4f1b59] text-white px-8 sm:px-10 py-4 rounded-xl shadow-lg font-bold text-base sm:text-lg hover:from-[#4f1b59] hover:to-[#a259c6] transition-all duration-200" onClick={() => setEditMode(true)}>
+                    Edit Profile
+                  </Button>
+                </motion.div>
               )}
-              {/* In edit mode, if profile.timetable_image, show a Remove button below the image preview. */}
-              {editMode && profile.timetable_image && (
-                <button
-                  className="mt-2 px-3 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200 transition"
-                  onClick={() => setProfile((p: any) => ({ ...p, timetable_image: null }))}
-                  type="button"
-                >Remove Timetable</button>
-              )}
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </main>

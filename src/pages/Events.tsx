@@ -7,7 +7,7 @@ import { Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Events = () => {
-  const [selectedTimeframe, setSelectedTimeframe] = useState('upcoming');
+  const [selectedTimeframe, setSelectedTimeframe] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [deleteMode, setDeleteMode] = useState(false);
   const navigate = useNavigate();
