@@ -37,6 +37,7 @@ const DEPARTMENT_OPTIONS = [
   'Photography',
   'Logistics',
   'Marketing',
+  'Public Relations', // Added as per request
 ];
 
 // Add 50 hobbies and 50 tags
