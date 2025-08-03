@@ -1,12 +1,12 @@
 import Header from '../components/Header';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, MapPin, Image as ImageIcon, Tag, ArrowLeft } from 'lucide-react';
+import { Calendar, Clock, MapPin, Image as ImageIcon, Tag, ArrowLeft, AlertCircle } from 'lucide-react';
 
 const CATEGORY_OPTIONS = [
   'Technical', 'Workshop', 'Social', 'Seminar', 'Networking', 'Other'
@@ -27,9 +27,66 @@ const AddEvent = () => {
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState<{[k:string]: boolean}>({});
   const [categorySuggestions, setCategorySuggestions] = useState<string[]>([]);
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [hasAccess, setHasAccess] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const userRole = localStorage.getItem('role');
+  const userId = localStorage.getItem('userId');
+
+  // Check user access on component mount
+  useEffect(() => {
+    const checkAccess = async () => {
+      if (!isLoggedIn) {
+        navigate('/login');
+        return;
+      }
+
+      if (userRole === 'executive') {
+        navigate('/events');
+        return;
+      }
+
+      if (userId) {
+        try {
+          const response = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${userId}`);
+          if (response.ok) {
+            const profile = await response.json();
+            setUserProfile(profile);
+            
+            // Check if user has SMCW department and core role
+            const canAccess = profile?.department === 'SMCW' && 
+              (profile?.member_type === 'core' || profile?.member_type === 'super_core');
+            
+            setHasAccess(canAccess);
+            
+            if (!canAccess) {
+              toast({ 
+                title: 'Access Denied', 
+                description: 'Only SMCW Core members can add events.', 
+                variant: 'destructive' 
+              });
+              navigate('/events');
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+          toast({ 
+            title: 'Error', 
+            description: 'Failed to verify user permissions.', 
+            variant: 'destructive' 
+          });
+          navigate('/events');
+        }
+      }
+      setProfileLoading(false);
+    };
+
+    checkAccess();
+  }, [isLoggedIn, userRole, userId, navigate, toast]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setTouched(t => ({ ...t, [e.target.name]: true }));
@@ -87,6 +144,48 @@ const AddEvent = () => {
   // Helper for floating label
   const isFilled = (name: string) => form[name as keyof typeof form]?.toString().length > 0;
   const isError = (name: string) => touched[name] && !isFilled(name);
+  // Show loading state while checking access
+  if (profileLoading) {
+    return (
+      <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
+        <Header />
+        <div className="py-20 relative z-10">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-center items-center min-h-[400px]">
+              <div className="text-gray-500 text-lg">Checking permissions...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show access denied if user doesn't have permission
+  if (!hasAccess) {
+    return (
+      <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
+        <Header />
+        <div className="py-20 relative z-10">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-center items-center min-h-[400px]">
+              <div className="text-center">
+                <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Access Denied</h2>
+                <p className="text-gray-600 mb-4">Only SMCW Core members can add events.</p>
+                <button
+                  onClick={() => navigate('/events')}
+                  className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                >
+                  Back to Events
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
       {/* Animated background shapes */}

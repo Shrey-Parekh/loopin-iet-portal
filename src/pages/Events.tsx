@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import EventsFilter from '../components/EventsFilter';
 import EventsList from '../components/EventsList';
@@ -10,9 +10,38 @@ const Events = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [deleteMode, setDeleteMode] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const userRole = localStorage.getItem('role');
+  const userId = localStorage.getItem('userId');
+
+  // Fetch user profile to check department and role
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (isLoggedIn && userId) {
+        try {
+          const response = await fetch(`https://loopin-iet-portal-1.onrender.com/api/profile/${userId}`);
+          if (response.ok) {
+            const profile = await response.json();
+            setUserProfile(profile);
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+        }
+      }
+      setLoading(false);
+    };
+
+    fetchUserProfile();
+  }, [isLoggedIn, userId]);
+
+  // Check if user can add events (SMCW department and core role)
+  const canAddEvents = isLoggedIn && 
+    userRole !== 'executive' && 
+    userProfile?.department === 'SMCW' && 
+    (userProfile?.member_type === 'core' || userProfile?.member_type === 'super_core');
 
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
@@ -78,7 +107,7 @@ const Events = () => {
                 setSelectedTimeframe={setSelectedTimeframe}
               />
             </motion.div>
-            {isLoggedIn && userRole !== 'executive' && (
+            {canAddEvents && (
               <motion.div className="flex flex-row md:flex-col gap-2 md:gap-3 items-center md:items-end min-w-[140px] w-full md:w-auto" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}>
                 <button
                   className="w-full px-5 py-2 border border-[#4f1b59] text-[#4f1b59] font-semibold rounded-full shadow bg-white hover:bg-[#4f1b59] hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-[#a259c6]/40"
@@ -96,14 +125,20 @@ const Events = () => {
               </motion.div>
             )}
           </motion.div>
-          <div className="mt-8">
-            <EventsList 
-              selectedTimeframe={selectedTimeframe}
-              selectedCategory={selectedCategory}
-              deleteMode={deleteMode}
-              setDeleteMode={setDeleteMode}
-            />
-          </div>
+          {loading ? (
+            <div className="mt-8 flex justify-center">
+              <div className="text-gray-500">Loading...</div>
+            </div>
+          ) : (
+            <div className="mt-8">
+              <EventsList 
+                selectedTimeframe={selectedTimeframe}
+                selectedCategory={selectedCategory}
+                deleteMode={deleteMode}
+                setDeleteMode={setDeleteMode}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
