@@ -70,13 +70,147 @@ const Newsletter = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
+    <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(135deg, #f8f6ff 0%, #f3e8ff 25%, #e0c3fc 50%, #d4b5f7 75%, #fff 100%)' }}>
+      {/* Revolutionary Animated Background */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-12%] left-[-10%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] blur-3xl opacity-15" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-br from-[#4f1b59] via-[#f3e8ff] to-[#fff] blur-3xl opacity-10" />
-        <div className="absolute top-[30%] left-[-15%] w-[40vw] h-[40vw] rounded-full bg-gradient-to-br from-[#f9e7ff] via-[#ffe6fa] to-[#fff] blur-3xl opacity-10" />
-        <div className="absolute bottom-[10%] right-[-18%] w-[38vw] h-[38vw] rounded-full bg-gradient-to-br from-[#fff] via-[#e0c3fc] to-[#f3e8ff] blur-3xl opacity-10" />
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white/80 via-white/0 to-transparent" />
+        {/* Primary gradient orbs with enhanced animations */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+          animate={{ 
+            opacity: [0.08, 0.15, 0.08], 
+            scale: [0.8, 1.2, 0.8], 
+            rotate: [0, 180, 360],
+            x: [0, 50, 0],
+            y: [0, -30, 0]
+          }}
+          transition={{ 
+            duration: 20, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            times: [0, 0.5, 1]
+          }}
+          className="absolute top-[-15%] left-[-15%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] blur-3xl"
+        />
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+          animate={{ 
+            opacity: [0.06, 0.12, 0.06], 
+            scale: [0.9, 1.1, 0.9], 
+            rotate: [360, 180, 0],
+            x: [0, -40, 0],
+            y: [0, 20, 0]
+          }}
+          transition={{ 
+            duration: 25, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 2,
+            times: [0, 0.5, 1]
+          }}
+          className="absolute bottom-[-15%] right-[-15%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-br from-[#4f1b59] via-[#e0c3fc] to-[#a259c6] blur-3xl"
+        />
+
+        {/* Secondary ambient orbs */}
+        <motion.div
+          animate={{ 
+            opacity: [0.04, 0.08, 0.04],
+            scale: [0.8, 1.3, 0.8],
+            rotate: [0, 90, 180],
+            x: [0, 30, 0],
+            y: [0, -20, 0]
+          }}
+          transition={{ 
+            duration: 18, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 1
+          }}
+          className="absolute top-[25%] left-[-20%] w-[45vw] h-[45vw] rounded-full bg-gradient-to-br from-[#f9e7ff] via-[#ffe6fa] to-[#e0c3fc] blur-3xl"
+        />
+        
+        <motion.div
+          animate={{ 
+            opacity: [0.03, 0.07, 0.03],
+            scale: [0.7, 1.2, 0.7],
+            rotate: [180, 270, 360],
+            x: [0, -25, 0],
+            y: [0, 15, 0]
+          }}
+          transition={{ 
+            duration: 22, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 3
+          }}
+          className="absolute bottom-[15%] right-[-25%] w-[40vw] h-[40vw] rounded-full bg-gradient-to-br from-[#fff] via-[#e0c3fc] to-[#d4b5f7] blur-3xl"
+        />
+
+        {/* Enhanced floating particles */}
+        <div className="absolute inset-0">
+          {[...Array(25)].map((_, i) => (
+            <motion.div
+              key={i}
+              className={`absolute rounded-full ${
+                i % 3 === 0 ? 'w-3 h-3 bg-white/20' : 
+                i % 3 === 1 ? 'w-2 h-2 bg-[#a259c6]/30' : 
+                'w-1 h-1 bg-[#4f1b59]/40'
+              }`}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -40 - Math.random() * 20, 0],
+                x: [0, (Math.random() - 0.5) * 30, 0],
+                opacity: [0.2, 0.8, 0.2],
+                scale: [0.8, 1.4, 0.8],
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: 4 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 3,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Sophisticated geometric patterns */}
+        <div className="absolute inset-0 opacity-8">
+          <motion.div
+            animate={{ 
+              rotate: [0, 360],
+              scale: [1, 1.1, 1],
+              opacity: [0.05, 0.1, 0.05]
+            }}
+            transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-1/4 left-1/4 w-40 h-40 border-2 border-[#a259c6]/30 rounded-full"
+          />
+          <motion.div 
+            animate={{ 
+              rotate: [360, 0],
+              scale: [0.9, 1.2, 0.9],
+              opacity: [0.04, 0.08, 0.04]
+            }}
+            transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
+            className="absolute bottom-1/3 right-1/3 w-32 h-32 border-2 border-[#4f1b59]/25 rounded-full"
+          />
+          <motion.div 
+            animate={{ 
+              rotate: [0, 180, 360],
+              scale: [1, 1.3, 1],
+              opacity: [0.03, 0.07, 0.03]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-1/2 right-1/4 w-24 h-24 border border-[#a259c6]/20 rounded-full"
+          />
+        </div>
+                
+        {/* Enhanced gradient overlay */}
+        <div className="absolute bottom-0 left-0 w-full h-60 bg-gradient-to-t from-white/90 via-white/30 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-white/20 via-transparent to-transparent" />
       </div>
       <Header />
       <div className="py-20">

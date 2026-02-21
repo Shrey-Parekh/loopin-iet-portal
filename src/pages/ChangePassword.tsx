@@ -73,7 +73,43 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-[#f8f5fc] via-[#e9d8fd] to-[#f3eafd]">
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #f8f6ff 0%, #f3e8ff 25%, #e0c3fc 50%, #d4b5f7 75%, #fff 100%)' }}>
+      {/* Revolutionary Animated Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Primary gradient orbs with enhanced animations */}
+        <div
+          className="absolute top-[-20%] left-[-20%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] blur-3xl opacity-12"
+          style={{
+            animation: 'float 15s ease-in-out infinite'
+          }}
+        />
+        
+        <div
+          className="absolute bottom-[-20%] right-[-20%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-br from-[#4f1b59] via-[#e0c3fc] to-[#a259c6] blur-3xl opacity-10"
+          style={{
+            animation: 'float 18s ease-in-out infinite reverse'
+          }}
+        />
+
+        {/* Secondary ambient orbs */}
+        <div
+          className="absolute top-[30%] left-[-25%] w-[35vw] h-[35vw] rounded-full bg-gradient-to-br from-[#f9e7ff] via-[#ffe6fa] to-[#e0c3fc] blur-3xl opacity-8"
+          style={{
+            animation: 'float 12s ease-in-out infinite 1s'
+          }}
+        />
+        
+        <div
+          className="absolute bottom-[20%] right-[-30%] w-[30vw] h-[30vw] rounded-full bg-gradient-to-br from-[#fff] via-[#e0c3fc] to-[#d4b5f7] blur-3xl opacity-6"
+          style={{
+            animation: 'float 16s ease-in-out infinite 3s reverse'
+          }}
+        />
+
+        {/* Enhanced gradient overlay */}
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white/70 via-white/20 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-30 bg-gradient-to-b from-white/30 via-transparent to-transparent" />
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}

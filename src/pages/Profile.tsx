@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus, Sparkles, CheckCircle, Loader2, XCircle, Award } from 'lucide-react';
+import { Camera, User, Mail, Briefcase, Building2, Linkedin, Instagram, Github, Plus, Sparkles, CheckCircle, Loader2, XCircle, Award, Edit3, Save, Calendar, MapPin, Heart, Star, Zap, Globe, Phone, BookOpen, GraduationCap, Clock, Users, Target, Palette, Code, Music, Coffee, Mountain, Gamepad2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Label } from '@/components/ui/label';
@@ -346,140 +346,321 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(120deg, #f8f6ff 0%, #f3e8ff 40%, #e0c3fc 70%, #fff 100%)' }}>
-      {localStorageWarning && (
-        <div className="fixed top-0 left-0 w-full bg-red-100 text-red-700 text-center py-3 z-50 font-semibold shadow-lg border-b border-red-200">
-          {localStorageWarning}
-        </div>
-      )}
-      {profileWarning && !localStorageWarning && (
-        <div className="fixed top-0 left-0 w-full bg-yellow-100 text-yellow-800 text-center py-3 z-40 font-semibold shadow-lg border-b border-yellow-200">
-          {profileWarning}
-        </div>
-      )}
+    <div className="min-h-screen relative overflow-x-hidden" style={{ background: 'linear-gradient(135deg, #f8f6ff 0%, #f3e8ff 25%, #e0c3fc 50%, #d4b5f7 75%, #fff 100%)' }}>
+      {/* Enhanced Warning Messages */}
+      <AnimatePresence>
+        {localStorageWarning && (
+          <motion.div 
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            className="fixed top-0 left-0 w-full bg-gradient-to-r from-red-500 to-red-600 text-white text-center py-4 z-50 font-semibold shadow-2xl backdrop-blur-lg"
+          >
+            <div className="flex items-center justify-center gap-2">
+              <XCircle className="w-5 h-5" />
+              {localStorageWarning}
+            </div>
+          </motion.div>
+        )}
+        {profileWarning && !localStorageWarning && (
+          <motion.div 
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            className="fixed top-0 left-0 w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center py-4 z-40 font-semibold shadow-2xl backdrop-blur-lg"
+          >
+            <div className="flex items-center justify-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              {profileWarning}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
-      {/* Enhanced animated background with more effects */}
+      {/* Revolutionary Animated Background */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {/* Main dreamy blobs */}
+        {/* Primary gradient orbs with enhanced animations */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.13, scale: 1 }}
-          transition={{ duration: 2, ease: 'easeOut' }}
-          className="absolute top-[-12%] left-[-10%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] blur-3xl"
-        />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.09, scale: 1 }}
-          transition={{ duration: 2, delay: 0.5, ease: 'easeOut' }}
-          className="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-br from-[#4f1b59] via-[#f3e8ff] to-[#fff] blur-3xl"
-        />
-        {/* Extra dreamy blobs for depth */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 0.07, scale: 1 }}
-          transition={{ duration: 2.2, delay: 0.8, ease: 'easeOut' }}
-          className="absolute top-[30%] left-[-15%] w-[40vw] h-[40vw] rounded-full bg-gradient-to-br from-[#f9e7ff] via-[#ffe6fa] to-[#fff] blur-3xl"
-        />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 0.06, scale: 1 }}
-          transition={{ duration: 2.2, delay: 1.1, ease: 'easeOut' }}
-          className="absolute bottom-[10%] right-[-18%] w-[38vw] h-[38vw] rounded-full bg-gradient-to-br from-[#fff] via-[#e0c3fc] to-[#f3e8ff] blur-3xl"
+          initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+          animate={{ 
+            opacity: [0.08, 0.15, 0.08], 
+            scale: [0.8, 1.2, 0.8], 
+            rotate: [0, 180, 360],
+            x: [0, 50, 0],
+            y: [0, -30, 0]
+          }}
+          transition={{ 
+            duration: 20, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            times: [0, 0.5, 1]
+          }}
+          className="absolute top-[-15%] left-[-15%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] blur-3xl"
         />
         
-        {/* Floating particles */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+          animate={{ 
+            opacity: [0.06, 0.12, 0.06], 
+            scale: [0.9, 1.1, 0.9], 
+            rotate: [360, 180, 0],
+            x: [0, -40, 0],
+            y: [0, 20, 0]
+          }}
+          transition={{ 
+            duration: 25, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 2,
+            times: [0, 0.5, 1]
+          }}
+          className="absolute bottom-[-15%] right-[-15%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-br from-[#4f1b59] via-[#e0c3fc] to-[#a259c6] blur-3xl"
+        />
+
+        {/* Secondary ambient orbs */}
+        <motion.div
+          animate={{ 
+            opacity: [0.04, 0.08, 0.04],
+            scale: [0.8, 1.3, 0.8],
+            rotate: [0, 90, 180],
+            x: [0, 30, 0],
+            y: [0, -20, 0]
+          }}
+          transition={{ 
+            duration: 18, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 1
+          }}
+          className="absolute top-[25%] left-[-20%] w-[45vw] h-[45vw] rounded-full bg-gradient-to-br from-[#f9e7ff] via-[#ffe6fa] to-[#e0c3fc] blur-3xl"
+        />
+        
+        <motion.div
+          animate={{ 
+            opacity: [0.03, 0.07, 0.03],
+            scale: [0.7, 1.2, 0.7],
+            rotate: [180, 270, 360],
+            x: [0, -25, 0],
+            y: [0, 15, 0]
+          }}
+          transition={{ 
+            duration: 22, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 3
+          }}
+          className="absolute bottom-[15%] right-[-25%] w-[40vw] h-[40vw] rounded-full bg-gradient-to-br from-[#fff] via-[#e0c3fc] to-[#d4b5f7] blur-3xl"
+        />
+
+        {/* Enhanced floating particles with varied sizes and movements */}
         <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(30)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 bg-white/30 rounded-full"
+              className={`absolute rounded-full ${
+                i % 3 === 0 ? 'w-3 h-3 bg-white/20' : 
+                i % 3 === 1 ? 'w-2 h-2 bg-[#a259c6]/30' : 
+                'w-1 h-1 bg-[#4f1b59]/40'
+              }`}
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
               }}
               animate={{
-                y: [0, -20, 0],
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.2, 1],
+                y: [0, -40 - Math.random() * 20, 0],
+                x: [0, (Math.random() - 0.5) * 30, 0],
+                opacity: [0.2, 0.8, 0.2],
+                scale: [0.8, 1.4, 0.8],
+                rotate: [0, 360],
               }}
               transition={{
-                duration: 3 + Math.random() * 2,
+                duration: 4 + Math.random() * 4,
                 repeat: Infinity,
-                delay: Math.random() * 2,
+                delay: Math.random() * 3,
+                ease: "easeInOut"
               }}
             />
           ))}
-              </div>
+        </div>
 
-        {/* Animated geometric patterns */}
-        <div className="absolute inset-0 opacity-10">
-              <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            className="absolute top-1/4 left-1/4 w-32 h-32 border-2 border-[#a259c6] rounded-full"
-          />
-          <motion.div 
-            animate={{ rotate: -360 }}
-            transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-            className="absolute bottom-1/3 right-1/3 w-24 h-24 border-2 border-[#4f1b59] rounded-full"
-          />
-          <motion.div 
-            animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+        {/* Sophisticated geometric patterns */}
+        <div className="absolute inset-0 opacity-8">
+          <motion.div
+            animate={{ 
+              rotate: [0, 360],
+              scale: [1, 1.1, 1],
+              opacity: [0.05, 0.1, 0.05]
+            }}
             transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-            className="absolute top-1/2 right-1/4 w-16 h-16 border border-[#a259c6]/50 rounded-full"
+            className="absolute top-1/4 left-1/4 w-40 h-40 border-2 border-[#a259c6]/30 rounded-full"
           />
-                </div>
+          <motion.div 
+            animate={{ 
+              rotate: [360, 0],
+              scale: [0.9, 1.2, 0.9],
+              opacity: [0.04, 0.08, 0.04]
+            }}
+            transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
+            className="absolute bottom-1/3 right-1/3 w-32 h-32 border-2 border-[#4f1b59]/25 rounded-full"
+          />
+          <motion.div 
+            animate={{ 
+              rotate: [0, 180, 360],
+              scale: [1, 1.3, 1],
+              opacity: [0.03, 0.07, 0.03]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-1/2 right-1/4 w-24 h-24 border border-[#a259c6]/20 rounded-full"
+          />
+          
+          {/* Additional decorative elements */}
+          <motion.div
+            animate={{
+              rotate: [0, 360],
+              scale: [0.8, 1.1, 0.8],
+              opacity: [0.02, 0.06, 0.02]
+            }}
+            transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-3/4 left-1/6 w-28 h-28 border border-[#e0c3fc]/30 rounded-full"
+          />
+        </div>
                 
-        {/* Faint radial fade at bottom for extra depth */}
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white/80 via-white/0 to-transparent" />
+        {/* Enhanced gradient overlay */}
+        <div className="absolute bottom-0 left-0 w-full h-60 bg-gradient-to-t from-white/90 via-white/30 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-white/20 via-transparent to-transparent" />
       </div>
       
       <Header />
-      <main className="relative z-10 max-w-6xl mx-auto py-8 px-4 w-full">
+      <main className="relative z-10 max-w-7xl mx-auto py-12 px-4 w-full">
         {editMode ? (
-          <form onSubmit={handleSave} className="flex flex-col gap-8 w-full">
-            {/* Enhanced Profile Header Section */}
-                    <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8"
+          <form onSubmit={handleSave} className="space-y-8 w-full">
+            {/* Revolutionary Profile Hero Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="relative overflow-hidden"
             >
-              <div className="flex flex-col lg:flex-row items-center gap-8">
-                {/* Profile Image Section */}
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`relative w-56 h-56 rounded-2xl border-8 border-transparent bg-gradient-to-br from-[#a259c6] via-[#f3e8ff] to-[#4f1b59] shadow-2xl flex items-center justify-center transition-all duration-300 cursor-pointer group ${dragActive ? 'ring-8 ring-[#a259c6]/60' : ''}`}
-                    style={{ 
-                      boxShadow: '0 0 0 8px #e0c3fc, 0 20px 60px 0 rgba(162,89,198,0.25)',
-                      background: 'linear-gradient(135deg, #a259c6 0%, #f3e8ff 50%, #4f1b59 100%)'
-                    }}
+              {/* Hero Background with Animated Gradients */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#a259c6]/20 via-[#f3e8ff]/10 to-[#4f1b59]/20 rounded-[2.5rem]" />
+              <motion.div
+                animate={{
+                  background: [
+                    'linear-gradient(45deg, rgba(162,89,198,0.1) 0%, rgba(243,232,255,0.05) 50%, rgba(79,27,89,0.1) 100%)',
+                    'linear-gradient(135deg, rgba(79,27,89,0.1) 0%, rgba(224,195,252,0.05) 50%, rgba(162,89,198,0.1) 100%)',
+                    'linear-gradient(225deg, rgba(162,89,198,0.1) 0%, rgba(243,232,255,0.05) 50%, rgba(79,27,89,0.1) 100%)'
+                  ]
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 rounded-[2.5rem]"
+              />
+              
+              <div className="relative bg-white/70 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl border border-white/30 p-8 lg:p-12">
+                <div className="flex flex-col xl:flex-row items-center gap-12">
+                  
+                  {/* Enhanced Profile Image Section */}
+                  <motion.div 
+                    className="flex flex-col items-center"
+                    initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
+                    animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
+                    <div className="relative group">
+                      {/* Animated Ring Effects */}
+                      <motion.div
+                        animate={{ rotate: 360, scale: [1, 1.05, 1] }}
+                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                        className="absolute -inset-4 rounded-full bg-gradient-to-r from-[#a259c6] via-[#e0c3fc] to-[#4f1b59] opacity-20 blur-lg"
+                      />
+                      <motion.div
+                        animate={{ rotate: -360, scale: [1.02, 0.98, 1.02] }}
+                        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                        className="absolute -inset-2 rounded-full bg-gradient-to-r from-[#4f1b59] via-[#a259c6] to-[#e0c3fc] opacity-30 blur-md"
+                      />
+                      
+                      {/* Main Profile Container */}
+                      <motion.div
+                        className={`relative w-72 h-72 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ${dragActive ? 'scale-105 shadow-2xl' : 'hover:scale-105'}`}
                         onClick={handleImageClick}
                         onDragEnter={handleDrag}
                         onDragOver={handleDrag}
                         onDragLeave={handleDrag}
                         onDrop={handleDrop}
-                    tabIndex={0}
-                    role="button"
-                    aria-label="Upload profile photo"
-                  >
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 1, delay: 0.2 }}
-                      className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-[#a259c6]/60 via-[#f3e8ff]/40 to-[#4f1b59]/60 blur-2xl z-0"
-                    />
+                        whileHover={{ y: -8, rotateY: 5 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                          background: 'linear-gradient(135deg, #a259c6 0%, #f3e8ff 30%, #e0c3fc 70%, #4f1b59 100%)',
+                          boxShadow: '0 25px 50px -12px rgba(162,89,198,0.4), 0 0 0 1px rgba(255,255,255,0.1)'
+                        }}
+                      >
+                        {/* Shimmer Effect */}
+                        <motion.div
+                          animate={{ x: [-100, 400] }}
+                          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 -translate-x-full"
+                        />
+                        
                         {profile.image ? (
-                          <img
+                          <motion.img
                             src={profile.image}
                             alt="Profile"
-                        className="w-full h-full object-cover rounded-xl border-4 border-white shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:brightness-95 z-10"
+                            className="w-full h-full object-cover"
+                            initial={{ scale: 1.1, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.6 }}
                           />
                         ) : (
-                      <div className="w-full h-full flex items-center justify-center rounded-xl bg-gradient-to-br from-[#a259c6] to-[#4f1b59] z-10">
-                        <User className="w-24 h-24 text-white opacity-80" />
+                          <div className="w-full h-full flex items-center justify-center">
+                            <motion.div
+                              animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                              transition={{ duration: 4, repeat: Infinity }}
+                            >
+                              <User className="w-32 h-32 text-white/80" />
+                            </motion.div>
                           </div>
                         )}
+                        
+                        {/* Drag Overlay */}
+                        <AnimatePresence>
+                          {dragActive && (
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              className="absolute inset-0 bg-[#a259c6]/40 backdrop-blur-sm flex items-center justify-center"
+                            >
+                              <motion.div
+                                animate={{ scale: [1, 1.1, 1] }}
+                                transition={{ duration: 1, repeat: Infinity }}
+                                className="text-white text-xl font-bold flex items-center gap-2"
+                              >
+                                <Sparkles className="w-6 h-6" />
+                                Drop image here
+                              </motion.div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                      
+                      {/* Enhanced Camera Button */}
+                      <motion.button
+                        type="button"
+                        className="absolute -bottom-4 -right-4 w-16 h-16 bg-gradient-to-br from-[#a259c6] to-[#4f1b59] rounded-2xl shadow-2xl flex items-center justify-center group"
+                        onClick={handleImageClick}
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        whileTap={{ scale: 0.9 }}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+                      >
+                        <Camera className="w-8 h-8 text-white group-hover:scale-110 transition-transform" />
+                        <motion.div
+                          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="absolute inset-0 bg-white/20 rounded-2xl"
+                        />
+                      </motion.button>
+                      
                       <input
                         ref={fileInputRef}
                         type="file"
@@ -488,271 +669,632 @@ const Profile = () => {
                         onChange={handleChange}
                         className="hidden"
                       />
-                    {dragActive && (
-                      <div className="absolute inset-0 bg-[#a259c6]/30 rounded-xl flex items-center justify-center text-[#4f1b59] text-lg font-semibold pointer-events-none z-20">
-                        Drop image here
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Camera button */}
-                  <motion.button
-                    type="button"
-                    className="mt-6 bg-gradient-to-tr from-[#a259c6] to-[#4f1b59] p-4 rounded-2xl shadow-xl hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#a259c6]/40"
-                    onClick={handleImageClick}
-                    aria-label="Upload profile photo"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Camera className="w-7 h-7 text-white" />
-                  </motion.button>
-                </div>
-
-                {/* Profile Info Section */}
-                <div className="flex-1 text-center lg:text-left">
-                  <motion.div 
-                    className="mb-6"
-                    initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                  >
-                    <div className="inline-block px-8 py-4 rounded-2xl bg-gradient-to-r from-[#a259c6]/90 to-[#4f1b59]/90 shadow-2xl backdrop-blur-md mb-4">
-                      <span className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg tracking-tight">
-                        {profile.name || 'Your Name'}
-                      </span>
-                    </div>
-                    <div className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-[#a259c6]/70 to-[#4f1b59]/70 shadow-lg text-xl md:text-2xl text-white/95 font-medium">
-                      {profile.email || 'Email'}
                     </div>
                   </motion.div>
 
-                                    {/* Minimal Role Badge */}
-                  <motion.div 
-                    className="mt-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                  >
+                  {/* Enhanced Profile Info Section */}
+                  <div className="flex-1 text-center xl:text-left space-y-8">
+                    {/* Name and Title */}
                     <motion.div
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg shadow-sm"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ type: 'spring', stiffness: 300 }}
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.8, delay: 0.4 }}
+                      className="space-y-4"
                     >
-                      <Award className="w-4 h-4" />
-                      <span className="font-medium text-sm">
-                        {profile.member_type ? profile.member_type.replace('_', ' ').toUpperCase() : 'MEMBER'}
-                      </span>
-                    </motion.div>
-                  </motion.div>
-                        </div>
+                      <motion.div
+                        className="relative inline-block"
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <motion.div
+                          animate={{
+                            background: [
+                              'linear-gradient(45deg, #a259c6, #4f1b59)',
+                              'linear-gradient(135deg, #4f1b59, #a259c6)',
+                              'linear-gradient(225deg, #a259c6, #4f1b59)'
+                            ]
+                          }}
+                          transition={{ duration: 6, repeat: Infinity }}
+                          className="absolute inset-0 rounded-3xl blur-lg opacity-30"
+                        />
+                        <div className="relative px-8 py-6 bg-gradient-to-r from-[#a259c6] to-[#4f1b59] rounded-3xl shadow-2xl">
+                          <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white tracking-tight">
+                            {profile.name || 'Your Name'}
+                          </h1>
                         </div>
                       </motion.div>
-
-            {/* Form Fields Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Personal Information Card */}
-                    <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8"
-                whileHover={{ scale: 1.02, y: -5 }}
-              >
-                <motion.h3 
-                  className="text-2xl font-bold text-[#4f1b59] mb-6 flex items-center gap-3"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                >
-                  <motion.div
-                    animate={{ rotate: [0, 10, -10, 0] }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                  >
-                    <User className="w-6 h-6 text-[#a259c6]" />
+                      
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                        className="flex flex-wrap items-center justify-center xl:justify-start gap-4"
+                      >
+                        <div className="px-6 py-3 bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/30">
+                          <div className="flex items-center gap-2 text-[#4f1b59]">
+                            <Mail className="w-5 h-5" />
+                            <span className="font-medium">{profile.email || 'Email'}</span>
+                          </div>
+                        </div>
+                        
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="px-6 py-3 bg-gradient-to-r from-[#a259c6]/20 to-[#4f1b59]/20 backdrop-blur-lg rounded-2xl border border-[#a259c6]/30"
+                        >
+                          <div className="flex items-center gap-2 text-[#4f1b59]">
+                            <Award className="w-5 h-5" />
+                            <span className="font-bold">
+                              {profile.member_type ? profile.member_type.replace('_', ' ').toUpperCase() : 'MEMBER'}
+                            </span>
+                          </div>
+                        </motion.div>
+                      </motion.div>
                     </motion.div>
-                  Personal Information
-                </motion.h3>
 
-                <div className="space-y-6">
-                  {/* Name */}
-                <motion.div
-                    className="relative group"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    whileHover={{ scale: 1.02 }}
-                  >
+                    {/* Quick Stats */}
                     <motion.div
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 0.3, delay: 0.5 }}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      className="grid grid-cols-2 lg:grid-cols-4 gap-4"
                     >
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                      {[
+                        { icon: Building2, label: 'Department', value: profile.department || 'Not Set' },
+                        { icon: Briefcase, label: 'Position', value: profile.position_hierarchy || 'Not Set' },
+                        { icon: GraduationCap, label: 'Course', value: profile.course || 'Not Set' },
+                        { icon: Calendar, label: 'Year', value: profile.year ? `${profile.year} Year` : 'Not Set' }
+                      ].map((stat, index) => (
+                        <motion.div
+                          key={stat.label}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.9 + index * 0.1 }}
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          className="p-4 bg-white/60 backdrop-blur-lg rounded-2xl border border-white/40 text-center group"
+                        >
+                          <stat.icon className="w-6 h-6 mx-auto mb-2 text-[#a259c6] group-hover:scale-110 transition-transform" />
+                          <p className="text-xs text-gray-600 font-medium">{stat.label}</p>
+                          <p className="text-sm font-bold text-[#4f1b59] truncate">{stat.value}</p>
+                        </motion.div>
+                      ))}
                     </motion.div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Revolutionary Form Fields Grid */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+              
+              {/* Personal Information Card - Enhanced */}
+              <motion.div
+                initial={{ opacity: 0, y: 40, rotateX: 15 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="xl:col-span-2 relative group"
+              >
+                {/* Animated Background */}
+                <motion.div
+                  animate={{
+                    background: [
+                      'linear-gradient(135deg, rgba(162,89,198,0.1) 0%, rgba(255,255,255,0.9) 100%)',
+                      'linear-gradient(225deg, rgba(79,27,89,0.1) 0%, rgba(255,255,255,0.9) 100%)',
+                      'linear-gradient(315deg, rgba(224,195,252,0.1) 0%, rgba(255,255,255,0.9) 100%)'
+                    ]
+                  }}
+                  transition={{ duration: 8, repeat: Infinity }}
+                  className="absolute inset-0 rounded-3xl"
+                />
+                
+                <div className="relative bg-white/70 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/30 p-8 overflow-hidden">
+                  {/* Decorative Elements */}
+                  <motion.div
+                    animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    className="absolute top-4 right-4 w-16 h-16 bg-gradient-to-br from-[#a259c6]/20 to-[#4f1b59]/20 rounded-full blur-xl"
+                  />
+                  
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="flex items-center gap-4 mb-8"
+                  >
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                      className="p-3 bg-gradient-to-br from-[#a259c6] to-[#4f1b59] rounded-2xl shadow-lg"
+                    >
+                      <User className="w-7 h-7 text-white" />
+                    </motion.div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-[#4f1b59]">Personal Information</h3>
+                      <p className="text-gray-600">Tell us about yourself</p>
+                    </div>
+                  </motion.div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Name Field */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="relative group"
+                    >
+                      <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Full Name</Label>
+                      <div className="relative">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-[#a259c6]/20 to-[#4f1b59]/20 rounded-lg"
+                        >
+                          <User className="w-5 h-5 text-[#a259c6]" />
+                        </motion.div>
                         <Input
                           name="name"
                           value={profile.name || ''}
                           onChange={handleChange}
                           required
-                      placeholder="Full Name" 
-                      className="h-14 text-lg pl-12 rounded-xl bg-white/90 shadow-lg border-2 border-transparent focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300 hover:shadow-xl" 
-                    />
-                  </motion.div>
-                  
-                  {/* Email */}
-                  <motion.div 
-                    className="relative group"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <motion.div
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 0.3, delay: 0.6 }}
-                    >
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                          placeholder="Enter your full name"
+                          className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90"
+                        />
+                      </div>
                     </motion.div>
+
+                    {/* Email Field */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="relative group"
+                    >
+                      <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Email Address</Label>
+                      <div className="relative">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-[#a259c6]/20 to-[#4f1b59]/20 rounded-lg"
+                        >
+                          <Mail className="w-5 h-5 text-[#a259c6]" />
+                        </motion.div>
                         <Input
                           name="email"
                           value={profile.email || ''}
                           onChange={handleChange}
-                      required 
+                          required
                           type="email"
-                          placeholder="Email"
-                      className="h-14 text-lg pl-12 rounded-xl bg-white/90 shadow-lg border-2 border-transparent focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300 hover:shadow-xl" 
-                    />
-                  </motion.div>
-                  
-                  {/* Bio */}
-                  <motion.div 
-                    className="relative group"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                      <Textarea
-                        name="bio"
-                        value={profile.bio || ''}
-                        onChange={handleChange}
-                      rows={4} 
-                        placeholder="Tell us about yourself..."
-                      className="text-lg px-5 py-4 min-h-[120px] rounded-xl bg-white/90 shadow-lg border-2 border-transparent focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300 hover:shadow-xl" 
-                      />
-                  </motion.div>
-                    </div>
+                          placeholder="your.email@example.com"
+                          className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90"
+                        />
+                      </div>
+                    </motion.div>
+
+                    {/* Bio Field - Full Width */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      className="lg:col-span-2 relative group"
+                    >
+                      <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Bio</Label>
+                      <div className="relative">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="absolute left-4 top-4 p-2 bg-gradient-to-br from-[#a259c6]/20 to-[#4f1b59]/20 rounded-lg"
+                        >
+                          <Edit3 className="w-5 h-5 text-[#a259c6]" />
+                        </motion.div>
+                        <Textarea
+                          name="bio"
+                          value={profile.bio || ''}
+                          onChange={handleChange}
+                          rows={4}
+                          placeholder="Tell us about yourself, your interests, and what makes you unique..."
+                          className="text-lg pl-16 pr-4 py-4 min-h-[120px] rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90 resize-none"
+                        />
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
               </motion.div>
 
-              {/* Role & Position Card */}
+              {/* Role & Position Card - Enhanced */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8"
+                initial={{ opacity: 0, y: 40, rotateX: 15 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="relative group"
               >
-                <h3 className="text-2xl font-bold text-[#4f1b59] mb-6 flex items-center gap-3">
-                  <Briefcase className="w-6 h-6 text-[#a259c6]" />
-                  Role & Position
-                </h3>
+                {/* Animated Background */}
+                <motion.div
+                  animate={{
+                    background: [
+                      'linear-gradient(45deg, rgba(79,27,89,0.1) 0%, rgba(255,255,255,0.9) 100%)',
+                      'linear-gradient(135deg, rgba(162,89,198,0.1) 0%, rgba(255,255,255,0.9) 100%)',
+                      'linear-gradient(225deg, rgba(224,195,252,0.1) 0%, rgba(255,255,255,0.9) 100%)'
+                    ]
+                  }}
+                  transition={{ duration: 10, repeat: Infinity }}
+                  className="absolute inset-0 rounded-3xl"
+                />
                 
-                <div className="space-y-6">
-                  {/* Role */}
-                  <div className="relative group">
-                    <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
+                <div className="relative bg-white/70 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/30 p-8 h-full">
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="flex items-center gap-4 mb-8"
+                  >
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                      className="p-3 bg-gradient-to-br from-[#4f1b59] to-[#a259c6] rounded-2xl shadow-lg"
+                    >
+                      <Briefcase className="w-7 h-7 text-white" />
+                    </motion.div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-[#4f1b59]">Role & Position</h3>
+                      <p className="text-gray-600">Your committee role</p>
+                    </div>
+                  </motion.div>
+
+                  <div className="space-y-6">
+                    {/* Member Type */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      className="relative group"
+                    >
+                      <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Member Type</Label>
+                      <div className="relative">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-[#4f1b59]/20 to-[#a259c6]/20 rounded-lg z-10"
+                        >
+                          <Award className="w-5 h-5 text-[#4f1b59]" />
+                        </motion.div>
                         <Select value={profile.member_type || ''} onValueChange={handleRoleChange}>
-                      <SelectTrigger className="h-14 text-lg pl-12 rounded-xl bg-white/90 shadow-lg border-2 border-transparent focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300">
-                            <SelectValue placeholder="Select role" />
+                          <SelectTrigger className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-[#4f1b59] focus:ring-4 focus:ring-[#4f1b59]/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90">
+                            <SelectValue placeholder="Select member type" />
                           </SelectTrigger>
-                          <SelectContent>
-                            {ROLE_OPTIONS.map(opt => (
-                              <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                          <SelectContent className="bg-white/95 backdrop-blur-lg border border-white/50 rounded-xl shadow-2xl">
+                            {ROLE_OPTIONS.map(role => (
+                              <SelectItem key={role.value} value={role.value} className="hover:bg-[#a259c6]/10 focus:bg-[#a259c6]/10">
+                                {role.label}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </div>
-                  
-                  {/* Department */}
-                      {showDept && profile.member_type !== 'mentor' && (
-                    <div className="relative group">
-                      <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
-                          <Select value={profile.department || ''} onValueChange={v => handleSelect('department', v)}>
-                        <SelectTrigger className="h-14 text-lg pl-12 rounded-xl bg-white/90 shadow-lg border-2 border-transparent focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300">
-                              <SelectValue placeholder="Select department" />
+                    </motion.div>
+
+                    {/* Position */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                      className="relative group"
+                    >
+                      <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Position</Label>
+                      <div className="relative">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-[#4f1b59]/20 to-[#a259c6]/20 rounded-lg z-10"
+                        >
+                          <Star className="w-5 h-5 text-[#4f1b59]" />
+                        </motion.div>
+                        <Select value={profile.position_hierarchy || ''} onValueChange={(value) => handleSelect('position_hierarchy', value)}>
+                          <SelectTrigger className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-[#4f1b59] focus:ring-4 focus:ring-[#4f1b59]/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90">
+                            <SelectValue placeholder="Select position" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white/95 backdrop-blur-lg border border-white/50 rounded-xl shadow-2xl">
+                            {getFilteredPositions(profile.member_type || '').map(position => (
+                              <SelectItem key={position} value={position} className="hover:bg-[#4f1b59]/10 focus:bg-[#4f1b59]/10">
+                                {position}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </motion.div>
+
+                    {/* Department - Conditional */}
+                    <AnimatePresence>
+                      {showDept && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0, y: -20 }}
+                          animate={{ opacity: 1, height: 'auto', y: 0 }}
+                          exit={{ opacity: 0, height: 0, y: -20 }}
+                          transition={{ duration: 0.5 }}
+                          className="relative group"
+                        >
+                          <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Department</Label>
+                          <div className="relative">
+                            <motion.div
+                              whileHover={{ scale: 1.05 }}
+                              className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-[#4f1b59]/20 to-[#a259c6]/20 rounded-lg z-10"
+                            >
+                              <Building2 className="w-5 h-5 text-[#4f1b59]" />
+                            </motion.div>
+                            <Select value={profile.department || ''} onValueChange={(value) => handleSelect('department', value)}>
+                              <SelectTrigger className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-[#4f1b59] focus:ring-4 focus:ring-[#4f1b59]/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90">
+                                <SelectValue placeholder="Select department" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white/95 backdrop-blur-lg border border-white/50 rounded-xl shadow-2xl">
+                                {DEPARTMENT_OPTIONS.map(dept => (
+                                  <SelectItem key={dept} value={dept} className="hover:bg-[#4f1b59]/10 focus:bg-[#4f1b59]/10">
+                                    {dept}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </motion.div>
+
+            {/* Academic Information & Social Links - New Enhanced Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* Academic Information Card */}
+              <motion.div
+                initial={{ opacity: 0, x: -50, rotateY: 15 }}
+                animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="relative group"
+              >
+                <motion.div
+                  animate={{
+                    background: [
+                      'linear-gradient(135deg, rgba(162,89,198,0.08) 0%, rgba(255,255,255,0.9) 100%)',
+                      'linear-gradient(225deg, rgba(79,27,89,0.08) 0%, rgba(255,255,255,0.9) 100%)',
+                      'linear-gradient(315deg, rgba(224,195,252,0.08) 0%, rgba(255,255,255,0.9) 100%)'
+                    ]
+                  }}
+                  transition={{ duration: 12, repeat: Infinity }}
+                  className="absolute inset-0 rounded-3xl"
+                />
+                
+                <div className="relative bg-white/70 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/30 p-8">
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.7 }}
+                    className="flex items-center gap-4 mb-8"
+                  >
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                      className="p-3 bg-gradient-to-br from-[#a259c6] to-[#4f1b59] rounded-2xl shadow-lg"
+                    >
+                      <GraduationCap className="w-7 h-7 text-white" />
+                    </motion.div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-[#4f1b59]">Academic Information</h3>
+                      <p className="text-gray-600">Your educational details</p>
+                    </div>
+                  </motion.div>
+
+                  <div className="space-y-6">
+                    {/* Course */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      className="relative group"
+                    >
+                      <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Course</Label>
+                      <div className="relative">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-[#a259c6]/20 to-[#4f1b59]/20 rounded-lg z-10"
+                        >
+                          <BookOpen className="w-5 h-5 text-[#a259c6]" />
+                        </motion.div>
+                        <Select value={profile.course || ''} onValueChange={(value) => handleSelect('course', value)}>
+                          <SelectTrigger className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90">
+                            <SelectValue placeholder="Select course" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white/95 backdrop-blur-lg border border-white/50 rounded-xl shadow-2xl">
+                            {COURSE_OPTIONS.map(course => (
+                              <SelectItem key={course} value={course} className="hover:bg-[#a259c6]/10 focus:bg-[#a259c6]/10">
+                                {course}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </motion.div>
+
+                    {/* Year and Stream */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.9 }}
+                        className="relative group"
+                      >
+                        <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Year</Label>
+                        <div className="relative">
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-[#a259c6]/20 to-[#4f1b59]/20 rounded-lg z-10"
+                          >
+                            <Calendar className="w-5 h-5 text-[#a259c6]" />
+                          </motion.div>
+                          <Select value={profile.year || ''} onValueChange={(value) => handleSelect('year', value)}>
+                            <SelectTrigger className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90">
+                              <SelectValue placeholder="Year" />
                             </SelectTrigger>
-                            <SelectContent>
-                              {DEPARTMENT_OPTIONS.map(opt => (
-                                <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                            <SelectContent className="bg-white/95 backdrop-blur-lg border border-white/50 rounded-xl shadow-2xl">
+                              {YEAR_OPTIONS.map(year => (
+                                <SelectItem key={year} value={year} className="hover:bg-[#a259c6]/10 focus:bg-[#a259c6]/10">
+                                  {year}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
-                      )}
-                  
-                  {/* Position */}
-                  <div className="relative group">
-                    <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
-                        <Select value={profile.position_hierarchy || ''} onValueChange={v => handleSelect('position_hierarchy', v)}>
-                      <SelectTrigger className="h-14 text-lg pl-12 rounded-xl bg-white/90 shadow-lg border-2 border-transparent focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300">
-                            <SelectValue placeholder="Select position" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {getFilteredPositions(profile.member_type || '').map(opt => (
-                              <SelectItem key={opt} value={opt}>{opt}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-              </motion.div>
-                  </div>
+                      </motion.div>
 
-            {/* Social Media Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8"
-            >
-              <h3 className="text-2xl font-bold text-[#4f1b59] mb-6 flex items-center gap-3">
-                <Linkedin className="w-6 h-6 text-[#a259c6]" />
-                Social Media Links
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="relative group">
-                  <Linkedin className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
-                  <Input 
-                    name="linkedin" 
-                    value={profile.linkedin || ''} 
-                    onChange={handleChange} 
-                    placeholder="LinkedIn profile URL" 
-                    className="h-14 text-lg pl-12 rounded-xl bg-white/90 shadow-lg border-2 border-transparent focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300" 
-                  />
-                      </div>
-                <div className="relative group">
-                  <Instagram className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
-                  <Input 
-                    name="Instagram" 
-                    value={profile.Instagram || ''} 
-                    onChange={handleChange} 
-                    placeholder="Instagram profile URL" 
-                    className="h-14 text-lg pl-12 rounded-xl bg-white/90 shadow-lg border-2 border-transparent focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300" 
-                  />
-                    </div>
-                <div className="relative group">
-                  <Github className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a259c6] w-6 h-6 group-focus-within:text-[#4f1b59] transition-colors" />
-                  <Input 
-                    name="github" 
-                    value={profile.github || ''} 
-                    onChange={handleChange} 
-                    placeholder="GitHub profile URL" 
-                    className="h-14 text-lg pl-12 rounded-xl bg-white/90 shadow-lg border-2 border-transparent focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300" 
-                  />
-                </div>
-              </div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.0 }}
+                        className="relative group"
+                      >
+                        <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Stream</Label>
+                        <div className="relative">
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-[#a259c6]/20 to-[#4f1b59]/20 rounded-lg z-10"
+                          >
+                            <Target className="w-5 h-5 text-[#a259c6]" />
                           </motion.div>
+                          <Select value={profile.stream || ''} onValueChange={(value) => handleSelect('stream', value)}>
+                            <SelectTrigger className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-[#a259c6] focus:ring-4 focus:ring-[#a259c6]/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90">
+                              <SelectValue placeholder="Stream" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white/95 backdrop-blur-lg border border-white/50 rounded-xl shadow-2xl">
+                              {STREAM_OPTIONS.map(stream => (
+                                <SelectItem key={stream} value={stream} className="hover:bg-[#a259c6]/10 focus:bg-[#a259c6]/10">
+                                  {stream}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </motion.div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
 
-              {/* Academic Details Card */}
+              {/* Social Links Card */}
+              <motion.div
+                initial={{ opacity: 0, x: 50, rotateY: -15 }}
+                animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="relative group"
+              >
+                <motion.div
+                  animate={{
+                    background: [
+                      'linear-gradient(45deg, rgba(79,27,89,0.08) 0%, rgba(255,255,255,0.9) 100%)',
+                      'linear-gradient(135deg, rgba(162,89,198,0.08) 0%, rgba(255,255,255,0.9) 100%)',
+                      'linear-gradient(225deg, rgba(224,195,252,0.08) 0%, rgba(255,255,255,0.9) 100%)'
+                    ]
+                  }}
+                  transition={{ duration: 14, repeat: Infinity }}
+                  className="absolute inset-0 rounded-3xl"
+                />
+                
+                <div className="relative bg-white/70 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/30 p-8 h-full">
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.9 }}
+                    className="flex items-center gap-4 mb-8"
+                  >
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                      className="p-3 bg-gradient-to-br from-[#4f1b59] to-[#a259c6] rounded-2xl shadow-lg"
+                    >
+                      <Globe className="w-7 h-7 text-white" />
+                    </motion.div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-[#4f1b59]">Social Links</h3>
+                      <p className="text-gray-600">Connect with you online</p>
+                    </div>
+                  </motion.div>
+
+                  <div className="space-y-6">
+                    {/* LinkedIn */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.0 }}
+                      className="relative group"
+                    >
+                      <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">LinkedIn</Label>
+                      <div className="relative">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg"
+                        >
+                          <Linkedin className="w-5 h-5 text-blue-600" />
+                        </motion.div>
+                        <Input
+                          name="linkedin"
+                          value={profile.linkedin || ''}
+                          onChange={handleChange}
+                          placeholder="https://linkedin.com/in/username"
+                          className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90"
+                        />
+                      </div>
+                    </motion.div>
+
+                    {/* GitHub */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.1 }}
+                      className="relative group"
+                    >
+                      <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">GitHub</Label>
+                      <div className="relative">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-gray-700/20 to-gray-900/20 rounded-lg"
+                        >
+                          <Github className="w-5 h-5 text-gray-800" />
+                        </motion.div>
+                        <Input
+                          name="github"
+                          value={profile.github || ''}
+                          onChange={handleChange}
+                          placeholder="https://github.com/username"
+                          className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-gray-700 focus:ring-4 focus:ring-gray-700/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90"
+                        />
+                      </div>
+                    </motion.div>
+
+                    {/* Instagram */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.2 }}
+                      className="relative group"
+                    >
+                      <Label className="text-sm font-semibold text-[#4f1b59] mb-2 block">Instagram</Label>
+                      <div className="relative">
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-pink-500/20 to-purple-600/20 rounded-lg"
+                        >
+                          <Instagram className="w-5 h-5 text-pink-600" />
+                        </motion.div>
+                        <Input
+                          name="Instagram"
+                          value={profile.Instagram || ''}
+                          onChange={handleChange}
+                          placeholder="https://instagram.com/username"
+                          className="h-14 text-lg pl-16 pr-4 rounded-2xl bg-white/80 backdrop-blur-lg shadow-lg border-2 border-white/50 focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 transition-all duration-300 hover:shadow-xl hover:bg-white/90"
+                        />
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Academic Details Card */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -837,7 +1379,6 @@ const Profile = () => {
                     <img src={profile.timetable_image} alt="Timetable" className="mt-4 rounded-xl shadow-lg max-w-xs max-h-60 border border-[#a259c6]/30" />
                   )}
                   </div>
-                </motion.div>
 
               {/* Hobbies & Tags Card */}
                 <motion.div
